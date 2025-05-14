@@ -27,7 +27,10 @@ export class Menu {
   
     async getInput(message: string = ''){
       let res = await new Promise<string>(resolve => rl.question(message, resolve))
-      .finally(() => rl.close());
+    //   .finally(() => rl.close());
+    
+    
+   
   
       return res;
     }

@@ -1,33 +1,35 @@
+import Item from "./Item";
+
 export class Order {
     total: number = 0;
     // date: Date;
     // deliveryLocation: string;
-    items: Map<string, number>; //define type?
+    items: Map<Item, number>; //define type?
     //make these private
   
     constructor() {
       this.total = 0;
-      this.items = new Map<string, number>;
+      this.items = new Map<Item, number>;
     }
   
     getAllItems () {
       console.log(this.items)
     }
   
-    getItem (item: string) {
+    getItem (item: Item) {
       return this.items.get(item)
     }
   
-    hasItem (item: string) {
+    hasItem (item: Item) {
       return this.items.has(item)
     }
   
-    setItem (item: string, quantity: number){
+    setItem (item: Item, quantity: number){
       this.items.set(item, quantity)
       //update total price
     }
   
-    removeItem (item: string) {
+    removeItem (item: Item) {
       this.items.delete(item)
     }
 } 

@@ -37,8 +37,8 @@ class Menu {
     }
     getInput() {
         return __awaiter(this, arguments, void 0, function* (message = '') {
-            let res = yield new Promise(resolve => rl.question(message, resolve))
-                .finally(() => rl.close());
+            let res = yield new Promise(resolve => rl.question(message, resolve));
+            //   .finally(() => rl.close());
             return res;
         });
     }
