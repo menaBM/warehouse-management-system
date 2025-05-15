@@ -11,14 +11,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OrderController = void 0;
 const Order_1 = require("../model/Order");
-class OrderController {
+const BaseController_1 = require("./BaseController");
+class OrderController extends BaseController_1.BaseController {
     constructor(inventory, menu) {
+        super(menu);
         this.order = new Order_1.Order();
         this.addAction = () => __awaiter(this, void 0, void 0, function* () {
             const item = yield this.getItemInput();
             const quantity = yield this.getQuantityInput();
-            if (!(item === null || item === void 0 ? void 0 : item.getQuantity()) || (item === null || item === void 0 ? void 0 : item.getQuantity()) < quantity) {
-                //handle properly
+            if (!item.getQuantity() || item.getQuantity() < quantity) {
+                //handle properly - as part of inventory
                 console.log("insufficient stock");
                 return;
             }
@@ -26,61 +28,53 @@ class OrderController {
             this.order.setItem(item, quantity);
         });
         this.editAction = () => __awaiter(this, void 0, void 0, function* () {
-            const item = yield this.getItemInput();
+            const item = yield this.getItemInOrder();
             const quantity = yield this.getQuantityInput();
-            if (!item) {
-                return;
-            } // remove once validated
-            if (!this.order.hasItem(item)) {
-                // error message
-                // try again 
-            }
+            //quantity check
             this.order.setItem(item, quantity);
         });
         this.removeAction = () => __awaiter(this, void 0, void 0, function* () {
-            const item = yield this.getItemInput();
-            if (!item) {
-                return;
-            } // remove once validated
-            if (!this.order.hasItem(item)) {
-                // error message
-                // loop back to try again
-                return;
-            }
+            const item = yield this.getItemInOrder();
             this.order.removeItem(item);
         });
         this.viewAction = () => {
             console.log(this.order.getAllItems());
         };
         this.inventory = inventory;
-        this.menu = menu;
-    }
-    rootAction() {
-        return __awaiter(this, void 0, void 0, function* () {
-            while (true) {
-                const actions = new Map([['Add Item', this.addAction], ['Edit Quantity', this.editAction], ['Remove Item', this.removeAction], ['View Order', this.viewAction]]);
-                const choice = yield this.menu.selectOption("Please select an option:", [...actions.keys()]);
-                let index = parseInt(choice) - 1;
-                // if ( !Number.isNaN(index) ) // && index in range
-                // loop until valid choice, output error message
-                yield [...actions.values()][index]();
-            }
-        });
+        this.actions = new Map([['Add Item', this.addAction], ['Edit Quantity', this.editAction], ['Remove Item', this.removeAction], ['View Order', this.viewAction]]);
     }
     getItemInput() {
         return __awaiter(this, void 0, void 0, function* () {
-            const itemName = yield this.menu.getInput("Enter item name:");
-            //validate is string
-            const item = this.inventory.lookupItem(itemName);
-            // error message if not found
-            return item;
+            while (true) {
+                const itemName = yield this.menu.getInput("Enter item name:");
+                const item = this.inventory.lookupItem(itemName);
+                if (item) {
+                    return item;
+                }
+                this.menu.outputMessage(`${itemName} not found in inventory`);
+            }
         });
     }
     getQuantityInput() {
         return __awaiter(this, void 0, void 0, function* () {
-            const quantity = yield this.menu.getInput("Enter item quantity:");
-            //validate int
-            return parseInt(quantity);
+            while (true) {
+                const quantity = Number(yield this.menu.getInput("Enter item quantity:"));
+                if (quantity) {
+                    return quantity;
+                }
+                this.menu.outputMessage(`Invalid quantity`);
+            }
+        });
+    }
+    getItemInOrder() {
+        return __awaiter(this, void 0, void 0, function* () {
+            while (true) {
+                const item = yield this.getItemInput();
+                if (this.order.hasItem(item)) {
+                    return item;
+                }
+                this.menu.outputMessage(`${item.getName()} not found in order`);
+            }
         });
     }
 }

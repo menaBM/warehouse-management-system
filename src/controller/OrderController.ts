@@ -1,57 +1,55 @@
-import { Menu } from "../view/menu";
 import { Inventory } from "../model/Inventory";
 import { Order } from "../model/Order";
+import { Menu } from "../view/menu";
+import { BaseController } from "./BaseController";
 
-export class OrderController { 
+export class OrderController extends BaseController {  
   order: Order = new Order(); 
   inventory: Inventory;
-  menu: Menu;
   
   constructor (inventory: Inventory, menu: Menu) {
+    super(menu)
     this.inventory = inventory;
-    this.menu = menu;
+    this.actions = new Map([['Add Item', this.addAction] , ['Edit Quantity', this.editAction], ['Remove Item', this.removeAction], ['View Order', this.viewAction]])
   }
 
-    async rootAction () { // in parent class and set options in contructor
-        while (true) {
-            const actions: Map< string, {(): any}>= new Map([['Add Item', this.addAction] , ['Edit Quantity', this.editAction], ['Remove Item', this.removeAction], ['View Order', this.viewAction]])
-            const choice = await this.menu.selectOption("Please select an option:", [...actions.keys()]) 
-
-            let index = parseInt(choice) - 1;
-
-            // if ( !Number.isNaN(index) ) // && index in range
-            // loop until valid choice, output error message
-
-            await [...actions.values()][index]()
-        }
-    }
-
   async getItemInput () {
-    const itemName =  await this.menu.getInput("Enter item name:") 
-
-    //validate is string
-
-    const item = this.inventory.lookupItem(itemName)
-
-    // error message if not found
-
-    return item
+    while (true) {
+      const itemName =  await this.menu.getInput("Enter item name:") 
+      const item = this.inventory.lookupItem(itemName)
+      if (item) {
+        return item
+      }
+      this.menu.outputMessage(`${itemName} not found in inventory`)
+    }
   }
 
   async getQuantityInput () {
-    const quantity = await this.menu.getInput("Enter item quantity:") 
-
-    //validate int
-
-    return parseInt(quantity)
+    while (true) {
+      const quantity =  Number( await this.menu.getInput("Enter item quantity:") )
+      if (quantity) {
+        return quantity
+      }
+      this.menu.outputMessage(`Invalid quantity`)
+    }
   }
 
-    addAction =  async () => { // needs to be arrow function to keep context of 'this'
+  async getItemInOrder () {
+    while (true) {
+      const item = await this.getItemInput()
+      if (this.order.hasItem(item)) {
+        return item
+      }
+      this.menu.outputMessage(`${item.getName()} not found in order`)
+    }
+  }
+
+  addAction =  async () => { // needs to be arrow function to keep context of 'this'
     const item = await this.getItemInput()
     const quantity = await this.getQuantityInput()
 
-    if (!item?.getQuantity() || item?.getQuantity() < quantity) {
-        //handle properly
+    if (!item.getQuantity() || item.getQuantity() < quantity) {
+        //handle properly - as part of inventory
         console.log("insufficient stock")
         return
     }
@@ -62,30 +60,16 @@ export class OrderController {
   }
 
     editAction = async () => {
-        const item = await this.getItemInput()
+        const item = await this.getItemInOrder()
         const quantity = await this.getQuantityInput()
 
-        if (!item) {return } // remove once validated
-
-        if (!this.order.hasItem(item)) {
-            // error message
-          // try again 
-        }
+        //quantity check
 
         this.order.setItem(item, quantity)
   }
 
-  removeAction = async () => { // similar to edit action? 
-    const item = await this.getItemInput()
-
-    if (!item) {return } // remove once validated
-    
-    if (!this.order.hasItem(item)) {
-      // error message
-      // loop back to try again
-      return
-    } 
-
+  removeAction = async () => {
+    const item = await this.getItemInOrder()
     this.order.removeItem(item)
   }
 

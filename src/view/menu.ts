@@ -34,4 +34,8 @@ export class Menu {
   
       return res;
     }
+
+    outputMessage (message: string = '') {
+      console.log(message)
+    }
 }

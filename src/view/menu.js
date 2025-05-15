@@ -42,5 +42,8 @@ class Menu {
             return res;
         });
     }
+    outputMessage(message = '') {
+        console.log(message);
+    }
 }
 exports.Menu = Menu;
