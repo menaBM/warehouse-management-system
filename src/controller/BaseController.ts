@@ -8,10 +8,9 @@ export class BaseController {
        this.menu = menu;
     }
 
-    async rootAction () {
+    rootAction = async() => {
         while (true) {
             const choice = await this.menu.selectOption("Please select an option:", [...this.actions.keys()]) 
-            
             let index = parseInt(choice) - 1;
 
             // if ( !Number.isNaN(index) ) // && index in range

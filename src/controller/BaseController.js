@@ -13,10 +13,7 @@ exports.BaseController = void 0;
 class BaseController {
     constructor(menu) {
         this.actions = new Map();
-        this.menu = menu;
-    }
-    rootAction() {
-        return __awaiter(this, void 0, void 0, function* () {
+        this.rootAction = () => __awaiter(this, void 0, void 0, function* () {
             while (true) {
                 const choice = yield this.menu.selectOption("Please select an option:", [...this.actions.keys()]);
                 let index = parseInt(choice) - 1;
@@ -25,6 +22,7 @@ class BaseController {
                 yield [...this.actions.values()][index]();
             }
         });
+        this.menu = menu;
     }
 }
 exports.BaseController = BaseController;
