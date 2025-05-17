@@ -1,0 +1,1 @@
+export type SupplierDetails = {name: string, email: string, phoneNumber: number, deliveryTimeInDays: number}
