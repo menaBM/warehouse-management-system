@@ -19,10 +19,21 @@ class Order {
     }
     setItem(item, quantity) {
         this.items.set(item, quantity);
-        //update total price
+        this.total += item.getPrice() * quantity;
     }
     removeItem(item) {
         this.items.delete(item);
+    }
+    getTotal() {
+        return this.total;
+    }
+    getSummary() {
+        let order = [["Name", "Quantity", "Price"]];
+        this.items.forEach((quantity, item) => {
+            const price = item.getPrice() * quantity;
+            order.push([item.getName(), quantity.toString(), price.toString()]);
+        });
+        return order;
     }
 }
 exports.Order = Order;

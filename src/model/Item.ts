@@ -2,11 +2,13 @@ export default class Item {
     name: string;
     price: number;
     quantity: number;
+    lowStockThreshold: number;
   
-    constructor (name: string, price: number, quantity: number) {
+    constructor (name: string, price: number, quantity: number, lowStockThreshold?: number) {
       this.name = name
       this.price = price
       this.quantity = quantity
+      this.lowStockThreshold = lowStockThreshold ?? Math.round(quantity * 0.2);
     }
   
     setName (name : string) {
@@ -31,5 +33,11 @@ export default class Item {
   
     getQuantity (): number {
       return this.quantity
+    }
+
+    // setLowStockThreshold () 
+
+    isLowStock (): Boolean {
+      return this.quantity <= this.lowStockThreshold
     }
 }

@@ -16,22 +16,16 @@ const rl = readline.createInterface({
     output: process.stdout
 });
 class Menu {
-    // display () {
-    //   // while true
-    //   this.printOptions()
-    //   this.selectOption()
-    // }
     printOptions(options) {
-        console.log("print options", options[0]);
         options.forEach((option, index) => {
             console.log(`${index + 1}. ${option}`);
         });
     }
     selectOption(message, options) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log(message);
+            console.log(`\n${message}\n`);
             this.printOptions(options);
-            let choice = yield this.getInput('Please enter selection:\n');
+            let choice = yield this.getInput('\nPlease enter number of selection:\n');
             return choice;
         });
     }
@@ -44,6 +38,17 @@ class Menu {
     }
     outputMessage(message = '') {
         console.log(message);
+    }
+    drawTable(data) {
+        data.forEach(entry => {
+            let row = ``;
+            entry.forEach(column => {
+                const maxLength = 25;
+                column = column.length > maxLength ? column.substring(0, maxLength - 1) : column + " ".repeat(maxLength - column.length);
+                row += column;
+            });
+            console.log(`${row}\n`);
+        });
     }
 }
 exports.Menu = Menu;

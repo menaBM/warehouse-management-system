@@ -7,9 +7,9 @@ export class Inventory {
     constructor () {
       //load from json?
       const testItems = [
-        {item: "item 1", value: new Item("item 1", 5, 34)},
+        {item: "item 1", value: new Item("item 1", 5, 34, 50)},
         {item: "item 2", value: new Item("item 2", 5, 100)},
-        {item: "item 3", value: new Item("item 3", 5, 48)},
+        {item: "item 3", value: new Item("item 3", 5, 48, 50)},
         {item: "item 4", value: new Item("item 4", 5, 23)}
       ]
   
@@ -20,8 +20,20 @@ export class Inventory {
     }
   
     generateReport () {
+      let report: Array<Array<string>> = [["Item", "Quantity", "Low Stock"]]
+      this.items.forEach(item => {
+        const isLowStock: string = item.isLowStock() ? "Yes" : "No";
+        report.push([item.getName(), item.getQuantity().toString(), isLowStock])
+      })
+      return report;
     }
-  
+
+    getLowStock () {
+      let lowStock: Array<Array<string>> = [["Item", "Quantity"]]
+      let items = [...this.items.values()].filter(item => item.isLowStock())
+      items.map(item => lowStock.push([item.getName(), item.getQuantity().toString()]))
+      return lowStock
+    }
     updateStock (item: Item, quantity: number) { 
       //need to check change is valid
   
@@ -38,10 +50,6 @@ export class Inventory {
         return stock ? stock.quantity >= quantity : false;
       }
       return false;
-    }
-  
-    checkLowStock (item: Item) {
-      // defined as a percentage or stored in a field on the item?
     }
   
     processOrder (order: Order) {

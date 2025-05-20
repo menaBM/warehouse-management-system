@@ -10,9 +10,9 @@ class Inventory {
         this.items = new Map;
         //load from json?
         const testItems = [
-            { item: "item 1", value: new Item_1.default("item 1", 5, 34) },
+            { item: "item 1", value: new Item_1.default("item 1", 5, 34, 50) },
             { item: "item 2", value: new Item_1.default("item 2", 5, 100) },
-            { item: "item 3", value: new Item_1.default("item 3", 5, 48) },
+            { item: "item 3", value: new Item_1.default("item 3", 5, 48, 50) },
             { item: "item 4", value: new Item_1.default("item 4", 5, 23) }
         ];
         testItems.forEach(item => {
@@ -20,6 +20,18 @@ class Inventory {
         });
     }
     generateReport() {
+        let report = [["Item", "Quantity", "Low Stock"]];
+        this.items.forEach(item => {
+            const isLowStock = item.isLowStock() ? "Yes" : "No";
+            report.push([item.getName(), item.getQuantity().toString(), isLowStock]);
+        });
+        return report;
+    }
+    getLowStock() {
+        let lowStock = [["Item", "Quantity"]];
+        let items = [...this.items.values()].filter(item => item.isLowStock());
+        items.map(item => lowStock.push([item.getName(), item.getQuantity().toString()]));
+        return lowStock;
     }
     updateStock(item, quantity) {
         //need to check change is valid
@@ -34,9 +46,6 @@ class Inventory {
             return stock ? stock.quantity >= quantity : false;
         }
         return false;
-    }
-    checkLowStock(item) {
-        // defined as a percentage or stored in a field on the item?
     }
     processOrder(order) {
         // could be customerOrder or supplierOrder

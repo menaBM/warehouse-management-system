@@ -26,10 +26,23 @@ export class Order {
   
     setItem (item: Item, quantity: number){
       this.items.set(item, quantity)
-      //update total price
+      this.total += item.getPrice() * quantity;
     }
   
     removeItem (item: Item) {
       this.items.delete(item)
+    }
+
+    getTotal(): number {
+      return this.total;
+    }
+
+    getSummary() {
+      let order: Array<Array<string>> = [["Name", "Quantity", "Price"]]
+      this.items.forEach((quantity, item) => {
+        const price: number = item.getPrice() * quantity;
+        order.push([item.getName(), quantity.toString(), price.toString()])
+      })
+      return order;
     }
 } 

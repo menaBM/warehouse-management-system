@@ -5,27 +5,20 @@ const rl = readline.createInterface({
 });
 
 export class Menu {
-    // display () {
-    //   // while true
-    //   this.printOptions()
-    //   this.selectOption()
-    // }
-  
     printOptions (options: Array<string>) {
-      console.log("print options", options[0])
       options.forEach((option, index) => {
         console.log(`${index + 1}. ${option}`)
       })
     }
   
     async selectOption (message: string, options: Array<string>) {
-      console.log(message)
+      console.log(`\n${message}\n`)
       this.printOptions(options)
-      let choice = await this.getInput('Please enter selection:\n')
+      let choice = await this.getInput('\nPlease enter number of selection:\n')
       return choice
     }
   
-    async getInput(message: string = ''){
+    async getInput (message: string = ''){
       let res = await new Promise<string>(resolve => rl.question(message, resolve))
     //   .finally(() => rl.close());
     
@@ -37,5 +30,17 @@ export class Menu {
 
     outputMessage (message: string = '') {
       console.log(message)
+    }
+
+    drawTable (data: Array<Array<string>>) {
+      data.forEach(entry => {
+        let row = ``
+        entry.forEach(column => {
+          const maxLength = 25 
+          column = column.length > maxLength ? column.substring(0, maxLength - 1) : column + " ".repeat(maxLength - column.length)
+          row += column
+        })
+        console.log(`${row}\n`)
+      })
     }
 }
