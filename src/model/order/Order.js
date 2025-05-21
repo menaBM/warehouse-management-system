@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Order = void 0;
 class Order {
-    //make these private
     constructor() {
         this.total = 0;
         this.total = 0;
@@ -17,7 +16,7 @@ class Order {
     hasItem(item) {
         return this.items.has(item);
     }
-    setItem(item, quantity) {
+    addItem(item, quantity) {
         this.items.set(item, quantity);
         this.total += item.getPrice() * quantity;
     }
@@ -27,6 +26,9 @@ class Order {
     getTotal() {
         return this.total;
     }
+    getStockUpdates() {
+        return this.items;
+    }
     getSummary() {
         let order = [["Name", "Quantity", "Price"]];
         this.items.forEach((quantity, item) => {
@@ -34,6 +36,8 @@ class Order {
             order.push([item.getName(), quantity.toString(), price.toString()]);
         });
         return order;
+    }
+    complete() {
     }
 }
 exports.Order = Order;

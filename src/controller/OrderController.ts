@@ -1,16 +1,24 @@
 import { Inventory } from "../model/Inventory";
-import { Order } from "../model/Order";
+import { Order } from "../model/order/Order";
 import { Menu } from "../view/menu";
 import { BaseController } from "./BaseController";
 
-export class OrderController extends BaseController {  
-  order: Order = new Order(); 
-  inventory: Inventory;
+export class OrderController extends BaseController {
+  private order: Order;
+  private orderClass: typeof Order
+  private inventory: Inventory;
   
-  constructor (inventory: Inventory, menu: Menu) {
+  constructor (inventory: Inventory, menu: Menu, order: typeof Order) { 
     super(menu)
+    this.orderClass = order
+    this.order = new order()
     this.inventory = inventory;
-    this.actions = new Map([['Add Item', this.addAction] , ['Edit Quantity', this.editAction], ['Remove Item', this.removeAction], ['View Order', this.viewAction]])
+    this.actions = new Map([['Add Item', this.addAction] , ['Edit Quantity', this.editAction], ['Remove Item', this.removeAction], ['View Order', this.viewAction], ["Complete Order", this.completeAction]])
+  }
+
+  async rootAction (): Promise<void>  { 
+    this.order = new this.orderClass
+    await super.rootAction()
   }
 
   async getItemInput () {
@@ -23,7 +31,7 @@ export class OrderController extends BaseController {
       this.menu.outputMessage(`${itemName} not found in inventory`)
     }
   }
-
+    
   async getQuantityInput () {
     while (true) {
       const quantity =  Number( await this.menu.getInput("Enter item quantity:") )
@@ -56,16 +64,16 @@ export class OrderController extends BaseController {
 
     // should error if already in the order - or update quantity?
 
-    this.order.setItem(item, quantity)
+    this.order.addItem(item, quantity)
   }
 
-    editAction = async () => {
-        const item = await this.getItemInOrder()
-        const quantity = await this.getQuantityInput()
+  editAction = async () => {
+    const item = await this.getItemInOrder()
+    const quantity = await this.getQuantityInput()
 
-        //quantity check
+    //quantity check
 
-        this.order.setItem(item, quantity)
+    this.order.addItem(item, quantity)
   }
 
   removeAction = async () => {
@@ -74,8 +82,15 @@ export class OrderController extends BaseController {
   }
 
   viewAction = () => {
-    console.log(this.order.getAllItems())
+    this.menu.drawTable(this.order.getSummary())
+    this.menu.outputMessage(`Order Total: ${this.order.getTotal()}`)
   }
 
+  completeAction = () => {
+    this.menu.outputMessage("Your final order is as follows:")
+    this.viewAction()
+    this.inventory.processOrder(this.order)    
+    this.exitAction()
+  }
   // Action for viewing in stock items
 }

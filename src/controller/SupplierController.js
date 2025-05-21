@@ -53,7 +53,10 @@ class SupplierController extends BaseController_1.BaseController {
             // this.menu.outputMessage(this.supplierDirectory.getAllSuppliers())
         });
         this.supplierDirectory = new SupplierDirectory_1.SupplierDirectory();
-        this.actions = new Map([['Add New Supplier', this.addAction], ['Edit Supplier', this.editAction], ['Delete Supplier', this.deleteAction], ['View All Suppliers', this.viewAction]]);
+        this.actions = new Map([['Add New Supplier', this.addAction], ['Edit Supplier', this.editAction], ['Delete Supplier', this.deleteAction]]); //, ['View All Suppliers', this.viewAction] ])
+    }
+    addNewAction(text, callback) {
+        this.actions.set(text, callback);
     }
     getSupplierInput(message, supplierDetails) {
         return __awaiter(this, void 0, void 0, function* () {

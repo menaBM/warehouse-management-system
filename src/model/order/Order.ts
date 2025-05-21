@@ -1,11 +1,10 @@
-import Item from "./Item";
+import Item from "../Item";
 
 export class Order {
-    total: number = 0;
+    private total: number = 0;
     // date: Date;
     // deliveryLocation: string;
-    items: Map<Item, number>; //define type?
-    //make these private
+    private items: Map<Item, number>;
   
     constructor() {
       this.total = 0;
@@ -24,7 +23,7 @@ export class Order {
       return this.items.has(item)
     }
   
-    setItem (item: Item, quantity: number){
+    addItem (item: Item, quantity: number){
       this.items.set(item, quantity)
       this.total += item.getPrice() * quantity;
     }
@@ -37,6 +36,10 @@ export class Order {
       return this.total;
     }
 
+    getStockUpdates (): Map<Item, number> {
+      return this.items
+    }
+
     getSummary() {
       let order: Array<Array<string>> = [["Name", "Quantity", "Price"]]
       this.items.forEach((quantity, item) => {
@@ -44,5 +47,9 @@ export class Order {
         order.push([item.getName(), quantity.toString(), price.toString()])
       })
       return order;
+    }
+
+    complete () {
+
     }
 } 

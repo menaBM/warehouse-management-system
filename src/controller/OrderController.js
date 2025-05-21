@@ -10,12 +10,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OrderController = void 0;
-const Order_1 = require("../model/Order");
 const BaseController_1 = require("./BaseController");
 class OrderController extends BaseController_1.BaseController {
-    constructor(inventory, menu) {
+    constructor(inventory, menu, order) {
         super(menu);
-        this.order = new Order_1.Order();
         this.addAction = () => __awaiter(this, void 0, void 0, function* () {
             const item = yield this.getItemInput();
             const quantity = yield this.getQuantityInput();
@@ -25,23 +23,41 @@ class OrderController extends BaseController_1.BaseController {
                 return;
             }
             // should error if already in the order - or update quantity?
-            this.order.setItem(item, quantity);
+            this.order.addItem(item, quantity);
         });
         this.editAction = () => __awaiter(this, void 0, void 0, function* () {
             const item = yield this.getItemInOrder();
             const quantity = yield this.getQuantityInput();
             //quantity check
-            this.order.setItem(item, quantity);
+            this.order.addItem(item, quantity);
         });
         this.removeAction = () => __awaiter(this, void 0, void 0, function* () {
             const item = yield this.getItemInOrder();
             this.order.removeItem(item);
         });
         this.viewAction = () => {
-            console.log(this.order.getAllItems());
+            this.menu.drawTable(this.order.getSummary());
+            this.menu.outputMessage(`Order Total: ${this.order.getTotal()}`);
         };
+        this.completeAction = () => {
+            this.menu.outputMessage("Your final order is as follows:");
+            this.viewAction();
+            this.inventory.processOrder(this.order);
+            this.exitAction();
+        };
+        this.orderClass = order;
+        this.order = new order();
         this.inventory = inventory;
-        this.actions = new Map([['Add Item', this.addAction], ['Edit Quantity', this.editAction], ['Remove Item', this.removeAction], ['View Order', this.viewAction]]);
+        this.actions = new Map([['Add Item', this.addAction], ['Edit Quantity', this.editAction], ['Remove Item', this.removeAction], ['View Order', this.viewAction], ["Complete Order", this.completeAction]]);
+    }
+    rootAction() {
+        const _super = Object.create(null, {
+            rootAction: { get: () => super.rootAction }
+        });
+        return __awaiter(this, void 0, void 0, function* () {
+            this.order = new this.orderClass;
+            yield _super.rootAction.call(this);
+        });
     }
     getItemInput() {
         return __awaiter(this, void 0, void 0, function* () {

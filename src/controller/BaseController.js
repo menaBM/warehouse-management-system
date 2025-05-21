@@ -13,8 +13,17 @@ exports.BaseController = void 0;
 class BaseController {
     constructor(menu) {
         this.actions = new Map();
-        this.rootAction = () => __awaiter(this, void 0, void 0, function* () {
-            while (true) {
+        this.running = true;
+        this.exitAction = () => {
+            this.running = false;
+        };
+        this.menu = menu;
+    }
+    rootAction() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.actions.set("Exit", this.exitAction);
+            this.running = true;
+            while (this.running) {
                 const choice = yield this.menu.selectOption("Please select an option:", [...this.actions.keys()]);
                 let index = parseInt(choice) - 1;
                 // if ( !Number.isNaN(index) ) // && index in range
@@ -22,7 +31,6 @@ class BaseController {
                 yield [...this.actions.values()][index]();
             }
         });
-        this.menu = menu;
     }
 }
 exports.BaseController = BaseController;

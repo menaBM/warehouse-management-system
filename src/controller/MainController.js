@@ -6,7 +6,7 @@ class MainController extends BaseController_1.BaseController {
     constructor(menu, controllers) {
         super(menu);
         controllers.forEach((value, key) => {
-            this.actions.set(key, value.rootAction);
+            this.actions.set(key, value.rootAction.bind(value));
         });
     }
 }

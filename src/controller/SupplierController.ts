@@ -11,7 +11,11 @@ export class SupplierController extends BaseController {
     super(menu)
 
     this.supplierDirectory = new SupplierDirectory()
-    this.actions = new Map([['Add New Supplier', this.addAction], ['Edit Supplier', this.editAction], ['Delete Supplier', this.deleteAction], ['View All Suppliers', this.viewAction] ])
+    this.actions = new Map([['Add New Supplier', this.addAction], ['Edit Supplier', this.editAction], ['Delete Supplier', this.deleteAction] ])//, ['View All Suppliers', this.viewAction] ])
+  }
+
+  addNewAction(text: string, callback: {(): any}) {
+    this.actions.set(text, callback)
   }
 
   async getSupplierInput (message: string, supplierDetails?: SupplierDetails): Promise<SupplierDetails> {
