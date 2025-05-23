@@ -23,6 +23,10 @@ export class BaseController {
         }
     }
 
+    addNewAction(text: string, callback: {(): any}) {
+        this.actions.set(text, callback)
+    }
+
     exitAction = () => {
         this.running = false;
     }

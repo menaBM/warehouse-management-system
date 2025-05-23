@@ -1,21 +1,17 @@
 import { SupplierDetails } from "../types";
 import { Supplier } from "../model/Supplier";
-import { SupplierDirectory } from "../model/SupplierDirectory";
+import { SupplierManager} from "../model/SupplierManager";
 import { Menu } from "../view/menu";
 import { BaseController } from "./BaseController";
 
 export class SupplierController extends BaseController {
-  supplierDirectory: SupplierDirectory;
+  private supplierManager: SupplierManager;
 
-  constructor (menu: Menu) {
+  constructor (menu: Menu, supplierManager: SupplierManager) {
     super(menu)
 
-    this.supplierDirectory = new SupplierDirectory()
-    this.actions = new Map([['Add New Supplier', this.addAction], ['Edit Supplier', this.editAction], ['Delete Supplier', this.deleteAction] ])//, ['View All Suppliers', this.viewAction] ])
-  }
-
-  addNewAction(text: string, callback: {(): any}) {
-    this.actions.set(text, callback)
+    this.supplierManager = supplierManager
+    this.actions = new Map([['Add New Supplier', this.addAction], ['Edit Supplier', this.editAction], ['Delete Supplier', this.deleteAction], ["Order history", this.orderHistoryAction] ])//, ['View All Suppliers', this.viewAction] ])
   }
 
   async getSupplierInput (message: string, supplierDetails?: SupplierDetails): Promise<SupplierDetails> {
@@ -68,15 +64,20 @@ export class SupplierController extends BaseController {
 
     // verify not already existing supplier
 
-    this.supplierDirectory.addSupplier(supplier)
+    this.supplierManager.addSupplier(supplier)
   }
 
   editAction =  async () => {
     const name = await this.menu.getInput("Enter name of supplier to edit:") 
 
-    let supplier = this.supplierDirectory.getSupplier(name)
+    let supplier = this.supplierManager.getSupplier(name)
+
+    // confirm exists already and handle if not
+    // this.menu.outputMessage(`${itemName} not found in inventory`)
 
     if (!supplier) { return } // causing it to go back to the menu if no supplier entered - handle properly
+
+    //output current details
 
     const supplierDetails: SupplierDetails = await this.getSupplierInput( "Please enter new details for supplier (enter to leave unchanged)", {
       name: supplier.getName(),
@@ -85,27 +86,42 @@ export class SupplierController extends BaseController {
       deliveryTimeInDays: supplier.getDaysToDeliver()
     })
 
-    this.supplierDirectory.editSupplier(supplier, supplierDetails)
+    this.supplierManager.editSupplier(supplier, supplierDetails)
   }
 
   deleteAction =  async () => {
+    const name = await this.menu.getInput("Enter name of supplier to delete:") 
+    let supplier = this.supplierManager.getSupplier(name)
 
-            const name = await this.menu.getInput("Enter name of supplier to delete:") 
-            let supplier = this.supplierDirectory.getSupplier(name)
+    // confirm exists already and handle if not
+    // this.menu.outputMessage(`${name} not found in supplier directory`)
 
-            if (!supplier) { return }
+    if (!supplier) { return } // causing it to go back to the menu if no supplier enterered
 
-    this.supplierDirectory.removeSupplier(name)
+    this.supplierManager.removeSupplier(name)
   }
 
   viewAction =  async () => {
 
-    console.log("view action ", this.supplierDirectory.getAllSuppliers())
+  //   console.log("view action ", this.supplierManager.getAllSuppliers())
 
-        for (const [key,value] of this.supplierDirectory.getAllSuppliers().entries()) {
-            console.log(key, value)
-          };
+  //       for (const [key,value] of this.supplierManager.getAllSuppliers().entries()) {
+  //           console.log(key, value)
+  //         };
 
-    // this.menu.outputMessage(this.supplierDirectory.getAllSuppliers())
+  // this.menu.drawTable()
+
+  }
+
+  orderHistoryAction = () => {
+    let orders = this.supplierManager.viewOrders()
+    let orderSummaries: Array<Array<string>> = [["Order Number", "Supplier Name", "Order Status"]]
+
+    orders.forEach(order => {
+      const orderNumber = order.getOrderNumber()
+      if (!orderNumber) {return}
+      orderSummaries.push([orderNumber.toString(), "supplier name", "order status" ])
+    });
+    this.menu.drawTable(orderSummaries)
   }
 }

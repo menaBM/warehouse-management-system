@@ -1,12 +1,11 @@
 import { SupplierDetails } from "../types"
+import { SupplierOrder } from "./order/SupplierOrder"
+import { OrderArchive } from "./OrderArchive"
 import { Supplier } from "./Supplier"
 
-export class SupplierDirectory {
+export class SupplierManager {
     private suppliers: Map<string, Supplier> = new Map()
-
-    constructor() {
-        
-    }
+    private purchaseOrderArchive: OrderArchive = new OrderArchive()
 
     addSupplier (supplier: Supplier ) {
         // verify not already there
@@ -37,5 +36,13 @@ export class SupplierDirectory {
 
     getAllSuppliers (): Map<string, Supplier> {
         return this.suppliers;
+    }
+
+    addSupplierOrder (order: SupplierOrder) {
+        const orderNumber = this.purchaseOrderArchive.addOrder(order)
+    }
+
+    viewOrders (): Map<number, SupplierOrder> { // rename get all orders
+        return this.purchaseOrderArchive.getAllOrders()
     }
 }

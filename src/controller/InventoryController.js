@@ -26,7 +26,11 @@ class InventoryController extends BaseController_1.BaseController {
             this.menu.outputMessage(`${item.getName()}: ${item.getQuantity()}`);
         });
         this.inventory = inventory;
-        this.actions = new Map([['Stock Report', this.stockReportAction], ['Low Stock Items', this.lowStockAction], ['Check Item Stock', this.checkStockAction]]);
+        this.actions = new Map([
+            ['Stock Report', this.stockReportAction],
+            ['Low Stock Items', this.lowStockAction],
+            ['Check Item Stock', this.checkStockAction]
+        ]);
     }
     getItemInput() {
         return __awaiter(this, void 0, void 0, function* () {

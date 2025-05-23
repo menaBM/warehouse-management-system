@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Supplier = void 0;
 class Supplier {
+    // supplierItems
     constructor(name, email, phoneNumber, daysToDeliver) {
         this.name = name;
         this.email = email;

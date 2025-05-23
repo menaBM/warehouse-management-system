@@ -33,6 +33,7 @@ class Inventory {
         return lowStock;
     }
     updateStock(items) {
+        //need to check change is valid
         let alerts = new Array;
         items.forEach((quantity, item) => {
             const stock = this.items.get(item.getName());
@@ -47,6 +48,9 @@ class Inventory {
         });
         return alerts;
     }
+    // updateItemStock (item: Item, quantity: number) { 
+    //   //need to check change is valid
+    // }
     lookupItem(name) {
         return this.items.get(name);
     }

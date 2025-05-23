@@ -7,7 +7,7 @@ export class OrderController extends BaseController {
   private order: Order;
   private orderClass: typeof Order
   private inventory: Inventory;
-  
+
   constructor (inventory: Inventory, menu: Menu, order: typeof Order) { 
     super(menu)
     this.orderClass = order
@@ -52,15 +52,15 @@ export class OrderController extends BaseController {
     }
   }
 
-  addAction =  async () => { // needs to be arrow function to keep context of 'this'
+  addAction =  async () => {
     const item = await this.getItemInput()
     const quantity = await this.getQuantityInput()
 
-    if (!item.getQuantity() || item.getQuantity() < quantity) {
-        //handle properly - as part of inventory
-        console.log("insufficient stock")
-        return
-    }
+    // if (!item.getQuantity() || item.getQuantity() < quantity) {
+    //     //handle properly
+    //     console.log("insufficient stock")
+    //     return
+    // }
 
     // should error if already in the order - or update quantity?
 
@@ -89,7 +89,12 @@ export class OrderController extends BaseController {
   completeAction = () => {
     this.menu.outputMessage("Your final order is as follows:")
     this.viewAction()
-    this.inventory.processOrder(this.order)    
+
+    //confirm yes / no
+    //delivery address
+    const output = this.order.complete(this.inventory)
+    // this.menu.drawTable(output) - stock alerts
+
     this.exitAction()
   }
   // Action for viewing in stock items

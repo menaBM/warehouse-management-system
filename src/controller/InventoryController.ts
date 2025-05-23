@@ -8,7 +8,10 @@ export class InventoryController extends BaseController {
   constructor (menu: Menu, inventory: Inventory) {
     super(menu)
     this.inventory = inventory;
-    this.actions = new Map([['Stock Report', this.stockReportAction], ['Low Stock Items', this.lowStockAction], ['Check Item Stock', this.checkStockAction]])
+    this.actions = new Map([
+      ['Stock Report', this.stockReportAction],
+      ['Low Stock Items', this.lowStockAction],
+      ['Check Item Stock', this.checkStockAction]])
   }
 
   stockReportAction = () => { 

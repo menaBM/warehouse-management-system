@@ -14,7 +14,6 @@ export class Inventory {
       testItems.forEach(item => {
         this.items.set(item.item, item.value)
       })
-  
     }
   
     generateReport () {
@@ -34,6 +33,7 @@ export class Inventory {
     }
 
     updateStock (items: Map<Item, number>) {
+      //need to check change is valid
 
       let alerts = new Array<Array<string>>
       items.forEach((quantity, item) => {
@@ -51,12 +51,17 @@ export class Inventory {
       })  
       return alerts
     }
+
+    // updateItemStock (item: Item, quantity: number) { 
+    //   //need to check change is valid
+  
+    // }
   
     lookupItem (name: string): Item | undefined {
       return this.items.get(name)
     }
   
-    checkInStock (item: Item, quantity: number) {
+    checkInStock (item: Item, quantity: number) { // validate quantity not negative
       const stock = this.items.get(item.getName())
       if ( stock ) {
         return stock ? stock.getQuantity() >= quantity : false;

@@ -17,11 +17,11 @@ class OrderController extends BaseController_1.BaseController {
         this.addAction = () => __awaiter(this, void 0, void 0, function* () {
             const item = yield this.getItemInput();
             const quantity = yield this.getQuantityInput();
-            if (!item.getQuantity() || item.getQuantity() < quantity) {
-                //handle properly - as part of inventory
-                console.log("insufficient stock");
-                return;
-            }
+            // if (!item.getQuantity() || item.getQuantity() < quantity) {
+            //     //handle properly
+            //     console.log("insufficient stock")
+            //     return
+            // }
             // should error if already in the order - or update quantity?
             this.order.addItem(item, quantity);
         });
@@ -42,7 +42,10 @@ class OrderController extends BaseController_1.BaseController {
         this.completeAction = () => {
             this.menu.outputMessage("Your final order is as follows:");
             this.viewAction();
-            this.inventory.processOrder(this.order);
+            //confirm yes / no
+            //delivery address
+            const output = this.order.complete(this.inventory);
+            // this.menu.drawTable(output) - stock alerts
             this.exitAction();
         };
         this.orderClass = order;

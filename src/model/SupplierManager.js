@@ -1,9 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SupplierDirectory = void 0;
-class SupplierDirectory {
+exports.SupplierManager = void 0;
+const OrderArchive_1 = require("./OrderArchive");
+class SupplierManager {
     constructor() {
         this.suppliers = new Map();
+        this.purchaseOrderArchive = new OrderArchive_1.OrderArchive();
     }
     addSupplier(supplier) {
         // verify not already there
@@ -28,5 +30,11 @@ class SupplierDirectory {
     getAllSuppliers() {
         return this.suppliers;
     }
+    addSupplierOrder(order) {
+        const orderNumber = this.purchaseOrderArchive.addOrder(order);
+    }
+    viewOrders() {
+        return this.purchaseOrderArchive.getAllOrders();
+    }
 }
-exports.SupplierDirectory = SupplierDirectory;
+exports.SupplierManager = SupplierManager;

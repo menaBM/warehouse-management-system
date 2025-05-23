@@ -32,5 +32,8 @@ class BaseController {
             }
         });
     }
+    addNewAction(text, callback) {
+        this.actions.set(text, callback);
+    }
 }
 exports.BaseController = BaseController;

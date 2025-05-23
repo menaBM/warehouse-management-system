@@ -7,16 +7,19 @@ import { BaseController } from "./src/controller/BaseController";
 import { InventoryController } from "./src/controller/InventoryController";
 import { CustomerOrder } from "./src/model/order/CustomerOrder";
 import { SupplierOrder } from "./src/model/order/SupplierOrder";
+import { SupplierManager } from "./src/model/SupplierManager";
 
 const menu = new Menu()
 const inventory = new Inventory()
+const supplierManager = new SupplierManager()
 
+SupplierOrder.supplierManager = supplierManager;
 const customerOrderController = new OrderController(inventory, menu, CustomerOrder)
 const supplierOrderController = new OrderController(inventory, menu, SupplierOrder)
-const supplierController = new SupplierController(menu)
+const supplierController = new SupplierController(menu, supplierManager)
 const inventoryController = new InventoryController(menu, inventory)
 
-supplierController.addNewAction("Place Purchase Order", supplierOrderController.rootAction.bind(supplierOrderController))
+supplierController.addNewAction("New Purchase Order", supplierOrderController.rootAction.bind(supplierOrderController))
 
 const menuControllers: Map<string, BaseController> =  new Map()
 menuControllers.set('Place Order', customerOrderController)
