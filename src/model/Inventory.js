@@ -8,7 +8,6 @@ const Item_1 = __importDefault(require("./Item"));
 class Inventory {
     constructor() {
         this.items = new Map;
-        //load from json?
         const testItems = [
             { item: "item 1", value: new Item_1.default("item 1", 5, 34, 50) },
             { item: "item 2", value: new Item_1.default("item 2", 5, 100) },
@@ -33,24 +32,30 @@ class Inventory {
         items.map(item => lowStock.push([item.getName(), item.getQuantity().toString()]));
         return lowStock;
     }
-    updateStock(item, quantity) {
-        //need to check change is valid
+    updateStock(items) {
+        let alerts = new Array;
+        items.forEach((quantity, item) => {
+            const stock = this.items.get(item.getName());
+            if (!stock)
+                return;
+            // check sufficient stock
+            stock.setQuantity(stock.getQuantity() - quantity);
+            if (stock.isLowStock()) {
+                alerts.push([`${stock.getName()}" currentyl at kjsdfkjahfjlkasdhf units, threshold is asdhfjakshf`]);
+            }
+            this.items.set(stock.getName(), stock);
+        });
+        return alerts;
     }
     lookupItem(name) {
         return this.items.get(name);
     }
     checkInStock(item, quantity) {
         const stock = this.items.get(item.getName());
-        // move to lookUpItem method
         if (stock) {
-            return stock ? stock.quantity >= quantity : false;
+            return stock ? stock.getQuantity() >= quantity : false;
         }
         return false;
-    }
-    processOrder(order) {
-        // could be customerOrder or supplierOrder
-        //loop through order.getItems() 
-        //updateStock()
     }
 }
 exports.Inventory = Inventory;

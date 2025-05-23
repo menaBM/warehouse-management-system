@@ -3,10 +3,11 @@ import { Menu } from "../view/menu";
 import { BaseController } from "./BaseController";
 
 export class InventoryController extends BaseController {
-  inventory: Inventory = new Inventory();
+  private inventory: Inventory;
   
-  constructor (menu: Menu) {
+  constructor (menu: Menu, inventory: Inventory) {
     super(menu)
+    this.inventory = inventory;
     this.actions = new Map([['Stock Report', this.stockReportAction], ['Low Stock Items', this.lowStockAction], ['Check Item Stock', this.checkStockAction]])
   }
 

@@ -1,3 +1,4 @@
+import { Inventory } from "../Inventory";
 import Item from "../Item";
 
 export class Order {
@@ -11,8 +12,8 @@ export class Order {
       this.items = new Map<Item, number>;
     }
   
-    getAllItems () {
-      console.log(this.items)
+    getAllItems (): Map<Item, number> {
+      return this.items
     }
   
     getItem (item: Item) {
@@ -36,10 +37,6 @@ export class Order {
       return this.total;
     }
 
-    getStockUpdates (): Map<Item, number> {
-      return this.items
-    }
-
     getSummary() {
       let order: Array<Array<string>> = [["Name", "Quantity", "Price"]]
       this.items.forEach((quantity, item) => {
@@ -49,7 +46,6 @@ export class Order {
       return order;
     }
 
-    complete () {
-
+    complete (inventory: Inventory) {
     }
 } 

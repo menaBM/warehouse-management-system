@@ -10,12 +10,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.InventoryController = void 0;
-const Inventory_1 = require("../model/Inventory");
 const BaseController_1 = require("./BaseController");
 class InventoryController extends BaseController_1.BaseController {
-    constructor(menu) {
+    constructor(menu, inventory) {
         super(menu);
-        this.inventory = new Inventory_1.Inventory();
         this.stockReportAction = () => {
             this.menu.drawTable(this.inventory.generateReport());
         };
@@ -27,6 +25,7 @@ class InventoryController extends BaseController_1.BaseController {
             const item = yield this.getItemInput();
             this.menu.outputMessage(`${item.getName()}: ${item.getQuantity()}`);
         });
+        this.inventory = inventory;
         this.actions = new Map([['Stock Report', this.stockReportAction], ['Low Stock Items', this.lowStockAction], ['Check Item Stock', this.checkStockAction]]);
     }
     getItemInput() {

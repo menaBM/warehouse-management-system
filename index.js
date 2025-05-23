@@ -13,7 +13,7 @@ const inventory = new Inventory_1.Inventory();
 const customerOrderController = new OrderController_1.OrderController(inventory, menu, CustomerOrder_1.CustomerOrder);
 const supplierOrderController = new OrderController_1.OrderController(inventory, menu, SupplierOrder_1.SupplierOrder);
 const supplierController = new SupplierController_1.SupplierController(menu);
-const inventoryController = new InventoryController_1.InventoryController(menu);
+const inventoryController = new InventoryController_1.InventoryController(menu, inventory);
 supplierController.addNewAction("Place Purchase Order", supplierOrderController.rootAction.bind(supplierOrderController));
 const menuControllers = new Map();
 menuControllers.set('Place Order', customerOrderController);

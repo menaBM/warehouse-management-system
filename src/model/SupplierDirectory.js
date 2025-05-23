@@ -7,20 +7,20 @@ class SupplierDirectory {
     }
     addSupplier(supplier) {
         // verify not already there
-        this.suppliers.set(supplier.name, supplier);
+        this.suppliers.set(supplier.getName(), supplier);
     }
     getSupplier(supplierName) {
         return this.suppliers.get(supplierName);
     }
     editSupplier(supplier, supplierDetails) {
-        if (supplier.name !== supplierDetails.name) {
-            this.suppliers.delete(supplier.name);
+        if (supplier.getName() !== supplierDetails.name) {
+            this.suppliers.delete(supplier.getName());
         }
         supplier.setName(supplierDetails.name);
         supplier.setEmail(supplierDetails.email);
         supplier.setPhoneNumber(supplierDetails.phoneNumber);
         supplier.setDaysToDeliver(supplierDetails.deliveryTimeInDays);
-        this.suppliers.set(supplier.name, supplier);
+        this.suppliers.set(supplier.getName(), supplier);
     }
     removeSupplier(supplierName) {
         this.suppliers.delete(supplierName);

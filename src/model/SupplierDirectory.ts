@@ -2,7 +2,7 @@ import { SupplierDetails } from "../types"
 import { Supplier } from "./Supplier"
 
 export class SupplierDirectory {
-    suppliers: Map<string, Supplier> = new Map()
+    private suppliers: Map<string, Supplier> = new Map()
 
     constructor() {
         
@@ -11,7 +11,7 @@ export class SupplierDirectory {
     addSupplier (supplier: Supplier ) {
         // verify not already there
 
-        this.suppliers.set(supplier.name, supplier)
+        this.suppliers.set(supplier.getName(), supplier)
     }
 
     getSupplier (supplierName: string) {
@@ -19,8 +19,8 @@ export class SupplierDirectory {
     }
 
     editSupplier (supplier: Supplier, supplierDetails: SupplierDetails) {
-        if (supplier.name !== supplierDetails.name) {
-            this.suppliers.delete(supplier.name)
+        if (supplier.getName() !== supplierDetails.name) {
+            this.suppliers.delete(supplier.getName())
         }
       
         supplier.setName(supplierDetails.name)
@@ -28,7 +28,7 @@ export class SupplierDirectory {
         supplier.setPhoneNumber(supplierDetails.phoneNumber)
         supplier.setDaysToDeliver(supplierDetails.deliveryTimeInDays)
       
-        this.suppliers.set(supplier.name, supplier)
+        this.suppliers.set(supplier.getName(), supplier)
     }
 
     removeSupplier (supplierName: string) {

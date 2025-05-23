@@ -1,8 +1,8 @@
 export default class Item {
-    name: string;
-    price: number;
-    quantity: number;
-    lowStockThreshold: number;
+    private name: string;
+    private price: number;
+    private quantity: number;
+    private lowStockThreshold: number;
   
     constructor (name: string, price: number, quantity: number, lowStockThreshold?: number) {
       this.name = name

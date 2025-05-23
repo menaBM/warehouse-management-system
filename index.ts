@@ -14,7 +14,7 @@ const inventory = new Inventory()
 const customerOrderController = new OrderController(inventory, menu, CustomerOrder)
 const supplierOrderController = new OrderController(inventory, menu, SupplierOrder)
 const supplierController = new SupplierController(menu)
-const inventoryController = new InventoryController(menu)
+const inventoryController = new InventoryController(menu, inventory)
 
 supplierController.addNewAction("Place Purchase Order", supplierOrderController.rootAction.bind(supplierOrderController))
 

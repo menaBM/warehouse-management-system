@@ -8,7 +8,7 @@ class Order {
         this.items = new Map;
     }
     getAllItems() {
-        console.log(this.items);
+        return this.items;
     }
     getItem(item) {
         return this.items.get(item);
@@ -26,9 +26,6 @@ class Order {
     getTotal() {
         return this.total;
     }
-    getStockUpdates() {
-        return this.items;
-    }
     getSummary() {
         let order = [["Name", "Quantity", "Price"]];
         this.items.forEach((quantity, item) => {
@@ -37,7 +34,7 @@ class Order {
         });
         return order;
     }
-    complete() {
+    complete(inventory) {
     }
 }
 exports.Order = Order;
