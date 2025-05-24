@@ -25,11 +25,20 @@ class InventoryController extends BaseController_1.BaseController {
             const item = yield this.getItemInput();
             this.menu.outputMessage(`${item.getName()}: ${item.getQuantity()}`);
         });
+        this.addInventoryAction = () => __awaiter(this, void 0, void 0, function* () {
+            //verify inputs, check name not already used
+            const name = yield this.menu.getInput("Enter item name:");
+            const price = parseInt(yield this.menu.getInput("Enter item price:"));
+            const quantity = parseInt(yield this.menu.getInput("Enter quantity of item currently in stock:"));
+            const lowStockThreshold = parseInt(yield this.menu.getInput("Enter threshold for item to be considered low stock:"));
+            this.inventory.addItem(name, price, quantity, lowStockThreshold);
+        });
         this.inventory = inventory;
         this.actions = new Map([
             ['Stock Report', this.stockReportAction],
             ['Low Stock Items', this.lowStockAction],
-            ['Check Item Stock', this.checkStockAction]
+            ['Check Item Stock', this.checkStockAction],
+            ['Add new Inventory', this.addInventoryAction]
         ]);
     }
     getItemInput() {

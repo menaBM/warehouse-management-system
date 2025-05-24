@@ -61,5 +61,9 @@ class Inventory {
         }
         return false;
     }
+    addItem(name, price, quantity, lowStockThreshold) {
+        const item = new Item_1.default(name, price, quantity, lowStockThreshold);
+        this.items.set(name, item);
+    }
 }
 exports.Inventory = Inventory;

@@ -68,4 +68,9 @@ export class Inventory {
       }
       return false;
     }
+
+    addItem (name:string, price:number, quantity:number, lowStockThreshold: number) {
+      const item = new Item(name, price, quantity, lowStockThreshold)
+      this.items.set(name, item)
+    }
   }

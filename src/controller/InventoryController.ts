@@ -11,7 +11,9 @@ export class InventoryController extends BaseController {
     this.actions = new Map([
       ['Stock Report', this.stockReportAction],
       ['Low Stock Items', this.lowStockAction],
-      ['Check Item Stock', this.checkStockAction]])
+      ['Check Item Stock', this.checkStockAction],
+      ['Add new Inventory', this.addInventoryAction]
+    ])
   }
 
   stockReportAction = () => { 
@@ -22,7 +24,6 @@ export class InventoryController extends BaseController {
     // handle if no low stock
     this.menu.drawTable(this.inventory.getLowStock())
   }
-
 
   async getItemInput () {
    while (true) {
@@ -38,5 +39,15 @@ export class InventoryController extends BaseController {
   checkStockAction = async () => {
     const item = await this.getItemInput()
     this.menu.outputMessage(`${item.getName()}: ${item.getQuantity()}`)
+  }
+
+  addInventoryAction = async () => {
+    //verify inputs, check name not already used
+    const name: string = await this.menu.getInput("Enter item name:")
+    const price: number = parseInt( await this.menu.getInput("Enter item price:"))
+    const quantity: number = parseInt(await this.menu.getInput("Enter quantity of item currently in stock:")) 
+    const lowStockThreshold: number = parseInt( await this.menu.getInput("Enter threshold for item to be considered low stock:")) 
+
+    this.inventory.addItem(name, price, quantity, lowStockThreshold)
   }
 }
