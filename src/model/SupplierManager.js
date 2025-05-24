@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SupplierManager = void 0;
-const OrderArchive_1 = require("./OrderArchive");
+const PurchaseOrderArchive_1 = require("./PurchaseOrderArchive");
 class SupplierManager {
     constructor() {
         this.suppliers = new Map();
-        this.purchaseOrderArchive = new OrderArchive_1.OrderArchive();
+        this.purchaseOrderArchive = new PurchaseOrderArchive_1.PurchaseOrderArchive();
     }
     addSupplier(supplier) {
         // verify not already there

@@ -42,7 +42,7 @@ export class OrderController extends BaseController {
     }
   }
 
-  async getItemInOrder () {
+  private async getItemInOrder () {
     while (true) {
       const item = await this.getItemInput()
       if (this.order.hasItem(item)) {
@@ -52,7 +52,7 @@ export class OrderController extends BaseController {
     }
   }
 
-  addAction =  async () => {
+  private addAction =  async () => {
     const item = await this.getItemInput()
     const quantity = await this.getQuantityInput()
 
@@ -67,7 +67,7 @@ export class OrderController extends BaseController {
     this.order.addItem(item, quantity)
   }
 
-  editAction = async () => {
+  private editAction = async () => {
     const item = await this.getItemInOrder()
     const quantity = await this.getQuantityInput()
 
@@ -76,17 +76,17 @@ export class OrderController extends BaseController {
     this.order.addItem(item, quantity)
   }
 
-  removeAction = async () => {
+  private removeAction = async () => {
     const item = await this.getItemInOrder()
     this.order.removeItem(item)
   }
 
-  viewAction = () => {
+  private viewAction = () => {
     this.menu.drawTable(this.order.getSummary())
     this.menu.outputMessage(`Order Total: ${this.order.getTotal()}`)
   }
 
-  completeAction = () => {
+  private completeAction = () => {
     this.menu.outputMessage("Your final order is as follows:")
     this.viewAction()
 

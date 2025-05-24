@@ -18,6 +18,13 @@ class Inventory {
             this.items.set(item.item, item.value);
         });
     }
+    addItem(name, price, quantity, lowStockThreshold) {
+        const item = new Item_1.default(name, price, quantity, lowStockThreshold);
+        this.items.set(name, item);
+    }
+    lookupItem(name) {
+        return this.items.get(name);
+    }
     generateReport() {
         let report = [["Item", "Quantity", "Low Stock"]];
         this.items.forEach(item => {
@@ -42,28 +49,11 @@ class Inventory {
             // check sufficient stock
             stock.setQuantity(stock.getQuantity() - quantity);
             if (stock.isLowStock()) {
-                alerts.push([`${stock.getName()}" currentyl at kjsdfkjahfjlkasdhf units, threshold is asdhfjakshf`]);
+                alerts.push([`${stock.getName()}" currentyl at ... units, threshold is ...`]);
             }
             this.items.set(stock.getName(), stock);
         });
         return alerts;
-    }
-    // updateItemStock (item: Item, quantity: number) { 
-    //   //need to check change is valid
-    // }
-    lookupItem(name) {
-        return this.items.get(name);
-    }
-    checkInStock(item, quantity) {
-        const stock = this.items.get(item.getName());
-        if (stock) {
-            return stock ? stock.getQuantity() >= quantity : false;
-        }
-        return false;
-    }
-    addItem(name, price, quantity, lowStockThreshold) {
-        const item = new Item_1.default(name, price, quantity, lowStockThreshold);
-        this.items.set(name, item);
     }
 }
 exports.Inventory = Inventory;

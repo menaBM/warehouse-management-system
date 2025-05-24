@@ -27,7 +27,7 @@ export class BaseController {
         this.actions.set(text, callback)
     }
 
-    exitAction = () => {
+    protected exitAction = () => {
         this.running = false;
     }
 }

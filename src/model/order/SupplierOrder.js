@@ -9,6 +9,12 @@ class SupplierOrder extends Order_1.Order {
     }
     // status: Enum
     // date: Date;
+    setOrderNumber(orderNumber) {
+        this.orderNumber = orderNumber;
+    }
+    getOrderNumber() {
+        return this.orderNumber;
+    }
     getSummary() {
         let order = [["Name", "Quantity", "Price"]];
         this.getAllItems().forEach((quantity, item) => {
@@ -22,12 +28,6 @@ class SupplierOrder extends Order_1.Order {
         // set supplier name 
         SupplierOrder.supplierManager.addSupplierOrder(this);
         // add number to supplier order history
-    }
-    setOrderNumber(orderNumber) {
-        this.orderNumber = orderNumber;
-    }
-    getOrderNumber() {
-        return this.orderNumber;
     }
 }
 exports.SupplierOrder = SupplierOrder;

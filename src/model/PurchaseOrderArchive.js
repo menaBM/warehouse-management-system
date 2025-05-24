@@ -1,15 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.OrderArchive = void 0;
-class OrderArchive {
+exports.PurchaseOrderArchive = void 0;
+class PurchaseOrderArchive {
     constructor() {
         this.orders = new Map();
     }
     addOrder(order) {
-        const orderNumber = OrderArchive.nextOrderNumber;
+        const orderNumber = PurchaseOrderArchive.nextOrderNumber;
         this.orders.set(orderNumber, order);
         order.setOrderNumber(orderNumber);
-        OrderArchive.nextOrderNumber++;
+        PurchaseOrderArchive.nextOrderNumber++;
         return orderNumber;
     }
     getOrder(orderNumber) {
@@ -19,5 +19,5 @@ class OrderArchive {
         return this.orders;
     }
 }
-exports.OrderArchive = OrderArchive;
-OrderArchive.nextOrderNumber = 1;
+exports.PurchaseOrderArchive = PurchaseOrderArchive;
+PurchaseOrderArchive.nextOrderNumber = 1;

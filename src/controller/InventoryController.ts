@@ -16,11 +16,11 @@ export class InventoryController extends BaseController {
     ])
   }
 
-  stockReportAction = () => { 
+  private stockReportAction = () => { 
     this.menu.drawTable(this.inventory.generateReport())
   }
 
-  lowStockAction = () => {
+  private lowStockAction = () => {
     // handle if no low stock
     this.menu.drawTable(this.inventory.getLowStock())
   }
@@ -36,12 +36,12 @@ export class InventoryController extends BaseController {
     }
   }
 
-  checkStockAction = async () => {
+  private checkStockAction = async () => {
     const item = await this.getItemInput()
     this.menu.outputMessage(`${item.getName()}: ${item.getQuantity()}`)
   }
 
-  addInventoryAction = async () => {
+  private addInventoryAction = async () => {
     //verify inputs, check name not already used
     const name: string = await this.menu.getInput("Enter item name:")
     const price: number = parseInt( await this.menu.getInput("Enter item price:"))

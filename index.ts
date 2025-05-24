@@ -1,7 +1,6 @@
 import { Menu } from "./src/view/menu";
 import { Inventory } from "./src/model/Inventory";
 import { OrderController } from "./src/controller/OrderController";
-import { MainController } from "./src/controller/MainController";
 import { SupplierController } from "./src/controller/SupplierController";
 import { BaseController } from "./src/controller/BaseController";
 import { InventoryController } from "./src/controller/InventoryController";
@@ -21,10 +20,8 @@ const inventoryController = new InventoryController(menu, inventory)
 
 supplierController.addNewAction("New Purchase Order", supplierOrderController.rootAction.bind(supplierOrderController))
 
-const menuControllers: Map<string, BaseController> =  new Map()
-menuControllers.set('Place Order', customerOrderController)
-menuControllers.set('Manage Suppliers', supplierController)
-menuControllers.set('Manage Inventory', inventoryController)
-
-const mainController = new MainController(menu, menuControllers)
-mainController.rootAction()
+const baseController = new BaseController(menu)
+baseController.addNewAction('Place Order', customerOrderController.rootAction.bind(customerOrderController))
+baseController.addNewAction('Manage Suppliers', supplierController.rootAction.bind(supplierController))
+baseController.addNewAction('Manage Inventory', inventoryController.rootAction.bind(inventoryController))
+baseController.rootAction()

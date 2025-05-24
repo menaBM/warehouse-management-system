@@ -1,11 +1,11 @@
 import { SupplierDetails } from "../types"
 import { SupplierOrder } from "./order/SupplierOrder"
-import { OrderArchive } from "./OrderArchive"
+import { PurchaseOrderArchive } from "./PurchaseOrderArchive"
 import { Supplier } from "./Supplier"
 
 export class SupplierManager {
     private suppliers: Map<string, Supplier> = new Map()
-    private purchaseOrderArchive: OrderArchive = new OrderArchive()
+    private purchaseOrderArchive: PurchaseOrderArchive = new PurchaseOrderArchive()
 
     addSupplier (supplier: Supplier ) {
         // verify not already there

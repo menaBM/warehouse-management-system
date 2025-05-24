@@ -1,14 +1,14 @@
 import { SupplierOrder } from "./order/SupplierOrder"
 
-export class OrderArchive {
+export class PurchaseOrderArchive {
     private static nextOrderNumber: number = 1
     private orders: Map<number, SupplierOrder> = new Map()
 
     addOrder (order: SupplierOrder) {
-        const orderNumber = OrderArchive.nextOrderNumber
+        const orderNumber = PurchaseOrderArchive.nextOrderNumber
         this.orders.set(orderNumber, order)
         order.setOrderNumber(orderNumber)
-        OrderArchive.nextOrderNumber++
+        PurchaseOrderArchive.nextOrderNumber++
         return orderNumber
     }
 
