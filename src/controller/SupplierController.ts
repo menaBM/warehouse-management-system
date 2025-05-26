@@ -57,7 +57,7 @@ export class SupplierController extends BaseController {
     return {name, email, phoneNumber: Number(phoneNumber), deliveryTimeInDays: Number(deliveryTimeInDays)}  
   }
 
-  addAction =  async () => {
+  private addAction =  async () => {
     const supplierDetails: SupplierDetails = await this.getSupplierInput("Please enter details for new supplier")
 
     let supplier = new Supplier (supplierDetails.name, supplierDetails.email, supplierDetails.phoneNumber, supplierDetails.deliveryTimeInDays)
@@ -67,7 +67,7 @@ export class SupplierController extends BaseController {
     this.supplierManager.addSupplier(supplier)
   }
 
-  editAction =  async () => {
+  private editAction =  async () => {
     const name = await this.menu.getInput("Enter name of supplier to edit:") 
 
     let supplier = this.supplierManager.getSupplier(name)
@@ -89,7 +89,7 @@ export class SupplierController extends BaseController {
     this.supplierManager.editSupplier(supplier, supplierDetails)
   }
 
-  deleteAction =  async () => {
+  private deleteAction =  async () => {
     const name = await this.menu.getInput("Enter name of supplier to delete:") 
     let supplier = this.supplierManager.getSupplier(name)
 
@@ -101,7 +101,7 @@ export class SupplierController extends BaseController {
     this.supplierManager.removeSupplier(name)
   }
 
-  viewAction =  async () => {
+  private viewAction =  async () => {
 
   //   console.log("view action ", this.supplierManager.getAllSuppliers())
 
@@ -113,7 +113,7 @@ export class SupplierController extends BaseController {
 
   }
 
-  orderHistoryAction = () => {
+  private orderHistoryAction = () => {
     let orders = this.supplierManager.viewOrders()
     let orderSummaries: Array<Array<string>> = [["Order Number", "Supplier Name", "Order Status"]]
 

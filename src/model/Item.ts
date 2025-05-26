@@ -11,17 +11,17 @@ export default class Item {
       this.lowStockThreshold = lowStockThreshold ?? Math.round(quantity * 0.2);
     }
   
-    setName (name : string) {
-      this.name = name;
-    }
+    // setName (name : string) {
+    //   this.name = name;
+    // }
   
     getName () : string {
       return this.name
     }
   
-    setPrice (price: number) {
-      this.price = price
-    }
+    // setPrice (price: number) {
+    //   this.price = price
+    // }
   
     getPrice (): number {
       return this.price

@@ -7,15 +7,15 @@ class Item {
         this.quantity = quantity;
         this.lowStockThreshold = lowStockThreshold !== null && lowStockThreshold !== void 0 ? lowStockThreshold : Math.round(quantity * 0.2);
     }
-    setName(name) {
-        this.name = name;
-    }
+    // setName (name : string) {
+    //   this.name = name;
+    // }
     getName() {
         return this.name;
     }
-    setPrice(price) {
-        this.price = price;
-    }
+    // setPrice (price: number) {
+    //   this.price = price
+    // }
     getPrice() {
         return this.price;
     }

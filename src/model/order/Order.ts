@@ -16,17 +16,17 @@ export class Order {
       return this.items
     }
   
-    getItem (item: Item) {
-      return this.items.get(item)
+    // getItem (item: Item) {
+    //   return this.items.get(item)
+    // }
+
+    addItem (item: Item, quantity: number){
+      this.items.set(item, quantity)
+      this.total += item.getPrice() * quantity;
     }
   
     hasItem (item: Item) {
       return this.items.has(item)
-    }
-  
-    addItem (item: Item, quantity: number){
-      this.items.set(item, quantity)
-      this.total += item.getPrice() * quantity;
     }
   
     removeItem (item: Item) {

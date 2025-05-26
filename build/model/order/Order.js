@@ -10,15 +10,15 @@ class Order {
     getAllItems() {
         return this.items;
     }
-    getItem(item) {
-        return this.items.get(item);
-    }
-    hasItem(item) {
-        return this.items.has(item);
-    }
+    // getItem (item: Item) {
+    //   return this.items.get(item)
+    // }
     addItem(item, quantity) {
         this.items.set(item, quantity);
         this.total += item.getPrice() * quantity;
+    }
+    hasItem(item) {
+        return this.items.has(item);
     }
     removeItem(item) {
         this.items.delete(item);

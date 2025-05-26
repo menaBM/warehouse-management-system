@@ -32,7 +32,6 @@ class Menu {
     getInput() {
         return __awaiter(this, arguments, void 0, function* (message = '') {
             let res = yield new Promise(resolve => rl.question(message, resolve));
-            //   .finally(() => rl.close());
             return res;
         });
     }
@@ -49,6 +48,9 @@ class Menu {
             });
             console.log(`${row}\n`);
         });
+    }
+    quit() {
+        rl.close();
     }
 }
 exports.Menu = Menu;

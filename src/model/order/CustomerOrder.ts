@@ -1,5 +1,4 @@
 import { Inventory } from "../Inventory";
-import Item from "../Item";
 import { Order } from "./Order";
 
 export class CustomerOrder extends Order {

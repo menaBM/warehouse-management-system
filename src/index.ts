@@ -1,12 +1,12 @@
-import { Menu } from "./src/view/menu";
-import { Inventory } from "./src/model/Inventory";
-import { OrderController } from "./src/controller/OrderController";
-import { SupplierController } from "./src/controller/SupplierController";
-import { BaseController } from "./src/controller/BaseController";
-import { InventoryController } from "./src/controller/InventoryController";
-import { CustomerOrder } from "./src/model/order/CustomerOrder";
-import { SupplierOrder } from "./src/model/order/SupplierOrder";
-import { SupplierManager } from "./src/model/SupplierManager";
+import { Menu } from "./view/menu";
+import { Inventory } from "./model/Inventory";
+import { OrderController } from "./controller/OrderController";
+import { SupplierController } from "./controller/SupplierController";
+import { BaseController } from "./controller/BaseController";
+import { InventoryController } from "./controller/InventoryController";
+import { CustomerOrder } from "./model/order/CustomerOrder";
+import { SupplierOrder } from "./model/order/SupplierOrder";
+import { SupplierManager } from "./model/SupplierManager";
 
 const menu = new Menu()
 const inventory = new Inventory()
@@ -24,4 +24,5 @@ const baseController = new BaseController(menu)
 baseController.addNewAction('Place Order', customerOrderController.rootAction.bind(customerOrderController))
 baseController.addNewAction('Manage Suppliers', supplierController.rootAction.bind(supplierController))
 baseController.addNewAction('Manage Inventory', inventoryController.rootAction.bind(inventoryController))
-baseController.rootAction()
+
+baseController.rootAction().then(() => menu.quit())
