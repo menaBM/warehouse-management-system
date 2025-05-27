@@ -1,9 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Order = void 0;
+const types_1 = require("../../types");
 class Order {
     constructor() {
         this.total = 0;
+        // date: Date;
+        this.status = types_1.OrderStatus.Processing;
         this.total = 0;
         this.items = new Map;
     }
@@ -13,6 +16,12 @@ class Order {
     // getItem (item: Item) {
     //   return this.items.get(item)
     // }
+    setStatus(status) {
+        this.status = status;
+    }
+    getStatus() {
+        return this.status;
+    }
     addItem(item, quantity) {
         this.items.set(item, quantity);
         this.total += item.getPrice() * quantity;
@@ -35,6 +44,14 @@ class Order {
         return order;
     }
     complete(inventory) {
+        this.status = types_1.OrderStatus.Processed;
+        return ["Order completed"];
+    }
+    isValidQuantity(item, quantity) {
+        if (item.getQuantity() >= quantity) {
+            return true;
+        }
+        return false;
     }
 }
 exports.Order = Order;

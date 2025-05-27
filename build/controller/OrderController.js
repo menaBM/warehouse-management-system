@@ -16,19 +16,16 @@ class OrderController extends BaseController_1.BaseController {
         super(menu);
         this.addAction = () => __awaiter(this, void 0, void 0, function* () {
             const item = yield this.getItemInput();
-            const quantity = yield this.getQuantityInput();
-            // if (!item.getQuantity() || item.getQuantity() < quantity) {
-            //     //handle properly
-            //     console.log("insufficient stock")
-            //     return
-            // }
-            // should error if already in the order - or update quantity?
+            if (this.order.hasItem(item)) {
+                this.menu.outputMessage(`${item.getName()} already part of order`);
+                return;
+            }
+            const quantity = yield this.getQuantityInput(item);
             this.order.addItem(item, quantity);
         });
         this.editAction = () => __awaiter(this, void 0, void 0, function* () {
             const item = yield this.getItemInOrder();
-            const quantity = yield this.getQuantityInput();
-            //quantity check
+            const quantity = yield this.getQuantityInput(item);
             this.order.addItem(item, quantity);
         });
         this.removeAction = () => __awaiter(this, void 0, void 0, function* () {
@@ -42,10 +39,10 @@ class OrderController extends BaseController_1.BaseController {
         this.completeAction = () => {
             this.menu.outputMessage("Your final order is as follows:");
             this.viewAction();
-            //confirm yes / no
-            //delivery address
             const output = this.order.complete(this.inventory);
-            // this.menu.drawTable(output) - stock alerts
+            output.forEach((message) => {
+                this.menu.outputMessage(message);
+            });
             this.exitAction();
         };
         this.orderClass = order;
@@ -74,11 +71,15 @@ class OrderController extends BaseController_1.BaseController {
             }
         });
     }
-    getQuantityInput() {
+    getQuantityInput(item) {
         return __awaiter(this, void 0, void 0, function* () {
             while (true) {
                 const quantity = Number(yield this.menu.getInput("Enter item quantity:"));
                 if (quantity) {
+                    if (!this.order.isValidQuantity(item, quantity)) {
+                        this.menu.outputMessage("Insufficient stock");
+                        continue;
+                    }
                     return quantity;
                 }
                 this.menu.outputMessage(`Invalid quantity`);

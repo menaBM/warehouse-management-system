@@ -1,13 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SupplierOrder = void 0;
+const types_1 = require("../../types");
 const Order_1 = require("./Order");
 class SupplierOrder extends Order_1.Order {
     constructor() {
         super(...arguments);
         this.orderNumber = undefined;
     }
-    // status: Enum
     // date: Date;
     setOrderNumber(orderNumber) {
         this.orderNumber = orderNumber;
@@ -23,11 +23,15 @@ class SupplierOrder extends Order_1.Order {
         });
         return order;
     }
-    complete() {
-        // set order status
+    complete(inventory) {
         // set supplier name 
+        // set order number? 
+        this.setStatus(types_1.OrderStatus.Processed);
         SupplierOrder.supplierManager.addSupplierOrder(this);
-        // add number to supplier order history
+        return [];
+    }
+    isValidQuantity(item, quantity) {
+        return true;
     }
 }
 exports.SupplierOrder = SupplierOrder;

@@ -1,4 +1,5 @@
 import { Inventory } from "../model/Inventory";
+import Item from "../model/Item";
 import { Order } from "../model/order/Order";
 import { Menu } from "../view/menu";
 import { BaseController } from "./BaseController";
@@ -23,7 +24,7 @@ export class OrderController extends BaseController {
 
   async getItemInput () {
     while (true) {
-      const itemName =  await this.menu.getInput("Enter item name:") 
+      const itemName =  await this.menu.getInput("Enter item name:")
       const item = this.inventory.lookupItem(itemName)
       if (item) {
         return item
@@ -32,10 +33,14 @@ export class OrderController extends BaseController {
     }
   }
     
-  async getQuantityInput () {
+  async getQuantityInput (item: Item) {
     while (true) {
       const quantity =  Number( await this.menu.getInput("Enter item quantity:") )
       if (quantity) {
+        if (!this.order.isValidQuantity(item, quantity)) {
+          this.menu.outputMessage("Insufficient stock")
+          continue
+        }
         return quantity
       }
       this.menu.outputMessage(`Invalid quantity`)
@@ -54,25 +59,20 @@ export class OrderController extends BaseController {
 
   private addAction =  async () => {
     const item = await this.getItemInput()
-    const quantity = await this.getQuantityInput()
 
-    // if (!item.getQuantity() || item.getQuantity() < quantity) {
-    //     //handle properly
-    //     console.log("insufficient stock")
-    //     return
-    // }
+    if (this.order.hasItem(item)) {
+      this.menu.outputMessage(`${item.getName()} already part of order`)
+      return
+    }
 
-    // should error if already in the order - or update quantity?
+    const quantity = await this.getQuantityInput(item)
 
     this.order.addItem(item, quantity)
   }
 
   private editAction = async () => {
     const item = await this.getItemInOrder()
-    const quantity = await this.getQuantityInput()
-
-    //quantity check
-
+    const quantity = await this.getQuantityInput(item)
     this.order.addItem(item, quantity)
   }
 
@@ -90,12 +90,13 @@ export class OrderController extends BaseController {
     this.menu.outputMessage("Your final order is as follows:")
     this.viewAction()
 
-    //confirm yes / no
-    //delivery address
-    const output = this.order.complete(this.inventory)
-    // this.menu.drawTable(output) - stock alerts
+
+    const output: Array<string> = this.order.complete(this.inventory)
+  
+    output.forEach((message) => {
+      this.menu.outputMessage(message)
+    })
 
     this.exitAction()
   }
-  // Action for viewing in stock items
 }

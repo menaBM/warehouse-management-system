@@ -44,7 +44,7 @@ export class Inventory {
   updateStock (items: Map<Item, number>) {
     //need to check change is valid
 
-    let alerts = new Array<Array<string>>
+    let alerts = new Array<string>
     items.forEach((quantity, item) => {
       const stock = this.items.get(item.getName())
       
@@ -54,7 +54,7 @@ export class Inventory {
       stock.setQuantity(stock.getQuantity() - quantity)
     
       if (stock.isLowStock()) {
-        alerts.push([`${stock.getName()}" currentyl at ... units, threshold is ...`])
+        alerts.push(`LOW STOCK: Current quantity of ${stock.getName()} is ${stock.getQuantity()}`)
       }
       this.items.set(stock.getName(), stock)
     })  

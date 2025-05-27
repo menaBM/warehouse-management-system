@@ -49,7 +49,7 @@ class Inventory {
             // check sufficient stock
             stock.setQuantity(stock.getQuantity() - quantity);
             if (stock.isLowStock()) {
-                alerts.push([`${stock.getName()}" currentyl at ... units, threshold is ...`]);
+                alerts.push(`LOW STOCK: Current quantity of ${stock.getName()} is ${stock.getQuantity()}`);
             }
             this.items.set(stock.getName(), stock);
         });

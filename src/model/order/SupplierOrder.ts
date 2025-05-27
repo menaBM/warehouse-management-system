@@ -1,11 +1,13 @@
+import { OrderStatus } from "../../types";
 import { SupplierManager } from "../SupplierManager";
 import { Order } from "./Order";
+import { Inventory } from "../Inventory";
+import Item from "../Item";
 
 export class SupplierOrder extends Order {
   public static supplierManager: SupplierManager;
 
   private orderNumber: number | undefined = undefined;
-  // status: Enum
   // date: Date;
 
   setOrderNumber (orderNumber: number) {
@@ -25,12 +27,17 @@ export class SupplierOrder extends Order {
       return order;
   }
 
-  complete () {
-    // set order status
+  complete (inventory: Inventory): Array<string> {
     // set supplier name 
+    // set order number? 
 
+    this.setStatus(OrderStatus.Processed)
     SupplierOrder.supplierManager.addSupplierOrder(this)
 
-    // add number to supplier order history
+    return [];
+  }
+
+  isValidQuantity(item: Item, quantity: number): boolean {
+      return true;
   }
 } 

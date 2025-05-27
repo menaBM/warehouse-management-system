@@ -1,10 +1,11 @@
+import { OrderStatus } from "../../types";
 import { Inventory } from "../Inventory";
 import Item from "../Item";
 
 export class Order {
     private total: number = 0;
     // date: Date;
-    // deliveryLocation: string;
+    private status: OrderStatus = OrderStatus.Processing
     private items: Map<Item, number>;
   
     constructor() {
@@ -19,6 +20,14 @@ export class Order {
     // getItem (item: Item) {
     //   return this.items.get(item)
     // }
+
+    setStatus(status: OrderStatus) {
+      this.status = status
+    }
+
+    getStatus() : OrderStatus {
+      return this.status
+    }
 
     addItem (item: Item, quantity: number){
       this.items.set(item, quantity)
@@ -46,6 +55,15 @@ export class Order {
       return order;
     }
 
-    complete (inventory: Inventory) {
+    complete (inventory: Inventory): Array<string> {
+      this.status = OrderStatus.Processed
+      return ["Order completed"];
+    }
+
+    isValidQuantity(item: Item, quantity: number): boolean {
+      if (item.getQuantity() >= quantity) {
+        return true
+      }
+      return false
     }
 } 
