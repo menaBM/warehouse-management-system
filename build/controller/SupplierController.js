@@ -10,26 +10,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SupplierController = void 0;
-const Supplier_1 = require("../model/Supplier");
 const BaseController_1 = require("./BaseController");
 class SupplierController extends BaseController_1.BaseController {
     constructor(menu, supplierManager) {
         super(menu);
         this.addAction = () => __awaiter(this, void 0, void 0, function* () {
-            const supplierDetails = yield this.getSupplierInput("Please enter details for new supplier");
-            let supplier = new Supplier_1.Supplier(supplierDetails.name, supplierDetails.email, supplierDetails.phoneNumber, supplierDetails.deliveryTimeInDays);
-            // verify not already existing supplier
-            this.supplierManager.addSupplier(supplier);
+            let supplierDetails;
+            while (true) {
+                supplierDetails = yield this.getSupplierInput("Please enter details for new supplier");
+                if (!this.supplierManager.getSupplier(supplierDetails.name)) {
+                    break;
+                }
+                this.menu.outputMessage("Supplier already exists in records");
+            }
+            this.supplierManager.createSupplier(supplierDetails);
         });
         this.editAction = () => __awaiter(this, void 0, void 0, function* () {
-            const name = yield this.menu.getInput("Enter name of supplier to edit:");
-            let supplier = this.supplierManager.getSupplier(name);
-            // confirm exists already and handle if not
-            // this.menu.outputMessage(`${itemName} not found in inventory`)
-            if (!supplier) {
-                return;
-            } // causing it to go back to the menu if no supplier entered - handle properly
-            //output current details
+            let supplier = yield this.getExistingSupplier();
             const supplierDetails = yield this.getSupplierInput("Please enter new details for supplier (enter to leave unchanged)", {
                 name: supplier.getName(),
                 email: supplier.getEmail(),
@@ -39,21 +36,12 @@ class SupplierController extends BaseController_1.BaseController {
             this.supplierManager.editSupplier(supplier, supplierDetails);
         });
         this.deleteAction = () => __awaiter(this, void 0, void 0, function* () {
-            const name = yield this.menu.getInput("Enter name of supplier to delete:");
-            let supplier = this.supplierManager.getSupplier(name);
-            // confirm exists already and handle if not
-            // this.menu.outputMessage(`${name} not found in supplier directory`)
-            if (!supplier) {
-                return;
-            } // causing it to go back to the menu if no supplier enterered
-            this.supplierManager.removeSupplier(name);
+            let supplier = yield this.getExistingSupplier();
+            this.supplierManager.removeSupplier(supplier);
         });
         this.viewAction = () => __awaiter(this, void 0, void 0, function* () {
-            //   console.log("view action ", this.supplierManager.getAllSuppliers())
-            //       for (const [key,value] of this.supplierManager.getAllSuppliers().entries()) {
-            //           console.log(key, value)
-            //         };
-            // this.menu.drawTable()
+            let suppliers = [["Name", "Email", "Phone Number", "Delivery Time"]].concat(this.supplierManager.getAllSuppliers());
+            this.menu.drawTable(suppliers);
         });
         this.orderHistoryAction = () => {
             let orders = this.supplierManager.viewOrders();
@@ -63,19 +51,18 @@ class SupplierController extends BaseController_1.BaseController {
                 if (!orderNumber) {
                     return;
                 }
-                orderSummaries.push([orderNumber.toString(), "supplier name", "order status"]);
+                orderSummaries.push([orderNumber.toString(), "supplier name", order.getStatus()]);
             });
             this.menu.drawTable(orderSummaries);
         };
         this.supplierManager = supplierManager;
-        this.actions = new Map([['Add New Supplier', this.addAction], ['Edit Supplier', this.editAction], ['Delete Supplier', this.deleteAction], ["Order history", this.orderHistoryAction]]); //, ['View All Suppliers', this.viewAction] ])
+        this.actions = new Map([['Add New Supplier', this.addAction], ['Edit Supplier', this.editAction], ['Delete Supplier', this.deleteAction], ["Order history", this.orderHistoryAction], ['View All Suppliers', this.viewAction]]);
     }
     getSupplierInput(message, supplierDetails) {
         return __awaiter(this, void 0, void 0, function* () {
             let name, email, phoneNumber, deliveryTimeInDays;
             this.menu.outputMessage(message);
             // output an error message if incorrect input
-            console.log(supplierDetails);
             while (true) {
                 const input = yield this.menu.getInput("Name:");
                 name = input !== "" ? input : supplierDetails === null || supplierDetails === void 0 ? void 0 : supplierDetails.name;
@@ -105,6 +92,18 @@ class SupplierController extends BaseController_1.BaseController {
                 }
             }
             return { name, email, phoneNumber: Number(phoneNumber), deliveryTimeInDays: Number(deliveryTimeInDays) };
+        });
+    }
+    getExistingSupplier() {
+        return __awaiter(this, void 0, void 0, function* () {
+            while (true) {
+                const name = yield this.menu.getInput("Enter name of supplier:");
+                let supplierFound = this.supplierManager.getSupplier(name);
+                if (supplierFound) {
+                    return supplierFound;
+                }
+                this.menu.outputMessage("Supplier not found in records");
+            }
         });
     }
 }

@@ -11,7 +11,7 @@ export class SupplierController extends BaseController {
     super(menu)
 
     this.supplierManager = supplierManager
-    this.actions = new Map([['Add New Supplier', this.addAction], ['Edit Supplier', this.editAction], ['Delete Supplier', this.deleteAction], ["Order history", this.orderHistoryAction] ])//, ['View All Suppliers', this.viewAction] ])
+    this.actions = new Map([['Add New Supplier', this.addAction], ['Edit Supplier', this.editAction], ['Delete Supplier', this.deleteAction], ["Order history", this.orderHistoryAction], ['View All Suppliers', this.viewAction]])
   }
 
   async getSupplierInput (message: string, supplierDetails?: SupplierDetails): Promise<SupplierDetails> {
@@ -19,8 +19,6 @@ export class SupplierController extends BaseController {
     this.menu.outputMessage(message)
 
     // output an error message if incorrect input
-
-    console.log(supplierDetails)
 
     while (true) {
       const input = await this.menu.getInput("Name:")
@@ -57,27 +55,32 @@ export class SupplierController extends BaseController {
     return {name, email, phoneNumber: Number(phoneNumber), deliveryTimeInDays: Number(deliveryTimeInDays)}  
   }
 
+  async getExistingSupplier () {
+    while (true) {
+      const name = await this.menu.getInput("Enter name of supplier:") 
+      let supplierFound = this.supplierManager.getSupplier(name)
+      if (supplierFound) {
+        return supplierFound;
+      }
+      this.menu.outputMessage("Supplier not found in records")
+    }
+  }
+
   private addAction =  async () => {
-    const supplierDetails: SupplierDetails = await this.getSupplierInput("Please enter details for new supplier")
-
-    let supplier = new Supplier (supplierDetails.name, supplierDetails.email, supplierDetails.phoneNumber, supplierDetails.deliveryTimeInDays)
-
-    // verify not already existing supplier
-
-    this.supplierManager.addSupplier(supplier)
+    let supplierDetails: SupplierDetails;
+    while (true) {
+      supplierDetails = await this.getSupplierInput("Please enter details for new supplier")
+      if (!this.supplierManager.getSupplier(supplierDetails.name)) {
+        break
+      }
+      this.menu.outputMessage("Supplier already exists in records")
+    }
+    
+    this.supplierManager.createSupplier(supplierDetails)
   }
 
   private editAction =  async () => {
-    const name = await this.menu.getInput("Enter name of supplier to edit:") 
-
-    let supplier = this.supplierManager.getSupplier(name)
-
-    // confirm exists already and handle if not
-    // this.menu.outputMessage(`${itemName} not found in inventory`)
-
-    if (!supplier) { return } // causing it to go back to the menu if no supplier entered - handle properly
-
-    //output current details
+    let supplier: Supplier = await this.getExistingSupplier()
 
     const supplierDetails: SupplierDetails = await this.getSupplierInput( "Please enter new details for supplier (enter to leave unchanged)", {
       name: supplier.getName(),
@@ -90,27 +93,13 @@ export class SupplierController extends BaseController {
   }
 
   private deleteAction =  async () => {
-    const name = await this.menu.getInput("Enter name of supplier to delete:") 
-    let supplier = this.supplierManager.getSupplier(name)
-
-    // confirm exists already and handle if not
-    // this.menu.outputMessage(`${name} not found in supplier directory`)
-
-    if (!supplier) { return } // causing it to go back to the menu if no supplier enterered
-
-    this.supplierManager.removeSupplier(name)
+    let supplier: Supplier = await this.getExistingSupplier()
+    this.supplierManager.removeSupplier(supplier)
   }
 
   private viewAction =  async () => {
-
-  //   console.log("view action ", this.supplierManager.getAllSuppliers())
-
-  //       for (const [key,value] of this.supplierManager.getAllSuppliers().entries()) {
-  //           console.log(key, value)
-  //         };
-
-  // this.menu.drawTable()
-
+    let suppliers: Array<Array<string>> = [["Name", "Email", "Phone Number", "Delivery Time"]].concat(this.supplierManager.getAllSuppliers())
+    this.menu.drawTable(suppliers)
   }
 
   private orderHistoryAction = () => {
@@ -120,7 +109,7 @@ export class SupplierController extends BaseController {
     orders.forEach(order => {
       const orderNumber = order.getOrderNumber()
       if (!orderNumber) {return}
-      orderSummaries.push([orderNumber.toString(), "supplier name", "order status" ])
+      orderSummaries.push([orderNumber.toString(), "supplier name", order.getStatus() ])
     });
     this.menu.drawTable(orderSummaries)
   }

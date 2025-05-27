@@ -2,14 +2,15 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SupplierManager = void 0;
 const PurchaseOrderArchive_1 = require("./PurchaseOrderArchive");
+const Supplier_1 = require("./Supplier");
 class SupplierManager {
     constructor() {
         this.suppliers = new Map();
         this.purchaseOrderArchive = new PurchaseOrderArchive_1.PurchaseOrderArchive();
     }
-    addSupplier(supplier) {
-        // verify not already there
-        this.suppliers.set(supplier.getName(), supplier);
+    createSupplier(supplierDetails) {
+        let supplier = new Supplier_1.Supplier(supplierDetails.name, supplierDetails.email, supplierDetails.phoneNumber, supplierDetails.deliveryTimeInDays);
+        this.suppliers.set(supplierDetails.name, supplier);
     }
     getSupplier(supplierName) {
         return this.suppliers.get(supplierName);
@@ -24,11 +25,20 @@ class SupplierManager {
         supplier.setDaysToDeliver(supplierDetails.deliveryTimeInDays);
         this.suppliers.set(supplier.getName(), supplier);
     }
-    removeSupplier(supplierName) {
-        this.suppliers.delete(supplierName);
+    removeSupplier(supplier) {
+        this.suppliers.delete(supplier.getName());
     }
     getAllSuppliers() {
-        return this.suppliers;
+        let suppliers = new Array;
+        this.suppliers.forEach(supplier => {
+            suppliers.push([
+                supplier.getName(),
+                supplier.getEmail(),
+                supplier.getPhoneNumber().toString(),
+                supplier.getDaysToDeliver().toString()
+            ]);
+        });
+        return suppliers;
     }
     addSupplierOrder(order) {
         const orderNumber = this.purchaseOrderArchive.addOrder(order);

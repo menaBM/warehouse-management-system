@@ -7,10 +7,9 @@ export class SupplierManager {
     private suppliers: Map<string, Supplier> = new Map()
     private purchaseOrderArchive: PurchaseOrderArchive = new PurchaseOrderArchive()
 
-    addSupplier (supplier: Supplier ) {
-        // verify not already there
-
-        this.suppliers.set(supplier.getName(), supplier)
+    createSupplier (supplierDetails: SupplierDetails) {
+        let supplier = new Supplier (supplierDetails.name, supplierDetails.email, supplierDetails.phoneNumber, supplierDetails.deliveryTimeInDays)
+        this.suppliers.set(supplierDetails.name, supplier)
     }
 
     getSupplier (supplierName: string) {
@@ -30,12 +29,20 @@ export class SupplierManager {
         this.suppliers.set(supplier.getName(), supplier)
     }
 
-    removeSupplier (supplierName: string) {
-        this.suppliers.delete(supplierName)
+    removeSupplier (supplier: Supplier) {
+        this.suppliers.delete(supplier.getName())
     }
 
-    getAllSuppliers (): Map<string, Supplier> {
-        return this.suppliers;
+    getAllSuppliers (): Array<Array<string>> {
+        let suppliers = new Array<Array<string>>
+        this.suppliers.forEach(supplier => {
+            suppliers.push([
+                supplier.getName(),
+                supplier.getEmail(),
+                supplier.getPhoneNumber().toString(),
+                supplier.getDaysToDeliver().toString()])
+        })
+        return suppliers;
     }
 
     addSupplierOrder (order: SupplierOrder) {
