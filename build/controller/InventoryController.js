@@ -25,12 +25,24 @@ class InventoryController extends BaseController_1.BaseController {
             const item = yield this.getItemInput();
             this.menu.outputMessage(`${item.getName()}: ${item.getQuantity()}`);
         });
+        this.editStockAction = () => __awaiter(this, void 0, void 0, function* () {
+            const item = yield this.getItemInput();
+            const quantity = yield this.getNumberInput("Enter quantity:", "Invalid quantity");
+            this.inventory.updateStock(new Map([[item, item.getQuantity() - quantity]]));
+            this.menu.outputMessage(`${item.getName()} quantity set to ${quantity}`);
+        });
         this.addInventoryAction = () => __awaiter(this, void 0, void 0, function* () {
-            //verify inputs, check name not already used
-            const name = yield this.menu.getInput("Enter item name:");
-            const price = parseInt(yield this.menu.getInput("Enter item price:"));
-            const quantity = parseInt(yield this.menu.getInput("Enter quantity of item currently in stock:"));
-            const lowStockThreshold = parseInt(yield this.menu.getInput("Enter threshold for item to be considered low stock:"));
+            let name;
+            while (true) {
+                name = yield this.menu.getInput("Enter item name:");
+                if (name !== "" && !this.inventory.lookupItem(name)) {
+                    break;
+                }
+                this.menu.outputMessage("Invalid item name");
+            }
+            const price = yield this.getNumberInput("Enter item price:", "Invalid price");
+            const quantity = yield this.getNumberInput("Enter quantity of item currently in stock:", "Invalid quantity");
+            const lowStockThreshold = yield this.getNumberInput("Enter threshold for item to be considered low stock:", "Invalid threshold");
             this.inventory.addItem(name, price, quantity, lowStockThreshold);
         });
         this.inventory = inventory;
@@ -38,6 +50,7 @@ class InventoryController extends BaseController_1.BaseController {
             ['Stock Report', this.stockReportAction],
             ['Low Stock Items', this.lowStockAction],
             ['Check Item Stock', this.checkStockAction],
+            ['Edit Item Stock', this.editStockAction],
             ['Add new Inventory', this.addInventoryAction]
         ]);
     }
@@ -50,6 +63,17 @@ class InventoryController extends BaseController_1.BaseController {
                     return item;
                 }
                 this.menu.outputMessage(`${itemName} not found in inventory`);
+            }
+        });
+    }
+    getNumberInput(message, errorMessage) {
+        return __awaiter(this, void 0, void 0, function* () {
+            while (true) {
+                const input = Number(yield this.menu.getInput(message));
+                if (input >= 0) {
+                    return input;
+                }
+                this.menu.outputMessage(errorMessage);
             }
         });
     }

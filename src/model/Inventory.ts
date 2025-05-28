@@ -61,11 +61,6 @@ export class Inventory {
     return alerts
   }
 
-  // updateItemStock (item: Item, quantity: number) { 
-  //   //need to check change is valid
-
-  // }
-
   // checkInStock (item: Item, quantity: number) { // validate quantity not negative
   //   const stock = this.items.get(item.getName())
   //   if ( stock ) {

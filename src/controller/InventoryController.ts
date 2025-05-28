@@ -12,6 +12,7 @@ export class InventoryController extends BaseController {
       ['Stock Report', this.stockReportAction],
       ['Low Stock Items', this.lowStockAction],
       ['Check Item Stock', this.checkStockAction],
+      ['Edit Item Stock', this.editStockAction],
       ['Add new Inventory', this.addInventoryAction]
     ])
   }
@@ -25,6 +26,36 @@ export class InventoryController extends BaseController {
     this.menu.drawTable(this.inventory.getLowStock())
   }
 
+  private checkStockAction = async () => {
+    const item = await this.getItemInput()
+    this.menu.outputMessage(`${item.getName()}: ${item.getQuantity()}`)
+  }
+
+  private editStockAction = async () => {
+    const item = await this.getItemInput()
+    const quantity: number = await this.getNumberInput("Enter quantity:", "Invalid quantity")
+    this.inventory.updateStock(new Map([[item, item.getQuantity() - quantity]]))
+    this.menu.outputMessage(`${item.getName()} quantity set to ${quantity}`)
+  }
+
+  private addInventoryAction = async () => {
+    let name: string;
+
+    while (true) {
+      name = await this.menu.getInput("Enter item name:")
+      if (name !== "" && !this.inventory.lookupItem(name)) {
+        break;
+      }
+      this.menu.outputMessage("Invalid item name")
+    }
+
+    const price: number = await this.getNumberInput("Enter item price:", "Invalid price")
+    const quantity: number = await this.getNumberInput("Enter quantity of item currently in stock:", "Invalid quantity")
+    const lowStockThreshold: number = await this.getNumberInput("Enter threshold for item to be considered low stock:", "Invalid threshold")
+
+    this.inventory.addItem(name, price, quantity, lowStockThreshold)
+  }
+
   async getItemInput () {
    while (true) {
       const itemName =  await this.menu.getInput("Enter item name:") 
@@ -36,18 +67,13 @@ export class InventoryController extends BaseController {
     }
   }
 
-  private checkStockAction = async () => {
-    const item = await this.getItemInput()
-    this.menu.outputMessage(`${item.getName()}: ${item.getQuantity()}`)
-  }
-
-  private addInventoryAction = async () => {
-    //verify inputs, check name not already used
-    const name: string = await this.menu.getInput("Enter item name:")
-    const price: number = parseInt( await this.menu.getInput("Enter item price:"))
-    const quantity: number = parseInt(await this.menu.getInput("Enter quantity of item currently in stock:")) 
-    const lowStockThreshold: number = parseInt( await this.menu.getInput("Enter threshold for item to be considered low stock:")) 
-
-    this.inventory.addItem(name, price, quantity, lowStockThreshold)
+  private async getNumberInput(message: string, errorMessage: string): Promise<number> { //ususpicioulsy smiilar to another contorller? 
+     while (true) {
+      const input: number = Number( await this.menu.getInput(message))
+      if (input >= 0) {
+        return input
+      }
+      this.menu.outputMessage(errorMessage)
+     }
   }
 }
