@@ -67,13 +67,13 @@ export class OrderController extends BaseController {
 
     const quantity = await this.getQuantityInput(item)
 
-    this.order.addItem(item, quantity)
+    this.order.setItem(item, quantity)
   }
 
   private editAction = async () => {
     const item = await this.getItemInOrder()
     const quantity = await this.getQuantityInput(item)
-    this.order.addItem(item, quantity)
+    this.order.setItem(item, quantity)
   }
 
   private removeAction = async () => {

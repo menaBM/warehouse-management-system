@@ -21,12 +21,12 @@ class OrderController extends BaseController_1.BaseController {
                 return;
             }
             const quantity = yield this.getQuantityInput(item);
-            this.order.addItem(item, quantity);
+            this.order.setItem(item, quantity);
         });
         this.editAction = () => __awaiter(this, void 0, void 0, function* () {
             const item = yield this.getItemInOrder();
             const quantity = yield this.getQuantityInput(item);
-            this.order.addItem(item, quantity);
+            this.order.setItem(item, quantity);
         });
         this.removeAction = () => __awaiter(this, void 0, void 0, function* () {
             const item = yield this.getItemInOrder();

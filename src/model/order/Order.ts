@@ -4,7 +4,6 @@ import Item from "../Item";
 
 export class Order {
     private total: number = 0;
-    // date: Date;
     private status: OrderStatus = OrderStatus.Processing
     private items: Map<Item, number>;
   
@@ -29,7 +28,11 @@ export class Order {
       return this.status
     }
 
-    addItem (item: Item, quantity: number){
+    setItem (item: Item, quantity: number){
+      const existingItemQuantity = this.items.get(item)
+      if (existingItemQuantity) {
+        this.total -= existingItemQuantity * item.getPrice()
+      }
       this.items.set(item, quantity)
       this.total += item.getPrice() * quantity;
     }
@@ -39,6 +42,10 @@ export class Order {
     }
   
     removeItem (item: Item) {
+      const quantity = this.items.get(item)
+      if (quantity) {
+        this.total -= item.getPrice() * quantity;
+      }
       this.items.delete(item)
     }
 

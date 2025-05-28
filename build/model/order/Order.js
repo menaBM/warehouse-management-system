@@ -5,7 +5,6 @@ const types_1 = require("../../types");
 class Order {
     constructor() {
         this.total = 0;
-        // date: Date;
         this.status = types_1.OrderStatus.Processing;
         this.total = 0;
         this.items = new Map;
@@ -22,7 +21,11 @@ class Order {
     getStatus() {
         return this.status;
     }
-    addItem(item, quantity) {
+    setItem(item, quantity) {
+        const existingItemQuantity = this.items.get(item);
+        if (existingItemQuantity) {
+            this.total -= existingItemQuantity * item.getPrice();
+        }
         this.items.set(item, quantity);
         this.total += item.getPrice() * quantity;
     }
@@ -30,6 +33,10 @@ class Order {
         return this.items.has(item);
     }
     removeItem(item) {
+        const quantity = this.items.get(item);
+        if (quantity) {
+            this.total -= item.getPrice() * quantity;
+        }
         this.items.delete(item);
     }
     getTotal() {
