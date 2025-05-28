@@ -3,6 +3,7 @@ import { SupplierManager } from "../SupplierManager";
 import { Order } from "./Order";
 import { Inventory } from "../Inventory";
 import Item from "../Item";
+import { FinancialReport } from "../FinancialReport";
 
 export class SupplierOrder extends Order {
   public static supplierManager: SupplierManager;
@@ -27,17 +28,17 @@ export class SupplierOrder extends Order {
       return order;
   }
 
-  complete (inventory: Inventory): Array<string> {
+  complete (inventory: Inventory, financialReport: FinancialReport): Array<string> {
     // set supplier name 
     // set order number? 
 
     this.setStatus(OrderStatus.Processed)
     SupplierOrder.supplierManager.addSupplierOrder(this)
-
+    financialReport.updatePurchaseCosts(this)
     return [];
   }
 
   isValidQuantity(item: Item, quantity: number): boolean {
-      return true;
+    return true;
   }
 } 

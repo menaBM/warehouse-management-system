@@ -24,7 +24,7 @@ export class Menu {
     }
 
     outputMessage (message: string = '') {
-      console.log(message)
+      console.log("\n" + message)
     }
 
     drawTable (data: Array<Array<string>>) {

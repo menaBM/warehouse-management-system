@@ -1,3 +1,4 @@
+import { FinancialReport } from "../model/FinancialReport";
 import { Inventory } from "../model/Inventory";
 import Item from "../model/Item";
 import { Order } from "../model/order/Order";
@@ -8,17 +9,19 @@ export class OrderController extends BaseController {
   private order: Order;
   private orderClass: typeof Order
   private inventory: Inventory;
+  private financialReport: FinancialReport;
 
-  constructor (inventory: Inventory, menu: Menu, order: typeof Order) { 
+  constructor (inventory: Inventory, menu: Menu, order: typeof Order, financialReport: FinancialReport) { 
     super(menu)
+    this.inventory = inventory;
     this.orderClass = order
     this.order = new order()
-    this.inventory = inventory;
+    this.financialReport = financialReport
     this.actions = new Map([['Add Item', this.addAction] , ['Edit Quantity', this.editAction], ['Remove Item', this.removeAction], ['View Order', this.viewAction], ["Complete Order", this.completeAction]])
   }
 
   async rootAction (): Promise<void> {
-    this.order = new this.orderClass
+    this.order = new this.orderClass()
     await super.rootAction()
   }
 
@@ -91,7 +94,7 @@ export class OrderController extends BaseController {
     this.viewAction()
 
 
-    const output: Array<string> = this.order.complete(this.inventory)
+    const output: Array<string> = this.order.complete(this.inventory, this.financialReport)
   
     output.forEach((message) => {
       this.menu.outputMessage(message)

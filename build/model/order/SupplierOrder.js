@@ -23,11 +23,12 @@ class SupplierOrder extends Order_1.Order {
         });
         return order;
     }
-    complete(inventory) {
+    complete(inventory, financialReport) {
         // set supplier name 
         // set order number? 
         this.setStatus(types_1.OrderStatus.Processed);
         SupplierOrder.supplierManager.addSupplierOrder(this);
+        financialReport.updatePurchaseCosts(this);
         return [];
     }
     isValidQuantity(item, quantity) {

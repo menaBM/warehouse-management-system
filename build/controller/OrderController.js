@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.OrderController = void 0;
 const BaseController_1 = require("./BaseController");
 class OrderController extends BaseController_1.BaseController {
-    constructor(inventory, menu, order) {
+    constructor(inventory, menu, order, financialReport) {
         super(menu);
         this.addAction = () => __awaiter(this, void 0, void 0, function* () {
             const item = yield this.getItemInput();
@@ -39,15 +39,16 @@ class OrderController extends BaseController_1.BaseController {
         this.completeAction = () => {
             this.menu.outputMessage("Your final order is as follows:");
             this.viewAction();
-            const output = this.order.complete(this.inventory);
+            const output = this.order.complete(this.inventory, this.financialReport);
             output.forEach((message) => {
                 this.menu.outputMessage(message);
             });
             this.exitAction();
         };
+        this.inventory = inventory;
         this.orderClass = order;
         this.order = new order();
-        this.inventory = inventory;
+        this.financialReport = financialReport;
         this.actions = new Map([['Add Item', this.addAction], ['Edit Quantity', this.editAction], ['Remove Item', this.removeAction], ['View Order', this.viewAction], ["Complete Order", this.completeAction]]);
     }
     rootAction() {
@@ -55,7 +56,7 @@ class OrderController extends BaseController_1.BaseController {
             rootAction: { get: () => super.rootAction }
         });
         return __awaiter(this, void 0, void 0, function* () {
-            this.order = new this.orderClass;
+            this.order = new this.orderClass();
             yield _super.rootAction.call(this);
         });
     }

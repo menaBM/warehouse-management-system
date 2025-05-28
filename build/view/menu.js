@@ -36,7 +36,7 @@ class Menu {
         });
     }
     outputMessage(message = '') {
-        console.log(message);
+        console.log("\n" + message);
     }
     drawTable(data) {
         data.forEach(entry => {

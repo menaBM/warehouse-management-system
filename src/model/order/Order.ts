@@ -1,6 +1,7 @@
 import { OrderStatus } from "../../types";
 import { Inventory } from "../Inventory";
 import Item from "../Item";
+import { FinancialReport } from "../FinancialReport";
 
 export class Order {
     private total: number = 0;
@@ -31,10 +32,10 @@ export class Order {
     setItem (item: Item, quantity: number){
       const existingItemQuantity = this.items.get(item)
       if (existingItemQuantity) {
-        this.total -= existingItemQuantity * item.getPrice()
+        this.total -= existingItemQuantity * this.getItemPrice(item)
       }
       this.items.set(item, quantity)
-      this.total += item.getPrice() * quantity;
+      this.total += this.getItemPrice(item) * quantity;
     }
   
     hasItem (item: Item) {
@@ -44,9 +45,13 @@ export class Order {
     removeItem (item: Item) {
       const quantity = this.items.get(item)
       if (quantity) {
-        this.total -= item.getPrice() * quantity;
+        this.total -= this.getItemPrice(item) * quantity;
       }
       this.items.delete(item)
+    }
+
+    private getItemPrice(item: Item): number {
+      return item.getPrice()
     }
 
     getTotal(): number {
@@ -56,13 +61,13 @@ export class Order {
     getSummary() {
       let order: Array<Array<string>> = [["Name", "Quantity", "Price"]]
       this.items.forEach((quantity, item) => {
-        const price: number = item.getPrice() * quantity;
+        const price: number = this.getItemPrice(item) * quantity;
         order.push([item.getName(), quantity.toString(), price.toString()])
       })
       return order;
     }
 
-    complete (inventory: Inventory): Array<string> {
+    complete (inventory: Inventory, financialReport: FinancialReport): Array<string> {
       this.status = OrderStatus.Processed
       return ["Order completed"];
     }

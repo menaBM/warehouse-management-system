@@ -24,10 +24,10 @@ class Order {
     setItem(item, quantity) {
         const existingItemQuantity = this.items.get(item);
         if (existingItemQuantity) {
-            this.total -= existingItemQuantity * item.getPrice();
+            this.total -= existingItemQuantity * this.getItemPrice(item);
         }
         this.items.set(item, quantity);
-        this.total += item.getPrice() * quantity;
+        this.total += this.getItemPrice(item) * quantity;
     }
     hasItem(item) {
         return this.items.has(item);
@@ -35,9 +35,12 @@ class Order {
     removeItem(item) {
         const quantity = this.items.get(item);
         if (quantity) {
-            this.total -= item.getPrice() * quantity;
+            this.total -= this.getItemPrice(item) * quantity;
         }
         this.items.delete(item);
+    }
+    getItemPrice(item) {
+        return item.getPrice();
     }
     getTotal() {
         return this.total;
@@ -45,12 +48,12 @@ class Order {
     getSummary() {
         let order = [["Name", "Quantity", "Price"]];
         this.items.forEach((quantity, item) => {
-            const price = item.getPrice() * quantity;
+            const price = this.getItemPrice(item) * quantity;
             order.push([item.getName(), quantity.toString(), price.toString()]);
         });
         return order;
     }
-    complete(inventory) {
+    complete(inventory, financialReport) {
         this.status = types_1.OrderStatus.Processed;
         return ["Order completed"];
     }
