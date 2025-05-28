@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SupplierManager = void 0;
+const types_1 = require("../types");
 const PurchaseOrderArchive_1 = require("./PurchaseOrderArchive");
 const Supplier_1 = require("./Supplier");
 class SupplierManager {
@@ -43,8 +44,26 @@ class SupplierManager {
     addSupplierOrder(order) {
         const orderNumber = this.purchaseOrderArchive.addOrder(order);
     }
+    // getSupplierOrder (orderNumber: number) {
+    //     return this.purchaseOrderArchive.getOrder(orderNumber)
+    // }
     viewOrders() {
         return this.purchaseOrderArchive.getAllOrders();
+    }
+    processDelivery(orderNumber) {
+        let order = this.purchaseOrderArchive.getOrder(orderNumber);
+        let stockUpdates = new Map;
+        if (order) {
+            order.setStatus(types_1.OrderStatus.Delivered);
+            for (const [key, value] of order.getAllItems()) {
+                stockUpdates.set(key, -value);
+            }
+        }
+        ;
+        return stockUpdates;
+    }
+    getPendingDeliveries() {
+        return this.purchaseOrderArchive.getUndeliveredOrders();
     }
 }
 exports.SupplierManager = SupplierManager;

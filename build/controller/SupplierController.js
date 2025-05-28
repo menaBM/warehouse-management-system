@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SupplierController = void 0;
 const BaseController_1 = require("./BaseController");
 class SupplierController extends BaseController_1.BaseController {
-    constructor(menu, supplierManager) {
+    constructor(menu, supplierManager, inventory) {
         super(menu);
         this.addAction = () => __awaiter(this, void 0, void 0, function* () {
             let supplierDetails;
@@ -55,8 +55,37 @@ class SupplierController extends BaseController_1.BaseController {
             });
             this.menu.drawTable(orderSummaries);
         };
+        this.deliveryAction = () => __awaiter(this, void 0, void 0, function* () {
+            let deliveries = this.supplierManager.getPendingDeliveries();
+            if (deliveries.length < 1) {
+                this.menu.outputMessage("There are currently no pending deliveries");
+                return;
+            }
+            while (true) {
+                let orderNumber = Number(yield this.menu.getInput("Enter order number of delivery"));
+                if (!orderNumber) {
+                    this.menu.outputMessage("Invalid order number");
+                    continue;
+                }
+                if (deliveries.includes(orderNumber)) {
+                    const stockUpdates = this.supplierManager.processDelivery(orderNumber);
+                    this.inventory.updateStock(stockUpdates);
+                    this.menu.outputMessage("Inventory updated");
+                    return;
+                }
+                this.menu.outputMessage("No pending delivery found for this order number");
+            }
+        });
+        this.inventory = inventory;
         this.supplierManager = supplierManager;
-        this.actions = new Map([['Add New Supplier', this.addAction], ['Edit Supplier', this.editAction], ['Delete Supplier', this.deleteAction], ["Order history", this.orderHistoryAction], ['View All Suppliers', this.viewAction]]);
+        this.actions = new Map([
+            ['Add New Supplier', this.addAction],
+            ['Edit Supplier', this.editAction],
+            ['Delete Supplier', this.deleteAction],
+            ['View All Suppliers', this.viewAction],
+            ['Recieve Delivery', this.deliveryAction],
+            ["Order history", this.orderHistoryAction]
+        ]);
     }
     getSupplierInput(message, supplierDetails) {
         return __awaiter(this, void 0, void 0, function* () {

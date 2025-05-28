@@ -1,3 +1,4 @@
+import { OrderStatus } from "../types"
 import { SupplierOrder } from "./order/SupplierOrder"
 
 export class PurchaseOrderArchive {
@@ -18,5 +19,11 @@ export class PurchaseOrderArchive {
 
     getAllOrders (): Map<number, SupplierOrder> {
         return this.orders
+    }
+
+    getUndeliveredOrders () {
+        return Array.from(this.orders.keys()).filter(orderNumber => {
+            return this.orders.get(orderNumber)?.getStatus() !== OrderStatus.Delivered
+        })
     }
 }

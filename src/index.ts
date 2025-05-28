@@ -15,7 +15,7 @@ const supplierManager = new SupplierManager()
 SupplierOrder.supplierManager = supplierManager;
 const customerOrderController = new OrderController(inventory, menu, CustomerOrder)
 const supplierOrderController = new OrderController(inventory, menu, SupplierOrder)
-const supplierController = new SupplierController(menu, supplierManager)
+const supplierController = new SupplierController(menu, supplierManager, inventory)
 const inventoryController = new InventoryController(menu, inventory)
 
 supplierController.addNewAction("New Purchase Order", supplierOrderController.rootAction.bind(supplierOrderController))

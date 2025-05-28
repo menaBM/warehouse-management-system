@@ -3,15 +3,23 @@ import { Supplier } from "../model/Supplier";
 import { SupplierManager} from "../model/SupplierManager";
 import { Menu } from "../view/menu";
 import { BaseController } from "./BaseController";
+import { Inventory } from "../model/Inventory";
 
 export class SupplierController extends BaseController {
   private supplierManager: SupplierManager;
+  private inventory: Inventory;
 
-  constructor (menu: Menu, supplierManager: SupplierManager) {
+  constructor (menu: Menu, supplierManager: SupplierManager, inventory: Inventory) {
     super(menu)
-
+    this.inventory = inventory
     this.supplierManager = supplierManager
-    this.actions = new Map([['Add New Supplier', this.addAction], ['Edit Supplier', this.editAction], ['Delete Supplier', this.deleteAction], ["Order history", this.orderHistoryAction], ['View All Suppliers', this.viewAction]])
+    this.actions = new Map([
+      ['Add New Supplier', this.addAction],
+      ['Edit Supplier', this.editAction],
+      ['Delete Supplier', this.deleteAction],
+      ['View All Suppliers', this.viewAction],  
+      ['Recieve Delivery', this.deliveryAction],
+      ["Order history", this.orderHistoryAction]])
   }
 
   async getSupplierInput (message: string, supplierDetails?: SupplierDetails): Promise<SupplierDetails> {
@@ -112,5 +120,28 @@ export class SupplierController extends BaseController {
       orderSummaries.push([orderNumber.toString(), "supplier name", order.getStatus() ])
     });
     this.menu.drawTable(orderSummaries)
+  }
+
+  private deliveryAction = async () => {
+    let deliveries: Array<number> = this.supplierManager.getPendingDeliveries()
+    if (deliveries.length < 1) {
+      this.menu.outputMessage("There are currently no pending deliveries")
+      return
+    }
+
+    while (true) {
+      let orderNumber = Number(await this.menu.getInput("Enter order number of delivery"))
+      if (!orderNumber) {
+        this.menu.outputMessage("Invalid order number")
+        continue
+      }
+      if (deliveries.includes(orderNumber)) {
+        const stockUpdates = this.supplierManager.processDelivery(orderNumber)
+        this.inventory.updateStock(stockUpdates)
+        this.menu.outputMessage("Inventory updated")
+        return
+      }
+      this.menu.outputMessage("No pending delivery found for this order number")
+    }
   }
 }
