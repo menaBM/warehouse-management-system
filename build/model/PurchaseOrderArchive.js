@@ -9,9 +9,7 @@ class PurchaseOrderArchive {
     addOrder(order) {
         const orderNumber = PurchaseOrderArchive.nextOrderNumber;
         this.orders.set(orderNumber, order);
-        order.setOrderNumber(orderNumber);
         PurchaseOrderArchive.nextOrderNumber++;
-        return orderNumber;
     }
     getOrder(orderNumber) {
         return this.orders.get(orderNumber);

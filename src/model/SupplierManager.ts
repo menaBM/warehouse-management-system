@@ -45,7 +45,7 @@ export class SupplierManager {
     }
 
     addSupplierOrder (order: SupplierOrder) {
-        const orderNumber = this.purchaseOrderArchive.addOrder(order)
+        this.purchaseOrderArchive.addOrder(order)
     }
 
     // getSupplierOrder (orderNumber: number) {

@@ -29,7 +29,6 @@ const testItems: Array<[string, number, number, number, number, string]>  = [
 ]
 testItems.forEach(item => inventory.newItem(...item))
 
-SupplierOrder.supplierManager = supplierManager;
 const customerOrderController = new OrderController(inventory, menu, CustomerOrder, financialReport)
 const supplierController = new SupplierController(menu, supplierManager, inventory, financialReport)
 const inventoryController = new InventoryController(menu, inventory)

@@ -67,15 +67,13 @@ class SupplierController extends BaseController_1.BaseController {
             this.menu.drawTable(supplierItems.map(item => [item.getName()]));
             const supplierOrderController = new OrderController_1.OrderController(supplierInventory, this.menu, SupplierOrder_1.SupplierOrder, this.financialReport);
             yield supplierOrderController.rootAction();
+            let order = supplierOrderController.getOrder();
+            this.supplierManager.addSupplierOrder(order);
         });
         this.orderHistoryAction = () => {
             let orders = this.supplierManager.viewOrders();
             let orderSummaries = [["Order Number", "Supplier Name", "Order Status"]];
-            orders.forEach(order => {
-                const orderNumber = order.getOrderNumber();
-                if (!orderNumber) {
-                    return;
-                }
+            orders.forEach((order, orderNumber) => {
                 orderSummaries.push([orderNumber.toString(), order.getSupplierName(), order.getStatus()]);
             });
             this.menu.drawTable(orderSummaries);

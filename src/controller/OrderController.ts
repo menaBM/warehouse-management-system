@@ -25,7 +25,11 @@ export class OrderController extends BaseController {
     await super.rootAction()
   }
 
-  async getItemInput () {
+  getOrder (): Order{
+    return this.order;
+  }
+
+  private async getItemInput () {
     while (true) {
       const itemName =  await this.menu.getInput("Enter item name:")
       const item = this.inventory.lookupItem(itemName)
@@ -36,7 +40,7 @@ export class OrderController extends BaseController {
     }
   }
     
-  async getQuantityInput (item: Item) {
+  private async getQuantityInput (item: Item) {
     while (true) {
       const quantity =  Number( await this.menu.getInput("Enter item quantity:") )
       if (quantity) {

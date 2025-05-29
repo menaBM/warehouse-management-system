@@ -8,9 +8,7 @@ export class PurchaseOrderArchive {
     addOrder (order: SupplierOrder) {
         const orderNumber = PurchaseOrderArchive.nextOrderNumber
         this.orders.set(orderNumber, order)
-        order.setOrderNumber(orderNumber)
         PurchaseOrderArchive.nextOrderNumber++
-        return orderNumber
     }
 
     getOrder (orderNumber: number): SupplierOrder | undefined {

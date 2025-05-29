@@ -7,13 +7,6 @@ class SupplierOrder extends Order_1.Order {
     constructor() {
         super(...arguments);
         this.supplierName = undefined;
-        this.orderNumber = undefined;
-    }
-    setOrderNumber(orderNumber) {
-        this.orderNumber = orderNumber;
-    }
-    getOrderNumber() {
-        return this.orderNumber;
     }
     getSupplierName() {
         var _a;
@@ -31,7 +24,6 @@ class SupplierOrder extends Order_1.Order {
         var _a;
         this.supplierName = (_a = this.getAllItems().keys().next().value) === null || _a === void 0 ? void 0 : _a.getSupplierName();
         this.setStatus(types_1.OrderStatus.Processed);
-        SupplierOrder.supplierManager.addSupplierOrder(this);
         financialReport.updatePurchaseCosts(this);
         return [];
     }

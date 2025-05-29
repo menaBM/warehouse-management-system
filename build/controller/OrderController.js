@@ -60,6 +60,9 @@ class OrderController extends BaseController_1.BaseController {
             yield _super.rootAction.call(this);
         });
     }
+    getOrder() {
+        return this.order;
+    }
     getItemInput() {
         return __awaiter(this, void 0, void 0, function* () {
             while (true) {

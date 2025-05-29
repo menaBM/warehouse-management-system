@@ -7,7 +7,6 @@ const SupplierController_1 = require("./controller/SupplierController");
 const BaseController_1 = require("./controller/BaseController");
 const InventoryController_1 = require("./controller/InventoryController");
 const CustomerOrder_1 = require("./model/order/CustomerOrder");
-const SupplierOrder_1 = require("./model/order/SupplierOrder");
 const SupplierManager_1 = require("./model/SupplierManager");
 const FinancialReport_1 = require("./model/FinancialReport");
 const FinanceController_1 = require("./controller/FinanceController");
@@ -26,7 +25,6 @@ const testItems = [
     ["item 4", 12, 1, 23, 10, "supplier 2"]
 ];
 testItems.forEach(item => inventory.newItem(...item));
-SupplierOrder_1.SupplierOrder.supplierManager = supplierManager;
 const customerOrderController = new OrderController_1.OrderController(inventory, menu, CustomerOrder_1.CustomerOrder, financialReport);
 const supplierController = new SupplierController_1.SupplierController(menu, supplierManager, inventory, financialReport);
 const inventoryController = new InventoryController_1.InventoryController(menu, inventory);

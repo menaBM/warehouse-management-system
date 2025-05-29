@@ -40,7 +40,7 @@ class SupplierManager {
         return suppliers;
     }
     addSupplierOrder(order) {
-        const orderNumber = this.purchaseOrderArchive.addOrder(order);
+        this.purchaseOrderArchive.addOrder(order);
     }
     // getSupplierOrder (orderNumber: number) {
     //     return this.purchaseOrderArchive.getOrder(orderNumber)

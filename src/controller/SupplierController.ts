@@ -133,15 +133,16 @@ export class SupplierController extends BaseController {
 
     const supplierOrderController = new OrderController(supplierInventory, this.menu, SupplierOrder, this.financialReport)
     await supplierOrderController.rootAction()
+   
+    let order: SupplierOrder = supplierOrderController.getOrder() as SupplierOrder
+    this.supplierManager.addSupplierOrder(order)
   }
 
   private orderHistoryAction = () => {
     let orders = this.supplierManager.viewOrders()
     let orderSummaries: Array<Array<string>> = [["Order Number", "Supplier Name", "Order Status"]]
 
-    orders.forEach(order => {
-      const orderNumber = order.getOrderNumber()
-      if (!orderNumber) {return}
+    orders.forEach((order, orderNumber) => {
       orderSummaries.push([orderNumber.toString(), order.getSupplierName(), order.getStatus() ])
     });
     this.menu.drawTable(orderSummaries)
