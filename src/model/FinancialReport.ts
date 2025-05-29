@@ -1,10 +1,10 @@
 import { Order } from "./order/Order";
 
 export class FinancialReport {
-    purchaseCosts: number = 0;
-    salesRevenue: number = 0;
-    stockPurchases: Map<string, number> = new Map()
-    sales: Map<string, number> = new Map()
+    private purchaseCosts: number = 0;
+    private salesRevenue: number = 0;
+    private stockPurchases: Map<string, number> = new Map()
+    private sales: Map<string, number> = new Map()
 
     private updateRecords (order: Order, record: Map<string, number>) {
         order.getAllItems().forEach((quantity, item) => {
