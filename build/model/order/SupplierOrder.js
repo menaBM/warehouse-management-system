@@ -6,14 +6,18 @@ const Order_1 = require("./Order");
 class SupplierOrder extends Order_1.Order {
     constructor() {
         super(...arguments);
+        this.supplierName = undefined;
         this.orderNumber = undefined;
     }
-    // date: Date;
     setOrderNumber(orderNumber) {
         this.orderNumber = orderNumber;
     }
     getOrderNumber() {
         return this.orderNumber;
+    }
+    getSupplierName() {
+        var _a;
+        return (_a = this.supplierName) !== null && _a !== void 0 ? _a : "";
     }
     getSummary() {
         let order = [["Name", "Quantity", "Price"]];
@@ -24,8 +28,8 @@ class SupplierOrder extends Order_1.Order {
         return order;
     }
     complete(inventory, financialReport) {
-        // set supplier name 
-        // set order number? 
+        var _a;
+        this.supplierName = (_a = this.getAllItems().keys().next().value) === null || _a === void 0 ? void 0 : _a.getSupplierName();
         this.setStatus(types_1.OrderStatus.Processed);
         SupplierOrder.supplierManager.addSupplierOrder(this);
         financialReport.updatePurchaseCosts(this);

@@ -11,8 +11,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SupplierController = void 0;
 const BaseController_1 = require("./BaseController");
+const Inventory_1 = require("../model/Inventory");
+const OrderController_1 = require("./OrderController");
+const SupplierOrder_1 = require("../model/order/SupplierOrder");
 class SupplierController extends BaseController_1.BaseController {
-    constructor(menu, supplierManager, inventory) {
+    constructor(menu, supplierManager, inventory, financialReport) {
         super(menu);
         this.addAction = () => __awaiter(this, void 0, void 0, function* () {
             let supplierDetails;
@@ -42,6 +45,29 @@ class SupplierController extends BaseController_1.BaseController {
             let suppliers = [["Name", "Email", "Phone Number"]].concat(this.supplierManager.getAllSuppliers());
             this.menu.drawTable(suppliers);
         });
+        this.orderAction = () => __awaiter(this, void 0, void 0, function* () {
+            if (this.supplierManager.getAllSuppliers().length === 0) {
+                this.menu.outputMessage("No supplier records found");
+                return;
+            }
+            let supplierName = (yield this.getExistingSupplier()).getName();
+            let supplierInventory = new Inventory_1.Inventory();
+            let items = this.inventory.getItems();
+            const supplierItems = Array.from(items.values()).filter(item => {
+                if (item.getSupplierName() === supplierName) {
+                    supplierInventory.addItem(item);
+                    return item.getName();
+                }
+            });
+            if (supplierItems.length === 0) {
+                this.menu.outputMessage("No items available to order from this supplier");
+                return;
+            }
+            this.menu.outputMessage("Items available to order from this supplier's inventory:");
+            this.menu.drawTable(supplierItems.map(item => [item.getName()]));
+            const supplierOrderController = new OrderController_1.OrderController(supplierInventory, this.menu, SupplierOrder_1.SupplierOrder, this.financialReport);
+            yield supplierOrderController.rootAction();
+        });
         this.orderHistoryAction = () => {
             let orders = this.supplierManager.viewOrders();
             let orderSummaries = [["Order Number", "Supplier Name", "Order Status"]];
@@ -50,7 +76,7 @@ class SupplierController extends BaseController_1.BaseController {
                 if (!orderNumber) {
                     return;
                 }
-                orderSummaries.push([orderNumber.toString(), "supplier name", order.getStatus()]);
+                orderSummaries.push([orderNumber.toString(), order.getSupplierName(), order.getStatus()]);
             });
             this.menu.drawTable(orderSummaries);
         };
@@ -77,13 +103,15 @@ class SupplierController extends BaseController_1.BaseController {
         });
         this.inventory = inventory;
         this.supplierManager = supplierManager;
+        this.financialReport = financialReport;
         this.actions = new Map([
             ['Add New Supplier', this.addAction],
             ['Edit Supplier', this.editAction],
             ['Delete Supplier', this.deleteAction],
             ['View All Suppliers', this.viewAction],
-            ['Recieve Delivery', this.deliveryAction],
-            ["Order history", this.orderHistoryAction]
+            ['Place Supplier Order', this.orderAction],
+            ['Recieve Supplier Delivery', this.deliveryAction],
+            ["Supplier Order history", this.orderHistoryAction]
         ]);
     }
     getSupplierInput(message, supplierDetails) {

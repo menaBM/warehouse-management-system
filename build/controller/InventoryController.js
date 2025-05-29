@@ -33,6 +33,7 @@ class InventoryController extends BaseController_1.BaseController {
         });
         this.addInventoryAction = () => __awaiter(this, void 0, void 0, function* () {
             let name;
+            let supplierName;
             while (true) {
                 name = yield this.menu.getInput("Enter item name:");
                 if (name !== "" && !this.inventory.lookupItem(name)) {
@@ -44,7 +45,14 @@ class InventoryController extends BaseController_1.BaseController {
             const supplierPrice = yield this.getNumberInput("Enter supplier price for item:", "Invalid price");
             const quantity = yield this.getNumberInput("Enter quantity of item currently in stock:", "Invalid quantity");
             const lowStockThreshold = yield this.getNumberInput("Enter threshold for item to be considered low stock:", "Invalid threshold");
-            this.inventory.addItem(name, price, supplierPrice, quantity, lowStockThreshold);
+            while (true) {
+                supplierName = yield this.menu.getInput("Enter supplier name:");
+                if (supplierName !== "") {
+                    break;
+                }
+                this.menu.outputMessage(`Invalid supplier name`);
+            }
+            this.inventory.newItem(name, price, supplierPrice, quantity, lowStockThreshold, supplierName);
         });
         this.inventory = inventory;
         this.actions = new Map([

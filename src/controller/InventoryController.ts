@@ -40,6 +40,7 @@ export class InventoryController extends BaseController {
 
   private addInventoryAction = async () => {
     let name: string;
+    let supplierName: string;
 
     while (true) {
       name = await this.menu.getInput("Enter item name:")
@@ -54,7 +55,15 @@ export class InventoryController extends BaseController {
     const quantity: number = await this.getNumberInput("Enter quantity of item currently in stock:", "Invalid quantity")
     const lowStockThreshold: number = await this.getNumberInput("Enter threshold for item to be considered low stock:", "Invalid threshold")
 
-    this.inventory.addItem(name, price, supplierPrice, quantity, lowStockThreshold)
+    while (true) {
+      supplierName = await this.menu.getInput("Enter supplier name:")
+      if (supplierName !== "") {
+        break;
+      }
+      this.menu.outputMessage(`Invalid supplier name`)
+    }
+
+    this.inventory.newItem(name, price, supplierPrice, quantity, lowStockThreshold, supplierName)
   }
 
   async getItemInput () {
@@ -68,7 +77,7 @@ export class InventoryController extends BaseController {
     }
   }
 
-  private async getNumberInput(message: string, errorMessage: string): Promise<number> { //ususpicioulsy smiilar to another contorller? 
+  private async getNumberInput(message: string, errorMessage: string): Promise<number> {
      while (true) {
       const input: number = Number( await this.menu.getInput(message))
       if (input >= 0) {

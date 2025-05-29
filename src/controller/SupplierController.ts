@@ -4,22 +4,28 @@ import { SupplierManager} from "../model/SupplierManager";
 import { Menu } from "../view/menu";
 import { BaseController } from "./BaseController";
 import { Inventory } from "../model/Inventory";
+import { OrderController } from "./OrderController";
+import { FinancialReport } from "../model/FinancialReport";
+import { SupplierOrder } from "../model/order/SupplierOrder";
 
 export class SupplierController extends BaseController {
   private supplierManager: SupplierManager;
   private inventory: Inventory;
+  private financialReport: FinancialReport;
 
-  constructor (menu: Menu, supplierManager: SupplierManager, inventory: Inventory) {
+  constructor (menu: Menu, supplierManager: SupplierManager, inventory: Inventory, financialReport: FinancialReport) {
     super(menu)
     this.inventory = inventory
     this.supplierManager = supplierManager
+    this.financialReport = financialReport;
     this.actions = new Map([
       ['Add New Supplier', this.addAction],
       ['Edit Supplier', this.editAction],
       ['Delete Supplier', this.deleteAction],
-      ['View All Suppliers', this.viewAction],  
-      ['Recieve Delivery', this.deliveryAction],
-      ["Order history", this.orderHistoryAction]])
+      ['View All Suppliers', this.viewAction],
+      ['Place Supplier Order', this.orderAction] ,
+      ['Recieve Supplier Delivery', this.deliveryAction],
+      ["Supplier Order history", this.orderHistoryAction]])
   }
 
   async getSupplierInput (message: string, supplierDetails?: SupplierDetails): Promise<SupplierDetails> {
@@ -101,6 +107,34 @@ export class SupplierController extends BaseController {
     this.menu.drawTable(suppliers)
   }
 
+  private orderAction = async () => {
+    if (this.supplierManager.getAllSuppliers().length === 0) {
+      this.menu.outputMessage("No supplier records found")
+      return 
+    }
+
+    let supplierName: string = (await this.getExistingSupplier()).getName()
+    let supplierInventory:Inventory = new Inventory()
+
+    let items = this.inventory.getItems()
+    const supplierItems = Array.from(items.values()).filter(item => {
+      if (item.getSupplierName() === supplierName) {
+        supplierInventory.addItem(item)
+        return item.getName()
+      }})
+
+    if (supplierItems.length === 0) {
+      this.menu.outputMessage("No items available to order from this supplier")
+      return 
+    }
+
+    this.menu.outputMessage("Items available to order from this supplier's inventory:")
+    this.menu.drawTable(supplierItems.map(item => [item.getName()]))
+
+    const supplierOrderController = new OrderController(supplierInventory, this.menu, SupplierOrder, this.financialReport)
+    await supplierOrderController.rootAction()
+  }
+
   private orderHistoryAction = () => {
     let orders = this.supplierManager.viewOrders()
     let orderSummaries: Array<Array<string>> = [["Order Number", "Supplier Name", "Order Status"]]
@@ -108,7 +142,7 @@ export class SupplierController extends BaseController {
     orders.forEach(order => {
       const orderNumber = order.getOrderNumber()
       if (!orderNumber) {return}
-      orderSummaries.push([orderNumber.toString(), "supplier name", order.getStatus() ])
+      orderSummaries.push([orderNumber.toString(), order.getSupplierName(), order.getStatus() ])
     });
     this.menu.drawTable(orderSummaries)
   }

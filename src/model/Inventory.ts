@@ -3,13 +3,21 @@ import Item from "./Item";
 export class Inventory {
   private items = new Map<string, Item>;
 
-  addItem (name: string, price: number, supplierPrice: number, quantity: number, lowStockThreshold: number) {
-    const item = new Item(name, price, supplierPrice, quantity, lowStockThreshold)
+  newItem (name: string, price: number, supplierPrice: number, quantity: number, lowStockThreshold: number, supplierName: string) {
+    const item = new Item(name, price, supplierPrice, quantity, lowStockThreshold, supplierName)
     this.items.set(name, item)
+  }
+
+  addItem (item: Item) {
+    this.items.set(item.getName(), item)
   }
 
   lookupItem (name: string): Item | undefined {
     return this.items.get(name)
+  }
+
+   getItems (): Map<string, Item> {
+    return this.items
   }
 
   generateReport () {

@@ -39,6 +39,7 @@ class Menu {
         console.log("\n" + message);
     }
     drawTable(data) {
+        console.log(`\n`);
         data.forEach(entry => {
             let row = ``;
             entry.forEach(column => {

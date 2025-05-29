@@ -1,9 +1,7 @@
 export class Supplier {
     private name: string;
-    // order history
     private email: string;
     private phoneNumber: number;
-    // supplierItems
   
     constructor(name: string, email: string, phoneNumber: number) {
         this.name = name;

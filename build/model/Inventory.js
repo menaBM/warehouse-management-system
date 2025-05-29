@@ -16,12 +16,18 @@ class Inventory {
         //   return false;
         // }
     }
-    addItem(name, price, supplierPrice, quantity, lowStockThreshold) {
-        const item = new Item_1.default(name, price, supplierPrice, quantity, lowStockThreshold);
+    newItem(name, price, supplierPrice, quantity, lowStockThreshold, supplierName) {
+        const item = new Item_1.default(name, price, supplierPrice, quantity, lowStockThreshold, supplierName);
         this.items.set(name, item);
+    }
+    addItem(item) {
+        this.items.set(item.getName(), item);
     }
     lookupItem(name) {
         return this.items.get(name);
+    }
+    getItems() {
+        return this.items;
     }
     generateReport() {
         let report = [["Item", "Quantity", "Low Stock"]];

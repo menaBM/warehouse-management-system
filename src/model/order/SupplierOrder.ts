@@ -7,9 +7,8 @@ import { FinancialReport } from "../FinancialReport";
 
 export class SupplierOrder extends Order {
   public static supplierManager: SupplierManager;
-
+  private supplierName: string | undefined = undefined;
   private orderNumber: number | undefined = undefined;
-  // date: Date;
 
   setOrderNumber (orderNumber: number) {
     this.orderNumber = orderNumber;
@@ -17,6 +16,10 @@ export class SupplierOrder extends Order {
 
   getOrderNumber (): number | undefined {
     return this.orderNumber
+  }
+
+  getSupplierName (): string {
+    return this.supplierName ?? ""
   }
 
   getSummary() {
@@ -29,8 +32,7 @@ export class SupplierOrder extends Order {
   }
 
   complete (inventory: Inventory, financialReport: FinancialReport): Array<string> {
-    // set supplier name 
-    // set order number? 
+    this.supplierName = this.getAllItems().keys().next().value?.getSupplierName()
 
     this.setStatus(OrderStatus.Processed)
     SupplierOrder.supplierManager.addSupplierOrder(this)

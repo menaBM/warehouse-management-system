@@ -9,28 +9,31 @@ import { SupplierOrder } from "./model/order/SupplierOrder";
 import { SupplierManager } from "./model/SupplierManager";
 import { FinancialReport } from "./model/FinancialReport";
 import { FinanceController } from "./controller/FinanceController";
+import { SupplierDetails } from "./types";
 
 const menu = new Menu()
 const inventory = new Inventory()
 const supplierManager = new SupplierManager()
 const financialReport = new FinancialReport()
 
-const testItems: Array<[string, number, number, number, number]>  = [
-    ["item 1", 6, 3, 34, 5],
-    ["item 2", 10, 1, 200, 50],
-    ["item 3", 22, 2, 100, 20],
-    ["item 4", 12, 1,  23, 10]
+const supplier1: SupplierDetails = {name: "supplier 1", email: "email@address", phoneNumber: 1234}
+const supplier2: SupplierDetails = {name: "supplier 2", email: "test@email", phoneNumber: 987}
+supplierManager.createSupplier(supplier1)
+supplierManager.createSupplier(supplier2)
+
+const testItems: Array<[string, number, number, number, number, string]>  = [
+    ["item 1", 6, 3, 34, 5, "supplier 1"],
+    ["item 2", 10, 1, 200, 50, "supplier 1"],
+    ["item 3", 22, 2, 100, 20, "supplier 2"],
+    ["item 4", 12, 1,  23, 10, "supplier 2"]
 ]
-testItems.forEach(item => inventory.addItem(...item))
+testItems.forEach(item => inventory.newItem(...item))
 
 SupplierOrder.supplierManager = supplierManager;
 const customerOrderController = new OrderController(inventory, menu, CustomerOrder, financialReport)
-const supplierOrderController = new OrderController(inventory, menu, SupplierOrder, financialReport)
-const supplierController = new SupplierController(menu, supplierManager, inventory)
+const supplierController = new SupplierController(menu, supplierManager, inventory, financialReport)
 const inventoryController = new InventoryController(menu, inventory)
 const financeController = new FinanceController(menu, financialReport)
-
-supplierController.addNewAction("New Purchase Order", supplierOrderController.rootAction.bind(supplierOrderController))
 
 const baseController = new BaseController(menu)
 baseController.addNewAction('Place Order', customerOrderController.rootAction.bind(customerOrderController))
