@@ -93,7 +93,6 @@ export class OrderController extends BaseController {
     this.menu.outputMessage("Your final order is as follows:")
     this.viewAction()
 
-
     const output: Array<string> = this.order.complete(this.inventory, this.financialReport)
   
     output.forEach((message) => {

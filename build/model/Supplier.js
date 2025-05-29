@@ -3,11 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Supplier = void 0;
 class Supplier {
     // supplierItems
-    constructor(name, email, phoneNumber, daysToDeliver) {
+    constructor(name, email, phoneNumber) {
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.daysToDeliver = daysToDeliver;
     }
     setName(name) {
         this.name = name;
@@ -26,12 +25,6 @@ class Supplier {
     }
     getPhoneNumber() {
         return this.phoneNumber;
-    }
-    setDaysToDeliver(daysToDeliver) {
-        this.daysToDeliver = daysToDeliver;
-    }
-    getDaysToDeliver() {
-        return this.daysToDeliver;
     }
 }
 exports.Supplier = Supplier;

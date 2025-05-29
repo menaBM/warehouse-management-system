@@ -26,9 +26,9 @@ class BaseController {
             while (this.running) {
                 const choice = yield this.menu.selectOption("Please select an option:", [...this.actions.keys()]);
                 let index = parseInt(choice) - 1;
-                // if ( !Number.isNaN(index) ) // && index in range
-                // loop until valid choice, output error message
-                yield [...this.actions.values()][index]();
+                if (!Number.isNaN(index) && index <= this.actions.size) {
+                    yield [...this.actions.values()][index]();
+                }
             }
         });
     }

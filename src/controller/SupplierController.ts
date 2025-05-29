@@ -23,7 +23,7 @@ export class SupplierController extends BaseController {
   }
 
   async getSupplierInput (message: string, supplierDetails?: SupplierDetails): Promise<SupplierDetails> {
-    let name, email, phoneNumber, deliveryTimeInDays
+    let name, email, phoneNumber
     this.menu.outputMessage(message)
 
     // output an error message if incorrect input
@@ -52,15 +52,7 @@ export class SupplierController extends BaseController {
       }
     }
 
-    while (true) {
-      const input = await this.menu.getInput("Time in days for supplier deliveries to arrive:")
-      deliveryTimeInDays = input !== "" ? Number(input) : supplierDetails?.deliveryTimeInDays
-      if ( deliveryTimeInDays !== undefined && Number.isInteger(deliveryTimeInDays)) {
-        break;
-      }
-    }
-
-    return {name, email, phoneNumber: Number(phoneNumber), deliveryTimeInDays: Number(deliveryTimeInDays)}  
+    return {name, email, phoneNumber: Number(phoneNumber)}  
   }
 
   async getExistingSupplier () {
@@ -93,8 +85,7 @@ export class SupplierController extends BaseController {
     const supplierDetails: SupplierDetails = await this.getSupplierInput( "Please enter new details for supplier (enter to leave unchanged)", {
       name: supplier.getName(),
       email: supplier.getEmail(), 
-      phoneNumber:supplier.getPhoneNumber(),
-      deliveryTimeInDays: supplier.getDaysToDeliver()
+      phoneNumber:supplier.getPhoneNumber()
     })
 
     this.supplierManager.editSupplier(supplier, supplierDetails)
@@ -106,7 +97,7 @@ export class SupplierController extends BaseController {
   }
 
   private viewAction =  async () => {
-    let suppliers: Array<Array<string>> = [["Name", "Email", "Phone Number", "Delivery Time"]].concat(this.supplierManager.getAllSuppliers())
+    let suppliers: Array<Array<string>> = [["Name", "Email", "Phone Number"]].concat(this.supplierManager.getAllSuppliers())
     this.menu.drawTable(suppliers)
   }
 

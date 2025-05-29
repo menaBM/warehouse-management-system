@@ -41,9 +41,10 @@ class InventoryController extends BaseController_1.BaseController {
                 this.menu.outputMessage("Invalid item name");
             }
             const price = yield this.getNumberInput("Enter item price:", "Invalid price");
+            const supplierPrice = yield this.getNumberInput("Enter supplier price for item:", "Invalid price");
             const quantity = yield this.getNumberInput("Enter quantity of item currently in stock:", "Invalid quantity");
             const lowStockThreshold = yield this.getNumberInput("Enter threshold for item to be considered low stock:", "Invalid threshold");
-            this.inventory.addItem(name, price, quantity, lowStockThreshold);
+            this.inventory.addItem(name, price, supplierPrice, quantity, lowStockThreshold);
         });
         this.inventory = inventory;
         this.actions = new Map([

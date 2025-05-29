@@ -32,7 +32,10 @@ class SupplierOrder extends Order_1.Order {
         return [];
     }
     isValidQuantity(item, quantity) {
-        return true;
+        return true; // assume no quantity limit on items ordered from supplier
+    }
+    getItemPrice(item) {
+        return item.getSupplierPrice();
     }
 }
 exports.SupplierOrder = SupplierOrder;

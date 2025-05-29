@@ -29,7 +29,7 @@ export class Order {
       return this.status
     }
 
-    setItem (item: Item, quantity: number){
+    setItem (item: Item, quantity: number) {
       const existingItemQuantity = this.items.get(item)
       if (existingItemQuantity) {
         this.total -= existingItemQuantity * this.getItemPrice(item)
@@ -50,7 +50,7 @@ export class Order {
       this.items.delete(item)
     }
 
-    private getItemPrice(item: Item): number {
+    protected getItemPrice(item: Item): number {
       return item.getPrice()
     }
 

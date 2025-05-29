@@ -3,14 +3,12 @@ export class Supplier {
     // order history
     private email: string;
     private phoneNumber: number;
-    private daysToDeliver: number;
     // supplierItems
   
-    constructor(name: string, email: string, phoneNumber: number, daysToDeliver: number) {
+    constructor(name: string, email: string, phoneNumber: number) {
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.daysToDeliver = daysToDeliver;
     }
 
     setName (name: string) {
@@ -35,13 +33,5 @@ export class Supplier {
 
     getPhoneNumber (): number {
         return this.phoneNumber;
-    }
-
-    setDaysToDeliver (daysToDeliver: number) {
-        this.daysToDeliver = daysToDeliver
-    }
-
-    getDaysToDeliver (): number {
-        return this.daysToDeliver;
     }
 }

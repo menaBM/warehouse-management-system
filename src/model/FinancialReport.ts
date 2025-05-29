@@ -6,23 +6,26 @@ export class FinancialReport {
     private stockPurchases: Map<string, number> = new Map()
     private sales: Map<string, number> = new Map()
 
-    private updateRecords (order: Order, record: Map<string, number>) {
-        order.getAllItems().forEach((quantity, item) => {
-            const name: string = item.getName()
-            let total: number = record.get(name) ?? 0
-            total += quantity * item.getPrice()
-            record.set(name, total)
-        })
-    }
-
     updateSalesRevenue (order: Order) {
         this.salesRevenue += order.getTotal()
-        this.updateRecords(order, this.sales)
+
+        order.getAllItems().forEach((quantity, item) => {
+            const name: string = item.getName()
+            let total: number = this.sales.get(name) ?? 0
+            total += quantity * item.getPrice()
+            this.sales.set(name, total)
+        })
     }
 
     updatePurchaseCosts (order: Order) {
         this.purchaseCosts += order.getTotal() 
-        this.updateRecords(order, this.stockPurchases)
+        
+        order.getAllItems().forEach((quantity, item) => {
+            const name: string = item.getName()
+            let total: number = this.stockPurchases.get(name) ?? 0
+            total += quantity * item.getSupplierPrice()
+            this.stockPurchases.set(name, total)
+        })
     }
 
     generateSummaryReport (): Array<Array<string>> {

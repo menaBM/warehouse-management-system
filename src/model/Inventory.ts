@@ -3,21 +3,8 @@ import Item from "./Item";
 export class Inventory {
   private items = new Map<string, Item>;
 
-  constructor () {
-    const testItems = [
-      {item: "item 1", value: new Item("item 1", 5, 34, 50)},
-      {item: "item 2", value: new Item("item 2", 5, 100)},
-      {item: "item 3", value: new Item("item 3", 5, 48, 50)},
-      {item: "item 4", value: new Item("item 4", 5, 23)}
-    ]
-
-    testItems.forEach(item => {
-      this.items.set(item.item, item.value)
-    })
-  }
-
-  addItem (name:string, price:number, quantity:number, lowStockThreshold: number) {
-    const item = new Item(name, price, quantity, lowStockThreshold)
+  addItem (name: string, price: number, supplierPrice: number, quantity: number, lowStockThreshold: number) {
+    const item = new Item(name, price, supplierPrice, quantity, lowStockThreshold)
     this.items.set(name, item)
   }
 

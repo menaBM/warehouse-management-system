@@ -15,6 +15,14 @@ const inventory = new Inventory()
 const supplierManager = new SupplierManager()
 const financialReport = new FinancialReport()
 
+const testItems: Array<[string, number, number, number, number]>  = [
+    ["item 1", 6, 3, 34, 5],
+    ["item 2", 10, 1, 200, 50],
+    ["item 3", 22, 2, 100, 20],
+    ["item 4", 12, 1,  23, 10]
+]
+testItems.forEach(item => inventory.addItem(...item))
+
 SupplierOrder.supplierManager = supplierManager;
 const customerOrderController = new OrderController(inventory, menu, CustomerOrder, financialReport)
 const supplierOrderController = new OrderController(inventory, menu, SupplierOrder, financialReport)

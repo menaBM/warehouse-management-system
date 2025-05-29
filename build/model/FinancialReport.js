@@ -8,22 +8,25 @@ class FinancialReport {
         this.stockPurchases = new Map();
         this.sales = new Map();
     }
-    updateRecords(order, record) {
+    updateSalesRevenue(order) {
+        this.salesRevenue += order.getTotal();
         order.getAllItems().forEach((quantity, item) => {
             var _a;
             const name = item.getName();
-            let total = (_a = record.get(name)) !== null && _a !== void 0 ? _a : 0;
+            let total = (_a = this.sales.get(name)) !== null && _a !== void 0 ? _a : 0;
             total += quantity * item.getPrice();
-            record.set(name, total);
+            this.sales.set(name, total);
         });
-    }
-    updateSalesRevenue(order) {
-        this.salesRevenue += order.getTotal();
-        this.updateRecords(order, this.sales);
     }
     updatePurchaseCosts(order) {
         this.purchaseCosts += order.getTotal();
-        this.updateRecords(order, this.stockPurchases);
+        order.getAllItems().forEach((quantity, item) => {
+            var _a;
+            const name = item.getName();
+            let total = (_a = this.stockPurchases.get(name)) !== null && _a !== void 0 ? _a : 0;
+            total += quantity * item.getSupplierPrice();
+            this.stockPurchases.set(name, total);
+        });
     }
     generateSummaryReport() {
         const netIncome = this.salesRevenue - this.purchaseCosts;

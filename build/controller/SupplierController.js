@@ -30,8 +30,7 @@ class SupplierController extends BaseController_1.BaseController {
             const supplierDetails = yield this.getSupplierInput("Please enter new details for supplier (enter to leave unchanged)", {
                 name: supplier.getName(),
                 email: supplier.getEmail(),
-                phoneNumber: supplier.getPhoneNumber(),
-                deliveryTimeInDays: supplier.getDaysToDeliver()
+                phoneNumber: supplier.getPhoneNumber()
             });
             this.supplierManager.editSupplier(supplier, supplierDetails);
         });
@@ -40,7 +39,7 @@ class SupplierController extends BaseController_1.BaseController {
             this.supplierManager.removeSupplier(supplier);
         });
         this.viewAction = () => __awaiter(this, void 0, void 0, function* () {
-            let suppliers = [["Name", "Email", "Phone Number", "Delivery Time"]].concat(this.supplierManager.getAllSuppliers());
+            let suppliers = [["Name", "Email", "Phone Number"]].concat(this.supplierManager.getAllSuppliers());
             this.menu.drawTable(suppliers);
         });
         this.orderHistoryAction = () => {
@@ -89,7 +88,7 @@ class SupplierController extends BaseController_1.BaseController {
     }
     getSupplierInput(message, supplierDetails) {
         return __awaiter(this, void 0, void 0, function* () {
-            let name, email, phoneNumber, deliveryTimeInDays;
+            let name, email, phoneNumber;
             this.menu.outputMessage(message);
             // output an error message if incorrect input
             while (true) {
@@ -113,14 +112,7 @@ class SupplierController extends BaseController_1.BaseController {
                     break;
                 }
             }
-            while (true) {
-                const input = yield this.menu.getInput("Time in days for supplier deliveries to arrive:");
-                deliveryTimeInDays = input !== "" ? Number(input) : supplierDetails === null || supplierDetails === void 0 ? void 0 : supplierDetails.deliveryTimeInDays;
-                if (deliveryTimeInDays !== undefined && Number.isInteger(deliveryTimeInDays)) {
-                    break;
-                }
-            }
-            return { name, email, phoneNumber: Number(phoneNumber), deliveryTimeInDays: Number(deliveryTimeInDays) };
+            return { name, email, phoneNumber: Number(phoneNumber) };
         });
     }
     getExistingSupplier() {

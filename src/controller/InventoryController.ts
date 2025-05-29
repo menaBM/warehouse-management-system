@@ -50,10 +50,11 @@ export class InventoryController extends BaseController {
     }
 
     const price: number = await this.getNumberInput("Enter item price:", "Invalid price")
+    const supplierPrice: number = await this.getNumberInput("Enter supplier price for item:", "Invalid price")
     const quantity: number = await this.getNumberInput("Enter quantity of item currently in stock:", "Invalid quantity")
     const lowStockThreshold: number = await this.getNumberInput("Enter threshold for item to be considered low stock:", "Invalid threshold")
 
-    this.inventory.addItem(name, price, quantity, lowStockThreshold)
+    this.inventory.addItem(name, price, supplierPrice, quantity, lowStockThreshold)
   }
 
   async getItemInput () {

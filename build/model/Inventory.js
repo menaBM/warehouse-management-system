@@ -8,18 +8,16 @@ const Item_1 = __importDefault(require("./Item"));
 class Inventory {
     constructor() {
         this.items = new Map;
-        const testItems = [
-            { item: "item 1", value: new Item_1.default("item 1", 5, 34, 50) },
-            { item: "item 2", value: new Item_1.default("item 2", 5, 100) },
-            { item: "item 3", value: new Item_1.default("item 3", 5, 48, 50) },
-            { item: "item 4", value: new Item_1.default("item 4", 5, 23) }
-        ];
-        testItems.forEach(item => {
-            this.items.set(item.item, item.value);
-        });
+        // checkInStock (item: Item, quantity: number) { // validate quantity not negative
+        //   const stock = this.items.get(item.getName())
+        //   if ( stock ) {
+        //     return stock ? stock.getQuantity() >= quantity : false;
+        //   }
+        //   return false;
+        // }
     }
-    addItem(name, price, quantity, lowStockThreshold) {
-        const item = new Item_1.default(name, price, quantity, lowStockThreshold);
+    addItem(name, price, supplierPrice, quantity, lowStockThreshold) {
+        const item = new Item_1.default(name, price, supplierPrice, quantity, lowStockThreshold);
         this.items.set(name, item);
     }
     lookupItem(name) {

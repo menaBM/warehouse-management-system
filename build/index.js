@@ -15,6 +15,13 @@ const menu = new menu_1.Menu();
 const inventory = new Inventory_1.Inventory();
 const supplierManager = new SupplierManager_1.SupplierManager();
 const financialReport = new FinancialReport_1.FinancialReport();
+const testItems = [
+    ["item 1", 6, 3, 34, 5],
+    ["item 2", 10, 1, 200, 50],
+    ["item 3", 22, 2, 100, 20],
+    ["item 4", 12, 1, 23, 10]
+];
+testItems.forEach(item => inventory.addItem(...item));
 SupplierOrder_1.SupplierOrder.supplierManager = supplierManager;
 const customerOrderController = new OrderController_1.OrderController(inventory, menu, CustomerOrder_1.CustomerOrder, financialReport);
 const supplierOrderController = new OrderController_1.OrderController(inventory, menu, SupplierOrder_1.SupplierOrder, financialReport);

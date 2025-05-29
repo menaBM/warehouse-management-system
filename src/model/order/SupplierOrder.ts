@@ -39,6 +39,10 @@ export class SupplierOrder extends Order {
   }
 
   isValidQuantity(item: Item, quantity: number): boolean {
-    return true;
+    return true; // assume no quantity limit on items ordered from supplier
+  }
+
+  protected getItemPrice(item: Item): number {
+    return item.getSupplierPrice()
   }
 } 

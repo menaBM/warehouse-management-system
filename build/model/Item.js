@@ -1,11 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class Item {
-    constructor(name, price, quantity, lowStockThreshold) {
+    constructor(name, price, supplierPrice, quantity, lowStockThreshold) {
         this.name = name;
         this.price = price;
+        this.supplierPrice = supplierPrice;
         this.quantity = quantity;
-        this.lowStockThreshold = lowStockThreshold !== null && lowStockThreshold !== void 0 ? lowStockThreshold : Math.round(quantity * 0.2);
+        this.lowStockThreshold = lowStockThreshold;
     }
     // setName (name : string) {
     //   this.name = name;
@@ -19,13 +20,15 @@ class Item {
     getPrice() {
         return this.price;
     }
+    getSupplierPrice() {
+        return this.supplierPrice;
+    }
     setQuantity(quantity) {
         this.quantity = quantity;
     }
     getQuantity() {
         return this.quantity;
     }
-    // setLowStockThreshold () 
     isLowStock() {
         return this.quantity <= this.lowStockThreshold;
     }

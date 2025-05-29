@@ -10,7 +10,7 @@ class SupplierManager {
         this.purchaseOrderArchive = new PurchaseOrderArchive_1.PurchaseOrderArchive();
     }
     createSupplier(supplierDetails) {
-        let supplier = new Supplier_1.Supplier(supplierDetails.name, supplierDetails.email, supplierDetails.phoneNumber, supplierDetails.deliveryTimeInDays);
+        let supplier = new Supplier_1.Supplier(supplierDetails.name, supplierDetails.email, supplierDetails.phoneNumber);
         this.suppliers.set(supplierDetails.name, supplier);
     }
     getSupplier(supplierName) {
@@ -23,7 +23,6 @@ class SupplierManager {
         supplier.setName(supplierDetails.name);
         supplier.setEmail(supplierDetails.email);
         supplier.setPhoneNumber(supplierDetails.phoneNumber);
-        supplier.setDaysToDeliver(supplierDetails.deliveryTimeInDays);
         this.suppliers.set(supplier.getName(), supplier);
     }
     removeSupplier(supplier) {
@@ -35,8 +34,7 @@ class SupplierManager {
             suppliers.push([
                 supplier.getName(),
                 supplier.getEmail(),
-                supplier.getPhoneNumber().toString(),
-                supplier.getDaysToDeliver().toString()
+                supplier.getPhoneNumber().toString()
             ]);
         });
         return suppliers;

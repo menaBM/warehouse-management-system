@@ -9,7 +9,7 @@ export class SupplierManager {
     private purchaseOrderArchive: PurchaseOrderArchive = new PurchaseOrderArchive()
 
     createSupplier (supplierDetails: SupplierDetails) {
-        let supplier = new Supplier (supplierDetails.name, supplierDetails.email, supplierDetails.phoneNumber, supplierDetails.deliveryTimeInDays)
+        let supplier = new Supplier (supplierDetails.name, supplierDetails.email, supplierDetails.phoneNumber)
         this.suppliers.set(supplierDetails.name, supplier)
     }
 
@@ -25,7 +25,6 @@ export class SupplierManager {
         supplier.setName(supplierDetails.name)
         supplier.setEmail(supplierDetails.email)
         supplier.setPhoneNumber(supplierDetails.phoneNumber)
-        supplier.setDaysToDeliver(supplierDetails.deliveryTimeInDays)
       
         this.suppliers.set(supplier.getName(), supplier)
     }
@@ -40,8 +39,7 @@ export class SupplierManager {
             suppliers.push([
                 supplier.getName(),
                 supplier.getEmail(),
-                supplier.getPhoneNumber().toString(),
-                supplier.getDaysToDeliver().toString()])
+                supplier.getPhoneNumber().toString()])
         })
         return suppliers;
     }
