@@ -5,7 +5,7 @@ describe('Supplier', () => {
     let supplier: Supplier;
     
     beforeEach(() => {
-        supplier = new Supplier('test name', 'test@email', 1, 2)
+        supplier = new Supplier('test name', 'test@email', 1)
     })
 
     it('Gets supplier name', () => {
@@ -39,16 +39,5 @@ describe('Supplier', () => {
         supplier.setPhoneNumber(123456)
         let newNumber = supplier.getPhoneNumber()
         expect(newNumber).toEqual(123456)
-    })
-
-    it('Gets supplier delivery time', () => {
-       let daysToDeliver = supplier.getDaysToDeliver()
-       expect(daysToDeliver).toEqual(2)
-    });
-
-    it('Updates supplier delivery time', () => {
-        supplier.setDaysToDeliver(123)
-        let newDeliveryTime = supplier.getDaysToDeliver()
-        expect(newDeliveryTime).toEqual(123)
     })
 });

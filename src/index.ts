@@ -5,7 +5,6 @@ import { SupplierController } from "./controller/SupplierController";
 import { BaseController } from "./controller/BaseController";
 import { InventoryController } from "./controller/InventoryController";
 import { CustomerOrder } from "./model/order/CustomerOrder";
-import { SupplierOrder } from "./model/order/SupplierOrder";
 import { SupplierManager } from "./model/SupplierManager";
 import { FinancialReport } from "./model/FinancialReport";
 import { FinanceController } from "./controller/FinanceController";

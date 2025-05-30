@@ -16,7 +16,7 @@ export class Inventory {
     return this.items.get(name)
   }
 
-   getItems (): Map<string, Item> {
+  getItems (): Map<string, Item> {
     return this.items
   }
 
@@ -29,21 +29,21 @@ export class Inventory {
     return report;
   }
 
-  getLowStock () {
+  getLowStock (): Array<Array<string>> {
     let lowStock: Array<Array<string>> = [["Item", "Quantity"]]
     let items = [...this.items.values()].filter(item => item.isLowStock())
     items.map(item => lowStock.push([item.getName(), item.getQuantity().toString()]))
     return lowStock
   }
 
-  updateStock (items: Map<Item, number>) {
+  updateStock (items: Map<Item, number>): Array<string>{
     //need to check change is valid
 
     let alerts = new Array<string>
     items.forEach((quantity, item) => {
       const stock = this.items.get(item.getName())
       
-      if (!stock) return
+      if (!stock) return alerts
       
       // check sufficient stock
       stock.setQuantity(stock.getQuantity() - quantity)

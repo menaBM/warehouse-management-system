@@ -2,13 +2,13 @@ import { OrderStatus } from "../types"
 import { SupplierOrder } from "./order/SupplierOrder"
 
 export class PurchaseOrderArchive {
-    private static nextOrderNumber: number = 1
+    private nextOrderNumber: number = 1
     private orders: Map<number, SupplierOrder> = new Map()
 
     addOrder (order: SupplierOrder) {
-        const orderNumber = PurchaseOrderArchive.nextOrderNumber
+        const orderNumber = this.nextOrderNumber
         this.orders.set(orderNumber, order)
-        PurchaseOrderArchive.nextOrderNumber++
+        this.nextOrderNumber++
     }
 
     getOrder (orderNumber: number): SupplierOrder | undefined {
@@ -20,8 +20,8 @@ export class PurchaseOrderArchive {
     }
 
     getUndeliveredOrders () {
-        return Array.from(this.orders.keys()).filter(orderNumber => {
-            return this.orders.get(orderNumber)?.getStatus() !== OrderStatus.Delivered
-        })
+        return Array.from(this.orders.entries())
+        .filter(order => order[1].getStatus() !== OrderStatus.Delivered)
+        .map(order => order[0])
     }
 }

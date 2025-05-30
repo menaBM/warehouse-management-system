@@ -49,7 +49,7 @@ class Inventory {
         items.forEach((quantity, item) => {
             const stock = this.items.get(item.getName());
             if (!stock)
-                return;
+                return alerts;
             // check sufficient stock
             stock.setQuantity(stock.getQuantity() - quantity);
             if (stock.isLowStock()) {

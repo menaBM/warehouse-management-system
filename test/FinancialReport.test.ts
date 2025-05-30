@@ -9,14 +9,16 @@ describe('Financial Report', () => {
     let report: FinancialReport;
     let order1 = new Order()
     let order2= new Order()
-    let item1 = new Item("first item", 1, 2, 3)
-    let item2 = new Item("second item", 2, 10, 15)
+    let item1 = new Item("first item", 4, 3, 2, 1, "supplier")
+    let item2 = new Item("second item", 5, 2, 10, 15, "supplier")
 
     jest.mocked(item1.getName).mockReturnValue('first item')
     jest.mocked(item2.getName).mockReturnValue('second item')
 
-    jest.mocked(item1.getPrice).mockReturnValue(1)
-    jest.mocked(item2.getPrice).mockReturnValue(2)
+    jest.mocked(item1.getPrice).mockReturnValue(4)
+    jest.mocked(item2.getPrice).mockReturnValue(5)
+    jest.mocked(item1.getSupplierPrice).mockReturnValue(3)
+    jest.mocked(item2.getSupplierPrice).mockReturnValue(2)
     
     beforeEach(() => {
         jest.clearAllMocks();
@@ -38,14 +40,14 @@ describe('Financial Report', () => {
         let items = new Map([[item1, 5], [item2, 3]])
         jest.mocked(order1.getAllItems).mockReturnValueOnce(items)
         report.updateSalesRevenue(order1)
-        expect(report.generateFullReport().find(row => row.includes("first item"))).toEqual(["first item", "£5"])
-        expect(report.generateFullReport().find(row => row.includes("second item"))).toEqual(["second item", "£6"])
+        expect(report.generateFullReport().find(row => row.includes("first item"))).toEqual(["first item", "£20"])
+        expect(report.generateFullReport().find(row => row.includes("second item"))).toEqual(["second item", "£15"])
 
         let items2 = new Map([[item1, 1], [item2, 5]])
         jest.mocked(order2.getAllItems).mockReturnValueOnce(items2)
         report.updateSalesRevenue(order2)
-        expect(report.generateFullReport().find(row => row.includes("first item"))).toEqual(["first item", "£6"])
-        expect(report.generateFullReport().find(row => row.includes("second item"))).toEqual(["second item", "£16"])
+        expect(report.generateFullReport().find(row => row.includes("first item"))).toEqual(["first item", "£24"])
+        expect(report.generateFullReport().find(row => row.includes("second item"))).toEqual(["second item", "£40"])
     })
 
     it('Tracks total purchase costs', () => {
@@ -63,13 +65,13 @@ describe('Financial Report', () => {
         let items = new Map([[item1, 3], [item2, 9]])
         jest.mocked(order1.getAllItems).mockReturnValueOnce(items)
         report.updatePurchaseCosts(order1)
-        expect(report.generateFullReport().find(row => row.includes("first item"))).toEqual(["first item", "£3"])
+        expect(report.generateFullReport().find(row => row.includes("first item"))).toEqual(["first item", "£9"])
         expect(report.generateFullReport().find(row => row.includes("second item"))).toEqual(["second item", "£18"])
 
         let items2 = new Map([[item1, 6], [item2, 3]])
         jest.mocked(order2.getAllItems).mockReturnValueOnce(items2)
         report.updatePurchaseCosts(order2)
-        expect(report.generateFullReport().find(row => row.includes("first item"))).toEqual(["first item", "£9"])
+        expect(report.generateFullReport().find(row => row.includes("first item"))).toEqual(["first item", "£27"])
         expect(report.generateFullReport().find(row => row.includes("second item"))).toEqual(["second item", "£24"])
     })
 
@@ -89,25 +91,25 @@ describe('Financial Report', () => {
     it('Generates a full report', () => {
         let items = new Map([[item1, 3], [item2, 9]])
         jest.mocked(order1.getAllItems).mockReturnValueOnce(items)
-        jest.mocked(order1.getTotal).mockReturnValueOnce(21)
+        jest.mocked(order1.getTotal).mockReturnValueOnce(27)
         
         let items2 = new Map([[item1, 6], [item2, 3]])
         jest.mocked(order2.getAllItems).mockReturnValueOnce(items2)
-        jest.mocked(order2.getTotal).mockReturnValueOnce(12)
+        jest.mocked(order2.getTotal).mockReturnValueOnce(39)
 
         report.updatePurchaseCosts(order1)
         report.updateSalesRevenue(order2)
 
         let expected = [
             ["Expenses"],
-            ["first item", "£3"],
+            ["first item", "£9"],
             ["second item", "£18"],
-            ["Stock Purchase Costs", "£21"],
+            ["Stock Purchase Costs", "£27"],
             ["Revenue"],
-            ["first item", "£6"],
-            ["second item", "£6"],
-            ["Sales Revenue", "£12"],
-            ["Net income (Loss)", "£9"]
+            ["first item", "£24"],
+            ["second item", "£15"],
+            ["Sales Revenue", "£39"],
+            ["Net income (Profit)", "£12"]
         ]
         expect(report.generateFullReport()).toEqual(expected)
     });

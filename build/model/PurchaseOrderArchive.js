@@ -4,12 +4,13 @@ exports.PurchaseOrderArchive = void 0;
 const types_1 = require("../types");
 class PurchaseOrderArchive {
     constructor() {
+        this.nextOrderNumber = 1;
         this.orders = new Map();
     }
     addOrder(order) {
-        const orderNumber = PurchaseOrderArchive.nextOrderNumber;
+        const orderNumber = this.nextOrderNumber;
         this.orders.set(orderNumber, order);
-        PurchaseOrderArchive.nextOrderNumber++;
+        this.nextOrderNumber++;
     }
     getOrder(orderNumber) {
         return this.orders.get(orderNumber);
@@ -18,11 +19,9 @@ class PurchaseOrderArchive {
         return this.orders;
     }
     getUndeliveredOrders() {
-        return Array.from(this.orders.keys()).filter(orderNumber => {
-            var _a;
-            return ((_a = this.orders.get(orderNumber)) === null || _a === void 0 ? void 0 : _a.getStatus()) !== types_1.OrderStatus.Delivered;
-        });
+        return Array.from(this.orders.entries())
+            .filter(order => order[1].getStatus() !== types_1.OrderStatus.Delivered)
+            .map(order => order[0]);
     }
 }
 exports.PurchaseOrderArchive = PurchaseOrderArchive;
-PurchaseOrderArchive.nextOrderNumber = 1;
