@@ -1,35 +1,35 @@
 export class Supplier {
-    private name: string;
-    private email: string;
-    private phoneNumber: number;
-  
-    constructor(name: string, email: string, phoneNumber: number) {
-        this.name = name;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-    }
+  private name: string;
+  private email: string;
+  private phoneNumber: number;
 
-    setName (name: string) {
-        this.name = name
-    }
+  constructor(name: string, email: string, phoneNumber: number) {
+    this.name = name;
+    this.email = email;
+    this.phoneNumber = phoneNumber;
+  }
 
-    getName (): string {
-        return this.name
-    }
+  setName(name: string) {
+    this.name = name;
+  }
 
-    setEmail (email: string) {
-        this.email = email;
-    }
+  getName(): string {
+    return this.name;
+  }
 
-    getEmail (): string {
-        return this.email
-    }
+  setEmail(email: string) {
+    this.email = email;
+  }
 
-    setPhoneNumber (phoneNumber: number) {
-        this.phoneNumber = phoneNumber;
-    }
+  getEmail(): string {
+    return this.email;
+  }
 
-    getPhoneNumber (): number {
-        return this.phoneNumber;
-    }
+  setPhoneNumber(phoneNumber: number) {
+    this.phoneNumber = phoneNumber;
+  }
+
+  getPhoneNumber(): number {
+    return this.phoneNumber;
+  }
 }
