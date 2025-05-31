@@ -1,4 +1,4 @@
-export default class Item {
+export class Item {
   private name: string;
   private price: number;
   private supplierPrice: number;

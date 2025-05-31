@@ -1,6 +1,6 @@
 import { FinancialReport } from "../model/FinancialReport";
 import { Inventory } from "../model/Inventory";
-import Item from "../model/Item";
+import { Item } from "../model/Item";
 import { Order } from "../model/order/Order";
 import { Menu } from "../view/menu";
 import { BaseController } from "./BaseController";

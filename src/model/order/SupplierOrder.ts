@@ -1,9 +1,8 @@
 import { OrderStatus } from "../../types";
-import { SupplierManager } from "../SupplierManager";
-import { Order } from "./Order";
-import { Inventory } from "../Inventory";
-import Item from "../Item";
 import { FinancialReport } from "../FinancialReport";
+import { Inventory } from "../Inventory";
+import { Item } from "../Item";
+import { Order } from "./Order";
 
 export class SupplierOrder extends Order {
   private supplierName: string | undefined = undefined;
@@ -15,7 +14,7 @@ export class SupplierOrder extends Order {
   getSummary() {
     let order: Array<Array<string>> = [["Name", "Quantity", "Price"]];
     this.getAllItems().forEach((quantity, item) => {
-      const price: number = item.getPrice() * quantity; // use supplier price instead
+      const price: number = item.getSupplierPrice() * quantity;
       order.push([item.getName(), quantity.toString(), price.toString()]);
     });
     return order;

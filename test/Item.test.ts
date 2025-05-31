@@ -1,4 +1,4 @@
-import Item from "../src/model/Item";
+import { Item } from "../src/model/Item";
 
 describe("Item", () => {
   let item: Item;

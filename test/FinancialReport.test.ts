@@ -1,5 +1,5 @@
 import { FinancialReport } from "../src/model/FinancialReport";
-import Item from "../src/model/Item";
+import { Item } from "../src/model/Item";
 import { Order } from "../src/model/order/Order";
 
 jest.mock("../src/model/Item");

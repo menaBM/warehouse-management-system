@@ -1,5 +1,5 @@
 import { Inventory } from "../src/model/Inventory";
-import Item from "../src/model/Item";
+import { Item } from "../src/model/Item";
 
 jest.mock("../src/model/Item");
 

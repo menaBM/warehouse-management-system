@@ -1,5 +1,5 @@
 import { OrderStatus, SupplierDetails } from "../types";
-import Item from "./Item";
+import { Item } from "./Item";
 import { SupplierOrder } from "./order/SupplierOrder";
 import { PurchaseOrderArchive } from "./PurchaseOrderArchive";
 import { Supplier } from "./Supplier";

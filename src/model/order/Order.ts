@@ -1,7 +1,7 @@
 import { OrderStatus } from "../../types";
-import { Inventory } from "../Inventory";
-import Item from "../Item";
 import { FinancialReport } from "../FinancialReport";
+import { Inventory } from "../Inventory";
+import { Item } from "../Item";
 
 export class Order {
   private total: number = 0;
