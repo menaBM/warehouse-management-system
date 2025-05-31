@@ -10,15 +10,9 @@ class Item {
         this.lowStockThreshold = lowStockThreshold;
         this.supplierName = supplierName;
     }
-    // setName (name : string) {
-    //   this.name = name;
-    // }
     getName() {
         return this.name;
     }
-    // setPrice (price: number) {
-    //   this.price = price
-    // }
     getPrice() {
         return this.price;
     }

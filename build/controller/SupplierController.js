@@ -73,7 +73,7 @@ class SupplierController extends BaseController_1.BaseController {
             this.supplierManager.addSupplierOrder(order);
         });
         this.orderHistoryAction = () => {
-            let orders = this.supplierManager.viewOrders();
+            let orders = this.supplierManager.getAllOrders();
             let orderSummaries = [
                 ["Order Number", "Supplier Name", "Order Status"],
             ];
@@ -124,21 +124,21 @@ class SupplierController extends BaseController_1.BaseController {
         return __awaiter(this, void 0, void 0, function* () {
             let name, email, phoneNumber;
             this.menu.outputMessage(message);
-            // output an error message if incorrect input
             while (true) {
                 const input = yield this.menu.getInput("Name:");
                 name = input !== "" ? input : supplierDetails === null || supplierDetails === void 0 ? void 0 : supplierDetails.name;
                 if (name !== undefined) {
                     break;
                 }
+                this.menu.outputMessage("Invalid name");
             }
             while (true) {
                 const input = yield this.menu.getInput("Email:");
                 email = input !== "" ? input : supplierDetails === null || supplierDetails === void 0 ? void 0 : supplierDetails.email;
                 if (email !== undefined && email.includes("@")) {
-                    // also check for no spaces, use regex
                     break;
                 }
+                this.menu.outputMessage("Invalid email");
             }
             while (true) {
                 const input = yield this.menu.getInput("Phone number:");
@@ -146,6 +146,7 @@ class SupplierController extends BaseController_1.BaseController {
                 if (phoneNumber !== undefined && Number.isInteger(phoneNumber)) {
                     break;
                 }
+                this.menu.outputMessage("Invalid phone number");
             }
             return { name, email, phoneNumber: Number(phoneNumber) };
         });

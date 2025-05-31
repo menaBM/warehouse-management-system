@@ -5,13 +5,6 @@ const Item_1 = require("./Item");
 class Inventory {
     constructor() {
         this.items = new Map();
-        // checkInStock (item: Item, quantity: number) { // validate quantity not negative
-        //   const stock = this.items.get(item.getName())
-        //   if ( stock ) {
-        //     return stock ? stock.getQuantity() >= quantity : false;
-        //   }
-        //   return false;
-        // }
     }
     newItem(name, price, supplierPrice, quantity, lowStockThreshold, supplierName) {
         const item = new Item_1.Item(name, price, supplierPrice, quantity, lowStockThreshold, supplierName);
@@ -41,13 +34,11 @@ class Inventory {
         return lowStock;
     }
     updateStock(items) {
-        //need to check change is valid
         let alerts = new Array();
         items.forEach((quantity, item) => {
             const stock = this.items.get(item.getName());
             if (!stock)
                 return alerts;
-            // check sufficient stock
             stock.setQuantity(stock.getQuantity() - quantity);
             if (stock.isLowStock()) {
                 alerts.push(`LOW STOCK: Current quantity of ${stock.getName()} is ${stock.getQuantity()}`);

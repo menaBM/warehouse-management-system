@@ -53,15 +53,12 @@ export class Inventory {
   }
 
   updateStock(items: Map<Item, number>): Array<string> {
-    //need to check change is valid
-
     let alerts = new Array<string>();
     items.forEach((quantity, item) => {
       const stock = this.items.get(item.getName());
 
       if (!stock) return alerts;
 
-      // check sufficient stock
       stock.setQuantity(stock.getQuantity() - quantity);
 
       if (stock.isLowStock()) {
@@ -73,12 +70,4 @@ export class Inventory {
     });
     return alerts;
   }
-
-  // checkInStock (item: Item, quantity: number) { // validate quantity not negative
-  //   const stock = this.items.get(item.getName())
-  //   if ( stock ) {
-  //     return stock ? stock.getQuantity() >= quantity : false;
-  //   }
-  //   return false;
-  // }
 }

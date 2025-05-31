@@ -22,7 +22,6 @@ export class InventoryController extends BaseController {
   };
 
   private lowStockAction = () => {
-    // handle if no low stock
     this.menu.drawTable(this.inventory.getLowStock());
   };
 
@@ -90,7 +89,7 @@ export class InventoryController extends BaseController {
     );
   };
 
-  async getItemInput() {
+  private async getItemInput() {
     while (true) {
       const itemName = await this.menu.getInput("Enter item name:");
       const item = this.inventory.lookupItem(itemName);

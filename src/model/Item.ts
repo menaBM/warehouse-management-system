@@ -22,17 +22,9 @@ export class Item {
     this.supplierName = supplierName;
   }
 
-  // setName (name : string) {
-  //   this.name = name;
-  // }
-
   getName(): string {
     return this.name;
   }
-
-  // setPrice (price: number) {
-  //   this.price = price
-  // }
 
   getPrice(): number {
     return this.price;

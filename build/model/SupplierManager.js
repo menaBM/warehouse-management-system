@@ -43,11 +43,7 @@ class SupplierManager {
     addSupplierOrder(order) {
         this.purchaseOrderArchive.addOrder(order);
     }
-    // getSupplierOrder (orderNumber: number) {
-    //     return this.purchaseOrderArchive.getOrder(orderNumber)
-    // }
-    viewOrders() {
-        // rename get all orders
+    getAllOrders() {
         return this.purchaseOrderArchive.getAllOrders();
     }
     processDelivery(orderNumber) {

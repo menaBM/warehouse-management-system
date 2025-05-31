@@ -17,10 +17,6 @@ export class Order {
     return this.items;
   }
 
-  // getItem (item: Item) {
-  //   return this.items.get(item)
-  // }
-
   setStatus(status: OrderStatus) {
     this.status = status;
   }

@@ -6,85 +6,82 @@ import { SupplierOrder } from "../src/model/order/SupplierOrder";
 import { Item } from "../src/model/Item";
 
 jest.mock("../src/model/Supplier");
-jest.mock("../src/model/PurchaseOrderArchive")
-jest.mock("../src/model/order/SupplierOrder")
-jest.mock("../src/model/Item")
+jest.mock("../src/model/PurchaseOrderArchive");
+jest.mock("../src/model/order/SupplierOrder");
+jest.mock("../src/model/Item");
 
-describe('Supplier manager', () => {
-
+describe("Supplier manager", () => {
   let supplier = new Supplier("test name", "test@email", 123);
 
   const supplierDetails: SupplierDetails = {
-    name:"test name",
-    email: "test@email", 
+    name: "test name",
+    email: "test@email",
     phoneNumber: 123,
-  }
-    
-    
+  };
+
   beforeEach(() => {
     jest.resetAllMocks();
-  })
+  });
 
-  it(('Creates new supplier'), () => {
-    let supplierManager = new SupplierManager()
-    supplierManager.createSupplier(supplierDetails)
-    expect(Supplier).toHaveBeenCalledTimes(1)
-    expect(supplierManager.getSupplier("test name")).toBeInstanceOf(Supplier)
-  })
+  it("Creates new supplier", () => {
+    let supplierManager = new SupplierManager();
+    supplierManager.createSupplier(supplierDetails);
+    expect(Supplier).toHaveBeenCalledTimes(1);
+    expect(supplierManager.getSupplier("test name")).toBeInstanceOf(Supplier);
+  });
 
-  it(('Gets supplier by name'), () => {
-    let supplierManager = new SupplierManager()
-    supplierManager.createSupplier(supplierDetails)
-    expect(supplierManager.getSupplier("test name")).toBeInstanceOf(Supplier)
-  })
+  it("Gets supplier by name", () => {
+    let supplierManager = new SupplierManager();
+    supplierManager.createSupplier(supplierDetails);
+    expect(supplierManager.getSupplier("test name")).toBeInstanceOf(Supplier);
+  });
 
-  it(('Edits a supplier'), () => {
+  it("Edits a supplier", () => {
     jest.mocked(supplier.getName).mockReturnValue("test name");
-    let supplierManager = new SupplierManager()
+    let supplierManager = new SupplierManager();
     const details: SupplierDetails = {
-      name:"test name",
-      email: "new@email", 
+      name: "test name",
+      email: "new@email",
       phoneNumber: 456,
-    }
+    };
 
-    supplierManager.createSupplier(supplierDetails)
-    supplierManager.editSupplier(supplier, details)
-    expect(supplier.setName).toHaveBeenCalledWith("test name")
-    expect(supplier.setEmail).toHaveBeenCalledWith("new@email")
-    expect(supplier.setPhoneNumber).toHaveBeenCalledWith(456)
-    expect(supplierManager.getSupplier("test name")).toBeInstanceOf(Supplier)  
-})
+    supplierManager.createSupplier(supplierDetails);
+    supplierManager.editSupplier(supplier, details);
+    expect(supplier.setName).toHaveBeenCalledWith("test name");
+    expect(supplier.setEmail).toHaveBeenCalledWith("new@email");
+    expect(supplier.setPhoneNumber).toHaveBeenCalledWith(456);
+    expect(supplierManager.getSupplier("test name")).toBeInstanceOf(Supplier);
+  });
 
-  it(('Removes old supplier records if necessary when editing'), () => {
+  it("Removes old supplier records if necessary when editing", () => {
     jest.mocked(supplier.getName).mockReturnValue("test name");
-    let supplierManager = new SupplierManager()
+    let supplierManager = new SupplierManager();
     const details: SupplierDetails = {
-      name:"new name",
-      email: "new@email", 
+      name: "new name",
+      email: "new@email",
       phoneNumber: 456,
-    }
+    };
 
-    supplierManager.createSupplier(supplierDetails)
-    supplierManager.editSupplier(supplier, details)
-    expect(supplier.setName).toHaveBeenCalledWith("new name")
-    expect(supplier.setEmail).toHaveBeenCalledWith("new@email")
-    expect(supplier.setPhoneNumber).toHaveBeenCalledWith(456)
-    expect(supplierManager.getSupplier("test name")).toBeUndefined() 
-    expect(supplierManager.getSupplier("new name")).toBeInstanceOf(Supplier)  
-  })
+    supplierManager.createSupplier(supplierDetails);
+    supplierManager.editSupplier(supplier, details);
+    expect(supplier.setName).toHaveBeenCalledWith("new name");
+    expect(supplier.setEmail).toHaveBeenCalledWith("new@email");
+    expect(supplier.setPhoneNumber).toHaveBeenCalledWith(456);
+    expect(supplierManager.getSupplier("test name")).toBeUndefined();
+    expect(supplierManager.getSupplier("new name")).toBeInstanceOf(Supplier);
+  });
 
-
-  it(('Deletes a supplier'), () => {
+  it("Deletes a supplier", () => {
     jest.mocked(supplier.getName).mockReturnValue("test name");
-    let supplierManager = new SupplierManager()
+    let supplierManager = new SupplierManager();
 
-    supplierManager.createSupplier(supplierDetails)
-    expect(supplierManager.getSupplier("test name")).toBeInstanceOf(Supplier)  
-    supplierManager.removeSupplier(supplier)
-    expect(supplierManager.getSupplier("test name")).toBeUndefined() 
-  })
+    supplierManager.createSupplier(supplierDetails);
+    expect(supplierManager.getSupplier("test name")).toBeInstanceOf(Supplier);
+    supplierManager.removeSupplier(supplier);
+    expect(supplierManager.getSupplier("test name")).toBeUndefined();
+  });
 
-  it(('Gets all suppliers'), () => {
+  it("Gets all suppliers", () => {
     jest.mocked(Supplier.prototype.getName).mockReturnValueOnce("test name");
     jest.mocked(Supplier.prototype.getEmail).mockReturnValueOnce("test@email");
     jest.mocked(Supplier.prototype.getPhoneNumber).mockReturnValueOnce(123);
@@ -94,51 +91,68 @@ describe('Supplier manager', () => {
     jest.mocked(Supplier.prototype.getPhoneNumber).mockReturnValueOnce(456);
 
     const details: SupplierDetails = {
-      name:"new name",
-      email: "new@email", 
+      name: "new name",
+      email: "new@email",
       phoneNumber: 456,
-    }
+    };
 
-    let supplierManager = new SupplierManager()
-    supplierManager.createSupplier(supplierDetails)
-    supplierManager.createSupplier(details)
+    let supplierManager = new SupplierManager();
+    supplierManager.createSupplier(supplierDetails);
+    supplierManager.createSupplier(details);
 
-    expect(supplierManager.getAllSuppliers()).toEqual([['test name', "test@email", "123"], ["new name", "new@email", "456"]])  
-  })
+    expect(supplierManager.getAllSuppliers()).toEqual([
+      ["test name", "test@email", "123"],
+      ["new name", "new@email", "456"],
+    ]);
+  });
 
-  it(('Adds a supplier order'), () => {
-    let order = new SupplierOrder()
-    let supplierManager = new SupplierManager()
-    supplierManager.addSupplierOrder(order)
+  it("Adds a supplier order", () => {
+    let order = new SupplierOrder();
+    let supplierManager = new SupplierManager();
+    supplierManager.addSupplierOrder(order);
 
-    expect(PurchaseOrderArchive.prototype.addOrder).toHaveBeenCalledWith(order)  
-  })
+    expect(PurchaseOrderArchive.prototype.addOrder).toHaveBeenCalledWith(order);
+  });
 
-  it(('Views a supplier order'), () => {
-    let supplierManager = new SupplierManager()
-    supplierManager.viewOrders()
+  it("Views a supplier order", () => {
+    let supplierManager = new SupplierManager();
+    supplierManager.getAllOrders();
 
-    expect(PurchaseOrderArchive.prototype.getAllOrders).toHaveBeenCalled()
-  })
+    expect(PurchaseOrderArchive.prototype.getAllOrders).toHaveBeenCalled();
+  });
 
-  it(('Processes a supplier delivery'), () => {
-    let order = new SupplierOrder
-    let item1 = new Item("item 1", 1, 2, 3, 4, "5")
-    const item2 = new Item("item 2", 1, 2, 3, 4, "5")
-    jest.mocked(order.getAllItems).mockReturnValueOnce(new Map([[item1, 5], [item2, 3]]));
-    jest.mocked(PurchaseOrderArchive.prototype.getOrder).mockReturnValueOnce(order);
+  it("Processes a supplier delivery", () => {
+    let order = new SupplierOrder();
+    let item1 = new Item("item 1", 1, 2, 3, 4, "5");
+    const item2 = new Item("item 2", 1, 2, 3, 4, "5");
+    jest.mocked(order.getAllItems).mockReturnValueOnce(
+      new Map([
+        [item1, 5],
+        [item2, 3],
+      ]),
+    );
+    jest
+      .mocked(PurchaseOrderArchive.prototype.getOrder)
+      .mockReturnValueOnce(order);
 
-    let supplierManager = new SupplierManager()
-    const result = supplierManager.processDelivery(1)
+    let supplierManager = new SupplierManager();
+    const result = supplierManager.processDelivery(1);
 
-    expect(order.setStatus).toHaveBeenCalledWith(OrderStatus.Delivered)
-    expect(result).toEqual(new Map([[item1, -5], [item2, -3]]))
-  })
+    expect(order.setStatus).toHaveBeenCalledWith(OrderStatus.Delivered);
+    expect(result).toEqual(
+      new Map([
+        [item1, -5],
+        [item2, -3],
+      ]),
+    );
+  });
 
-  it(('Gets pending deliveries'), () => {
-    let supplierManager = new SupplierManager()
-    supplierManager.getPendingDeliveries()
+  it("Gets pending deliveries", () => {
+    let supplierManager = new SupplierManager();
+    supplierManager.getPendingDeliveries();
 
-    expect(PurchaseOrderArchive.prototype.getUndeliveredOrders).toHaveBeenCalled()
-  })
+    expect(
+      PurchaseOrderArchive.prototype.getUndeliveredOrders,
+    ).toHaveBeenCalled();
+  });
 });

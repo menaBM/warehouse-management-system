@@ -18,7 +18,6 @@ class InventoryController extends BaseController_1.BaseController {
             this.menu.drawTable(this.inventory.generateReport());
         };
         this.lowStockAction = () => {
-            // handle if no low stock
             this.menu.drawTable(this.inventory.getLowStock());
         };
         this.checkStockAction = () => __awaiter(this, void 0, void 0, function* () {

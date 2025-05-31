@@ -34,14 +34,12 @@ export class SupplierController extends BaseController {
     ]);
   }
 
-  async getSupplierInput(
+  private async getSupplierInput(
     message: string,
     supplierDetails?: SupplierDetails,
   ): Promise<SupplierDetails> {
     let name, email, phoneNumber;
     this.menu.outputMessage(message);
-
-    // output an error message if incorrect input
 
     while (true) {
       const input = await this.menu.getInput("Name:");
@@ -49,15 +47,16 @@ export class SupplierController extends BaseController {
       if (name !== undefined) {
         break;
       }
+      this.menu.outputMessage("Invalid name");
     }
 
     while (true) {
       const input = await this.menu.getInput("Email:");
       email = input !== "" ? input : supplierDetails?.email;
       if (email !== undefined && email.includes("@")) {
-        // also check for no spaces, use regex
         break;
       }
+      this.menu.outputMessage("Invalid email");
     }
 
     while (true) {
@@ -66,12 +65,13 @@ export class SupplierController extends BaseController {
       if (phoneNumber !== undefined && Number.isInteger(phoneNumber)) {
         break;
       }
+      this.menu.outputMessage("Invalid phone number");
     }
 
     return { name, email, phoneNumber: Number(phoneNumber) };
   }
 
-  async getExistingSupplier() {
+  private async getExistingSupplier() {
     while (true) {
       const name = await this.menu.getInput("Enter name of supplier:");
       let supplierFound = this.supplierManager.getSupplier(name);
@@ -165,7 +165,7 @@ export class SupplierController extends BaseController {
   };
 
   private orderHistoryAction = () => {
-    let orders = this.supplierManager.viewOrders();
+    let orders = this.supplierManager.getAllOrders();
     let orderSummaries: Array<Array<string>> = [
       ["Order Number", "Supplier Name", "Order Status"],
     ];

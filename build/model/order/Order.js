@@ -12,9 +12,6 @@ class Order {
     getAllItems() {
         return this.items;
     }
-    // getItem (item: Item) {
-    //   return this.items.get(item)
-    // }
     setStatus(status) {
         this.status = status;
     }

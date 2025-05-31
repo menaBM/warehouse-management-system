@@ -23,7 +23,7 @@ export class SupplierManager {
   }
 
   editSupplier(supplier: Supplier, supplierDetails: SupplierDetails) {
-    const name = supplier.getName()
+    const name = supplier.getName();
     if (name !== supplierDetails.name) {
       this.suppliers.delete(name);
     }
@@ -55,12 +55,7 @@ export class SupplierManager {
     this.purchaseOrderArchive.addOrder(order);
   }
 
-  // getSupplierOrder (orderNumber: number) {
-  //     return this.purchaseOrderArchive.getOrder(orderNumber)
-  // }
-
-  viewOrders(): Map<number, SupplierOrder> {
-    // rename get all orders
+  getAllOrders(): Map<number, SupplierOrder> {
     return this.purchaseOrderArchive.getAllOrders();
   }
 
