@@ -17,13 +17,14 @@ class SupplierManager {
         return this.suppliers.get(supplierName);
     }
     editSupplier(supplier, supplierDetails) {
-        if (supplier.getName() !== supplierDetails.name) {
-            this.suppliers.delete(supplier.getName());
+        const name = supplier.getName();
+        if (name !== supplierDetails.name) {
+            this.suppliers.delete(name);
         }
         supplier.setName(supplierDetails.name);
         supplier.setEmail(supplierDetails.email);
         supplier.setPhoneNumber(supplierDetails.phoneNumber);
-        this.suppliers.set(supplier.getName(), supplier);
+        this.suppliers.set(supplierDetails.name, supplier);
     }
     removeSupplier(supplier) {
         this.suppliers.delete(supplier.getName());

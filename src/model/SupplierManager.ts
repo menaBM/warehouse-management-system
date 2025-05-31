@@ -18,20 +18,21 @@ export class SupplierManager {
     this.suppliers.set(supplierDetails.name, supplier);
   }
 
-  getSupplier(supplierName: string) {
+  getSupplier(supplierName: string): Supplier | undefined {
     return this.suppliers.get(supplierName);
   }
 
   editSupplier(supplier: Supplier, supplierDetails: SupplierDetails) {
-    if (supplier.getName() !== supplierDetails.name) {
-      this.suppliers.delete(supplier.getName());
+    const name = supplier.getName()
+    if (name !== supplierDetails.name) {
+      this.suppliers.delete(name);
     }
 
     supplier.setName(supplierDetails.name);
     supplier.setEmail(supplierDetails.email);
     supplier.setPhoneNumber(supplierDetails.phoneNumber);
 
-    this.suppliers.set(supplier.getName(), supplier);
+    this.suppliers.set(supplierDetails.name, supplier);
   }
 
   removeSupplier(supplier: Supplier) {
