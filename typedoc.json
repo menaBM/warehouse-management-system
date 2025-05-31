@@ -1,0 +1,22 @@
+{
+  "entryPoints": [
+    "./src/controller/BaseController.ts",
+    "./src/controller/FinanceController.ts",
+    "./src/controller/InventoryController.ts",
+    "./src/controller/OrderController.ts",
+    "./src/controller/SupplierController.ts",
+    "./src/model/order/CustomerOrder.ts",
+    "./src/model/order/Order.ts",
+    "./src/model/order/SupplierOrder.ts",
+    "./src/model/FinancialReport.ts",
+    "./src/model/Inventory.ts",
+    "./src/model/Item.ts",
+    "./src/model/PurchaseOrderArchive.ts",
+    "./src/model/Supplier.ts",
+    "./src/model/SupplierManager.ts",
+    "./src/view/menu.ts",
+    "./src/types.ts"
+  ],
+  "out": "docs",
+  "tsconfig": "tsconfig.json"
+}
