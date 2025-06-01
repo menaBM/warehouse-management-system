@@ -90,12 +90,22 @@ export class OrderController extends BaseController {
   };
 
   private editAction = async (): Promise<void> => {
+    if (this.order.getAllItems().size < 1) {
+      this.menu.outputMessage("Currently no items in order to edit");
+      return;
+    }
+
     const item: Item = await this.getItemInOrder();
     const quantity: number = await this.getQuantityInput(item);
     this.order.setItem(item, quantity);
   };
 
   private removeAction = async (): Promise<void> => {
+    if (this.order.getAllItems().size < 1) {
+      this.menu.outputMessage("Currently no items in the order to be removed");
+      return;
+    }
+
     const item: Item = await this.getItemInOrder();
     this.order.removeItem(item);
   };
@@ -106,6 +116,11 @@ export class OrderController extends BaseController {
   };
 
   private completeAction = (): void => {
+    if (this.order.getAllItems().size < 1) {
+      this.menu.outputMessage("Please add items to the order first");
+      return;
+    }
+
     this.menu.outputMessage("Your final order is as follows:");
     this.viewAction();
 

@@ -25,11 +25,19 @@ class OrderController extends BaseController_1.BaseController {
             this.order.setItem(item, quantity);
         });
         this.editAction = () => __awaiter(this, void 0, void 0, function* () {
+            if (this.order.getAllItems().size < 1) {
+                this.menu.outputMessage("Currently no items in order to edit");
+                return;
+            }
             const item = yield this.getItemInOrder();
             const quantity = yield this.getQuantityInput(item);
             this.order.setItem(item, quantity);
         });
         this.removeAction = () => __awaiter(this, void 0, void 0, function* () {
+            if (this.order.getAllItems().size < 1) {
+                this.menu.outputMessage("Currently no items in the order to be removed");
+                return;
+            }
             const item = yield this.getItemInOrder();
             this.order.removeItem(item);
         });
@@ -38,6 +46,10 @@ class OrderController extends BaseController_1.BaseController {
             this.menu.outputMessage(`Order Total: ${this.order.getTotal()}`);
         };
         this.completeAction = () => {
+            if (this.order.getAllItems().size < 1) {
+                this.menu.outputMessage("Please add items to the order first");
+                return;
+            }
             this.menu.outputMessage("Your final order is as follows:");
             this.viewAction();
             const output = this.order.complete(this.inventory, this.financialReport);
