@@ -53,8 +53,10 @@ export class OrderController extends BaseController {
 
   private async getQuantityInput(item: Item): Promise<number> {
     while (true) {
-      const quantity: number = Number(await this.menu.getInput("Enter item quantity:"));
-      if (! isNaN(quantity) && quantity > 0) {
+      const quantity: number = Number(
+        await this.menu.getInput("Enter item quantity:"),
+      );
+      if (!isNaN(quantity) && quantity > 0) {
         if (!this.order.isValidQuantity(item, quantity)) {
           this.menu.outputMessage("Insufficient stock");
           continue;

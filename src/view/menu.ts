@@ -14,7 +14,9 @@ export class Menu {
   async selectOption(message: string, options: Array<string>): Promise<string> {
     console.log(`\n${message}\n`);
     this.printOptions(options);
-    let choice: string = await this.getInput("\nPlease enter number of selection:\n");
+    let choice: string = await this.getInput(
+      "\nPlease enter number of selection:\n",
+    );
     return choice;
   }
 
@@ -32,7 +34,7 @@ export class Menu {
   drawTable(data: Array<Array<string>>): void {
     console.log(`\n`);
     data.forEach((entry) => {
-      let row : string = ``;
+      let row: string = ``;
       entry.forEach((column) => {
         const maxLength: number = 25;
         column =

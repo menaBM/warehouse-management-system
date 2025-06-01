@@ -26,7 +26,7 @@ export class Order {
   }
 
   setItem(item: Item, quantity: number): void {
-    const existingItemQuantity: number| undefined = this.items.get(item);
+    const existingItemQuantity: number | undefined = this.items.get(item);
     if (existingItemQuantity) {
       this.total -= existingItemQuantity * this.getItemPrice(item);
     }

@@ -10,7 +10,7 @@ export class Inventory {
     quantity: number,
     lowStockThreshold: number,
     supplierName: string,
-  ):void {
+  ): void {
     const item: Item = new Item(
       name,
       price,
@@ -22,7 +22,7 @@ export class Inventory {
     this.items.set(name, item);
   }
 
-  addItem(item: Item) : void{
+  addItem(item: Item): void {
     this.items.set(item.getName(), item);
   }
 
@@ -45,7 +45,9 @@ export class Inventory {
 
   getLowStock(): Array<Array<string>> {
     let lowStock: Array<Array<string>> = [["Item", "Quantity"]];
-    let items: Array<Item> = [...this.items.values()].filter((item) => item.isLowStock());
+    let items: Array<Item> = [...this.items.values()].filter((item) =>
+      item.isLowStock(),
+    );
     items.map((item) =>
       lowStock.push([item.getName(), item.getQuantity().toString()]),
     );

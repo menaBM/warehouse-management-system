@@ -54,7 +54,7 @@ export class SupplierController extends BaseController {
     }
 
     while (true) {
-      const input:string  = await this.menu.getInput("Email:");
+      const input: string = await this.menu.getInput("Email:");
       email = input !== "" ? input : supplierDetails?.email;
       if (email !== undefined && email.includes("@")) {
         break;
@@ -77,7 +77,8 @@ export class SupplierController extends BaseController {
   private async getExistingSupplier(): Promise<Supplier> {
     while (true) {
       const name: string = await this.menu.getInput("Enter name of supplier:");
-      let supplierFound: Supplier | undefined = this.supplierManager.getSupplier(name);
+      let supplierFound: Supplier | undefined =
+        this.supplierManager.getSupplier(name);
       if (supplierFound) {
         return supplierFound;
       }
@@ -137,12 +138,14 @@ export class SupplierController extends BaseController {
     let supplierInventory: Inventory = new Inventory();
 
     let items: Map<string, Item> = this.inventory.getItems();
-    const supplierItems: Array<Item> = Array.from(items.values()).filter((item) => {
-      if (item.getSupplierName() === supplierName) {
-        supplierInventory.addItem(item);
-        return item.getName();
-      }
-    });
+    const supplierItems: Array<Item> = Array.from(items.values()).filter(
+      (item) => {
+        if (item.getSupplierName() === supplierName) {
+          supplierInventory.addItem(item);
+          return item.getName();
+        }
+      },
+    );
 
     if (supplierItems.length === 0) {
       this.menu.outputMessage("No items available to order from this supplier");
@@ -168,7 +171,8 @@ export class SupplierController extends BaseController {
   };
 
   private orderHistoryAction = (): void => {
-    let orders: Map<number, SupplierOrder> = this.supplierManager.getAllOrders();
+    let orders: Map<number, SupplierOrder> =
+      this.supplierManager.getAllOrders();
     let orderSummaries: Array<Array<string>> = [
       ["Order Number", "Supplier Name", "Order Status"],
     ];
@@ -199,7 +203,8 @@ export class SupplierController extends BaseController {
         continue;
       }
       if (deliveries.includes(orderNumber)) {
-        const stockUpdates: Map<Item, number> = this.supplierManager.processDelivery(orderNumber);
+        const stockUpdates: Map<Item, number> =
+          this.supplierManager.processDelivery(orderNumber);
         this.inventory.updateStock(stockUpdates);
         this.menu.outputMessage("Inventory updated");
         return;

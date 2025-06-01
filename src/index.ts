@@ -48,8 +48,14 @@ const supplierController: SupplierController = new SupplierController(
   inventory,
   financialReport,
 );
-const inventoryController: InventoryController = new InventoryController(menu, inventory);
-const financeController: FinanceController = new FinanceController(menu, financialReport);
+const inventoryController: InventoryController = new InventoryController(
+  menu,
+  inventory,
+);
+const financeController: FinanceController = new FinanceController(
+  menu,
+  financialReport,
+);
 
 const baseController: BaseController = new BaseController(menu);
 baseController.addNewAction(

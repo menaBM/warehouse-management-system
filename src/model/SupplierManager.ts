@@ -60,7 +60,8 @@ export class SupplierManager {
   }
 
   processDelivery(orderNumber: number): Map<Item, number> {
-    let order : SupplierOrder | undefined= this.purchaseOrderArchive.getOrder(orderNumber);
+    let order: SupplierOrder | undefined =
+      this.purchaseOrderArchive.getOrder(orderNumber);
     let stockUpdates: Map<Item, number> = new Map<Item, number>();
 
     if (order) {
