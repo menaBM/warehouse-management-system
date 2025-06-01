@@ -34,7 +34,7 @@ export class Item {
     return this.supplierPrice;
   }
 
-  setQuantity(quantity: number) {
+  setQuantity(quantity: number): void {
     this.quantity = quantity;
   }
 
@@ -42,7 +42,7 @@ export class Item {
     return this.quantity;
   }
 
-  setSupplierName(supplierName: string) {
+  setSupplierName(supplierName: string): void {
     this.supplierName = supplierName;
   }
 

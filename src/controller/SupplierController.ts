@@ -7,6 +7,7 @@ import { Inventory } from "../model/Inventory";
 import { OrderController } from "./OrderController";
 import { FinancialReport } from "../model/FinancialReport";
 import { SupplierOrder } from "../model/order/SupplierOrder";
+import { Item } from "../model/Item";
 
 export class SupplierController extends BaseController {
   private supplierManager: SupplierManager;
@@ -38,11 +39,13 @@ export class SupplierController extends BaseController {
     message: string,
     supplierDetails?: SupplierDetails,
   ): Promise<SupplierDetails> {
-    let name, email, phoneNumber;
+    let name: string | undefined;
+    let email: string | undefined;
+    let phoneNumber: number | undefined;
     this.menu.outputMessage(message);
 
     while (true) {
-      const input = await this.menu.getInput("Name:");
+      const input: string = await this.menu.getInput("Name:");
       name = input !== "" ? input : supplierDetails?.name;
       if (name !== undefined) {
         break;
@@ -51,7 +54,7 @@ export class SupplierController extends BaseController {
     }
 
     while (true) {
-      const input = await this.menu.getInput("Email:");
+      const input:string  = await this.menu.getInput("Email:");
       email = input !== "" ? input : supplierDetails?.email;
       if (email !== undefined && email.includes("@")) {
         break;
@@ -60,7 +63,7 @@ export class SupplierController extends BaseController {
     }
 
     while (true) {
-      const input = await this.menu.getInput("Phone number:");
+      const input: string = await this.menu.getInput("Phone number:");
       phoneNumber = input !== "" ? Number(input) : supplierDetails?.phoneNumber;
       if (phoneNumber !== undefined && Number.isInteger(phoneNumber)) {
         break;
@@ -71,10 +74,10 @@ export class SupplierController extends BaseController {
     return { name, email, phoneNumber: Number(phoneNumber) };
   }
 
-  private async getExistingSupplier() {
+  private async getExistingSupplier(): Promise<Supplier> {
     while (true) {
-      const name = await this.menu.getInput("Enter name of supplier:");
-      let supplierFound = this.supplierManager.getSupplier(name);
+      const name: string = await this.menu.getInput("Enter name of supplier:");
+      let supplierFound: Supplier | undefined = this.supplierManager.getSupplier(name);
       if (supplierFound) {
         return supplierFound;
       }
@@ -82,7 +85,7 @@ export class SupplierController extends BaseController {
     }
   }
 
-  private addAction = async () => {
+  private addAction = async (): Promise<void> => {
     let supplierDetails: SupplierDetails;
     while (true) {
       supplierDetails = await this.getSupplierInput(
@@ -97,7 +100,7 @@ export class SupplierController extends BaseController {
     this.supplierManager.createSupplier(supplierDetails);
   };
 
-  private editAction = async () => {
+  private editAction = async (): Promise<void> => {
     let supplier: Supplier = await this.getExistingSupplier();
 
     const supplierDetails: SupplierDetails = await this.getSupplierInput(
@@ -112,19 +115,19 @@ export class SupplierController extends BaseController {
     this.supplierManager.editSupplier(supplier, supplierDetails);
   };
 
-  private deleteAction = async () => {
+  private deleteAction = async (): Promise<void> => {
     let supplier: Supplier = await this.getExistingSupplier();
     this.supplierManager.removeSupplier(supplier);
   };
 
-  private viewAction = async () => {
+  private viewAction = async (): Promise<void> => {
     let suppliers: Array<Array<string>> = [
       ["Name", "Email", "Phone Number"],
     ].concat(this.supplierManager.getAllSuppliers());
     this.menu.drawTable(suppliers);
   };
 
-  private orderAction = async () => {
+  private orderAction = async (): Promise<void> => {
     if (this.supplierManager.getAllSuppliers().length === 0) {
       this.menu.outputMessage("No supplier records found");
       return;
@@ -133,8 +136,8 @@ export class SupplierController extends BaseController {
     let supplierName: string = (await this.getExistingSupplier()).getName();
     let supplierInventory: Inventory = new Inventory();
 
-    let items = this.inventory.getItems();
-    const supplierItems = Array.from(items.values()).filter((item) => {
+    let items: Map<string, Item> = this.inventory.getItems();
+    const supplierItems: Array<Item> = Array.from(items.values()).filter((item) => {
       if (item.getSupplierName() === supplierName) {
         supplierInventory.addItem(item);
         return item.getName();
@@ -151,21 +154,21 @@ export class SupplierController extends BaseController {
     );
     this.menu.drawTable(supplierItems.map((item) => [item.getName()]));
 
-    const supplierOrderController = new OrderController(
+    const supplierOrderController: OrderController = new OrderController(
       supplierInventory,
       this.menu,
       SupplierOrder,
       this.financialReport,
     );
-    await supplierOrderController.rootAction();
 
+    await supplierOrderController.rootAction();
     let order: SupplierOrder =
       supplierOrderController.getOrder() as SupplierOrder;
     this.supplierManager.addSupplierOrder(order);
   };
 
-  private orderHistoryAction = () => {
-    let orders = this.supplierManager.getAllOrders();
+  private orderHistoryAction = (): void => {
+    let orders: Map<number, SupplierOrder> = this.supplierManager.getAllOrders();
     let orderSummaries: Array<Array<string>> = [
       ["Order Number", "Supplier Name", "Order Status"],
     ];
@@ -180,7 +183,7 @@ export class SupplierController extends BaseController {
     this.menu.drawTable(orderSummaries);
   };
 
-  private deliveryAction = async () => {
+  private deliveryAction = async (): Promise<void> => {
     let deliveries: Array<number> = this.supplierManager.getPendingDeliveries();
     if (deliveries.length < 1) {
       this.menu.outputMessage("There are currently no pending deliveries");
@@ -188,7 +191,7 @@ export class SupplierController extends BaseController {
     }
 
     while (true) {
-      let orderNumber = Number(
+      let orderNumber: number = Number(
         await this.menu.getInput("Enter order number of delivery"),
       );
       if (!orderNumber) {
@@ -196,7 +199,7 @@ export class SupplierController extends BaseController {
         continue;
       }
       if (deliveries.includes(orderNumber)) {
-        const stockUpdates = this.supplierManager.processDelivery(orderNumber);
+        const stockUpdates: Map<Item, number> = this.supplierManager.processDelivery(orderNumber);
         this.inventory.updateStock(stockUpdates);
         this.menu.outputMessage("Inventory updated");
         return;

@@ -9,8 +9,8 @@ export class SupplierManager {
   private purchaseOrderArchive: PurchaseOrderArchive =
     new PurchaseOrderArchive();
 
-  createSupplier(supplierDetails: SupplierDetails) {
-    let supplier = new Supplier(
+  createSupplier(supplierDetails: SupplierDetails): void {
+    let supplier: Supplier = new Supplier(
       supplierDetails.name,
       supplierDetails.email,
       supplierDetails.phoneNumber,
@@ -22,8 +22,8 @@ export class SupplierManager {
     return this.suppliers.get(supplierName);
   }
 
-  editSupplier(supplier: Supplier, supplierDetails: SupplierDetails) {
-    const name = supplier.getName();
+  editSupplier(supplier: Supplier, supplierDetails: SupplierDetails): void {
+    const name: string = supplier.getName();
     if (name !== supplierDetails.name) {
       this.suppliers.delete(name);
     }
@@ -35,12 +35,12 @@ export class SupplierManager {
     this.suppliers.set(supplierDetails.name, supplier);
   }
 
-  removeSupplier(supplier: Supplier) {
+  removeSupplier(supplier: Supplier): void {
     this.suppliers.delete(supplier.getName());
   }
 
   getAllSuppliers(): Array<Array<string>> {
-    let suppliers = new Array<Array<string>>();
+    let suppliers: Array<Array<string>> = new Array<Array<string>>();
     this.suppliers.forEach((supplier) => {
       suppliers.push([
         supplier.getName(),
@@ -51,7 +51,7 @@ export class SupplierManager {
     return suppliers;
   }
 
-  addSupplierOrder(order: SupplierOrder) {
+  addSupplierOrder(order: SupplierOrder): void {
     this.purchaseOrderArchive.addOrder(order);
   }
 
@@ -60,7 +60,7 @@ export class SupplierManager {
   }
 
   processDelivery(orderNumber: number): Map<Item, number> {
-    let order = this.purchaseOrderArchive.getOrder(orderNumber);
+    let order : SupplierOrder | undefined= this.purchaseOrderArchive.getOrder(orderNumber);
     let stockUpdates: Map<Item, number> = new Map<Item, number>();
 
     if (order) {

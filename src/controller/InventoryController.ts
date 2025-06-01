@@ -1,4 +1,5 @@
 import { Inventory } from "../model/Inventory";
+import { Item } from "../model/Item";
 import { Menu } from "../view/menu";
 import { BaseController } from "./BaseController";
 
@@ -17,21 +18,21 @@ export class InventoryController extends BaseController {
     ]);
   }
 
-  private stockReportAction = () => {
+  private stockReportAction = (): void => {
     this.menu.drawTable(this.inventory.generateReport());
   };
 
-  private lowStockAction = () => {
+  private lowStockAction = (): void => {
     this.menu.drawTable(this.inventory.getLowStock());
   };
 
-  private checkStockAction = async () => {
-    const item = await this.getItemInput();
+  private checkStockAction = async (): Promise<void> => {
+    const item: Item = await this.getItemInput();
     this.menu.outputMessage(`${item.getName()}: ${item.getQuantity()}`);
   };
 
-  private editStockAction = async () => {
-    const item = await this.getItemInput();
+  private editStockAction = async (): Promise<void> => {
+    const item: Item = await this.getItemInput();
     const quantity: number = await this.getNumberInput(
       "Enter quantity:",
       "Invalid quantity",
@@ -42,7 +43,7 @@ export class InventoryController extends BaseController {
     this.menu.outputMessage(`${item.getName()} quantity set to ${quantity}`);
   };
 
-  private addInventoryAction = async () => {
+  private addInventoryAction = async (): Promise<void> => {
     let name: string;
     let supplierName: string;
 
@@ -89,10 +90,10 @@ export class InventoryController extends BaseController {
     );
   };
 
-  private async getItemInput() {
+  private async getItemInput(): Promise<Item> {
     while (true) {
-      const itemName = await this.menu.getInput("Enter item name:");
-      const item = this.inventory.lookupItem(itemName);
+      const itemName: string = await this.menu.getInput("Enter item name:");
+      const item: Item | undefined = this.inventory.lookupItem(itemName);
       if (item) {
         return item;
       }

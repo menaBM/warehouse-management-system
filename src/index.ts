@@ -10,10 +10,10 @@ import { FinancialReport } from "./model/FinancialReport";
 import { FinanceController } from "./controller/FinanceController";
 import { SupplierDetails } from "./types";
 
-const menu = new Menu();
-const inventory = new Inventory();
-const supplierManager = new SupplierManager();
-const financialReport = new FinancialReport();
+const menu: Menu = new Menu();
+const inventory: Inventory = new Inventory();
+const supplierManager: SupplierManager = new SupplierManager();
+const financialReport: FinancialReport = new FinancialReport();
 
 const supplier1: SupplierDetails = {
   name: "supplier 1",
@@ -36,22 +36,22 @@ const testItems: Array<[string, number, number, number, number, string]> = [
 ];
 testItems.forEach((item) => inventory.newItem(...item));
 
-const customerOrderController = new OrderController(
+const customerOrderController: OrderController = new OrderController(
   inventory,
   menu,
   CustomerOrder,
   financialReport,
 );
-const supplierController = new SupplierController(
+const supplierController: SupplierController = new SupplierController(
   menu,
   supplierManager,
   inventory,
   financialReport,
 );
-const inventoryController = new InventoryController(menu, inventory);
-const financeController = new FinanceController(menu, financialReport);
+const inventoryController: InventoryController = new InventoryController(menu, inventory);
+const financeController: FinanceController = new FinanceController(menu, financialReport);
 
-const baseController = new BaseController(menu);
+const baseController: BaseController = new BaseController(menu);
 baseController.addNewAction(
   "Place Order",
   customerOrderController.rootAction.bind(customerOrderController),

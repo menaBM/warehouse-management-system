@@ -6,7 +6,7 @@ export class PurchaseOrderArchive {
   private orders: Map<number, SupplierOrder> = new Map();
 
   addOrder(order: SupplierOrder): void {
-    const orderNumber = this.nextOrderNumber;
+    const orderNumber: number = this.nextOrderNumber;
     this.orders.set(orderNumber, order);
     this.nextOrderNumber++;
   }

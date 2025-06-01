@@ -14,11 +14,11 @@ export class FinanceController extends BaseController {
     ]);
   }
 
-  summaryReportAction = async () => {
+  summaryReportAction = async (): Promise<void> => {
     this.menu.drawTable(this.financialReport.generateSummaryReport());
   };
 
-  fullReportAction = async () => {
+  fullReportAction = async (): Promise<void> => {
     this.menu.drawTable(this.financialReport.generateFullReport());
   };
 }

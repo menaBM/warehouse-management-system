@@ -5,36 +5,36 @@ const rl = readline.createInterface({
 });
 
 export class Menu {
-  printOptions(options: Array<string>) {
+  printOptions(options: Array<string>): void {
     options.forEach((option, index) => {
       console.log(`${index + 1}. ${option}`);
     });
   }
 
-  async selectOption(message: string, options: Array<string>) {
+  async selectOption(message: string, options: Array<string>): Promise<string> {
     console.log(`\n${message}\n`);
     this.printOptions(options);
-    let choice = await this.getInput("\nPlease enter number of selection:\n");
+    let choice: string = await this.getInput("\nPlease enter number of selection:\n");
     return choice;
   }
 
-  async getInput(message: string = "") {
-    let res = await new Promise<string>((resolve) =>
+  async getInput(message: string = ""): Promise<string> {
+    let input: string = await new Promise<string>((resolve) =>
       rl.question(message, resolve),
     );
-    return res;
+    return input;
   }
 
-  outputMessage(message: string = "") {
+  outputMessage(message: string = ""): void {
     console.log("\n" + message);
   }
 
-  drawTable(data: Array<Array<string>>) {
+  drawTable(data: Array<Array<string>>): void {
     console.log(`\n`);
     data.forEach((entry) => {
-      let row = ``;
+      let row : string = ``;
       entry.forEach((column) => {
-        const maxLength = 25;
+        const maxLength: number = 25;
         column =
           column.length > maxLength
             ? column.substring(0, maxLength - 1)
@@ -45,7 +45,7 @@ export class Menu {
     });
   }
 
-  quit() {
+  quit(): void {
     rl.close();
   }
 }

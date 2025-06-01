@@ -6,7 +6,7 @@ export class FinancialReport {
   private stockPurchases: Map<string, number> = new Map();
   private sales: Map<string, number> = new Map();
 
-  updateSalesRevenue(order: Order) {
+  updateSalesRevenue(order: Order): void {
     this.salesRevenue += order.getTotal();
 
     order.getAllItems().forEach((quantity, item) => {
@@ -17,7 +17,7 @@ export class FinancialReport {
     });
   }
 
-  updatePurchaseCosts(order: Order) {
+  updatePurchaseCosts(order: Order): void {
     this.purchaseCosts += order.getTotal();
 
     order.getAllItems().forEach((quantity, item) => {
@@ -29,7 +29,7 @@ export class FinancialReport {
   }
 
   generateSummaryReport(): Array<Array<string>> {
-    const netIncome = this.salesRevenue - this.purchaseCosts;
+    const netIncome: number = this.salesRevenue - this.purchaseCosts;
     let report: Array<Array<string>> = [
       [
         "Stock Purchase Costs",
@@ -46,7 +46,7 @@ export class FinancialReport {
   }
 
   generateFullReport(): Array<Array<string>> {
-    const netIncome = this.salesRevenue - this.purchaseCosts;
+    const netIncome: number = this.salesRevenue - this.purchaseCosts;
     let report: Array<Array<string>> = [["Expenses"]];
     report = report.concat(
       Array.from(this.stockPurchases).map((item) => [item[0], "£" + item[1]]),

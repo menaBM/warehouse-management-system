@@ -122,7 +122,9 @@ class SupplierController extends BaseController_1.BaseController {
     }
     getSupplierInput(message, supplierDetails) {
         return __awaiter(this, void 0, void 0, function* () {
-            let name, email, phoneNumber;
+            let name;
+            let email;
+            let phoneNumber;
             this.menu.outputMessage(message);
             while (true) {
                 const input = yield this.menu.getInput("Name:");

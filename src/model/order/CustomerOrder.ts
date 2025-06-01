@@ -10,7 +10,9 @@ export class CustomerOrder extends Order {
   ): Array<string> {
     this.setStatus(OrderStatus.Dispatched);
     financialReport.updateSalesRevenue(this);
-    const stockAlerts = inventory.updateStock(this.getAllItems());
+    const stockAlerts: Array<string> = inventory.updateStock(
+      this.getAllItems(),
+    );
     return stockAlerts;
   }
 }

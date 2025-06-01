@@ -31,8 +31,8 @@ class Menu {
     }
     getInput() {
         return __awaiter(this, arguments, void 0, function* (message = "") {
-            let res = yield new Promise((resolve) => rl.question(message, resolve));
-            return res;
+            let input = yield new Promise((resolve) => rl.question(message, resolve));
+            return input;
         });
     }
     outputMessage(message = "") {

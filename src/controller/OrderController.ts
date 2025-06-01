@@ -14,7 +14,7 @@ export class OrderController extends BaseController {
   constructor(
     inventory: Inventory,
     menu: Menu,
-    order: typeof Order,
+    order: typeof Order, // accepts any order class to create an instance of
     financialReport: FinancialReport,
   ) {
     super(menu);
@@ -40,10 +40,10 @@ export class OrderController extends BaseController {
     return this.order;
   }
 
-  private async getItemInput() {
+  private async getItemInput(): Promise<Item> {
     while (true) {
-      const itemName = await this.menu.getInput("Enter item name:");
-      const item = this.inventory.lookupItem(itemName);
+      const itemName: string = await this.menu.getInput("Enter item name:");
+      const item: Item | undefined = this.inventory.lookupItem(itemName);
       if (item) {
         return item;
       }
@@ -51,10 +51,10 @@ export class OrderController extends BaseController {
     }
   }
 
-  private async getQuantityInput(item: Item) {
+  private async getQuantityInput(item: Item): Promise<number> {
     while (true) {
-      const quantity = Number(await this.menu.getInput("Enter item quantity:"));
-      if (quantity) {
+      const quantity: number = Number(await this.menu.getInput("Enter item quantity:"));
+      if (! isNaN(quantity) && quantity > 0) {
         if (!this.order.isValidQuantity(item, quantity)) {
           this.menu.outputMessage("Insufficient stock");
           continue;
@@ -65,9 +65,9 @@ export class OrderController extends BaseController {
     }
   }
 
-  private async getItemInOrder() {
+  private async getItemInOrder(): Promise<Item> {
     while (true) {
-      const item = await this.getItemInput();
+      const item: Item = await this.getItemInput();
       if (this.order.hasItem(item)) {
         return item;
       }
@@ -75,36 +75,35 @@ export class OrderController extends BaseController {
     }
   }
 
-  private addAction = async () => {
-    const item = await this.getItemInput();
+  private addAction = async (): Promise<void> => {
+    const item: Item = await this.getItemInput();
 
     if (this.order.hasItem(item)) {
       this.menu.outputMessage(`${item.getName()} already part of order`);
       return;
     }
 
-    const quantity = await this.getQuantityInput(item);
-
+    const quantity: number = await this.getQuantityInput(item);
     this.order.setItem(item, quantity);
   };
 
-  private editAction = async () => {
-    const item = await this.getItemInOrder();
-    const quantity = await this.getQuantityInput(item);
+  private editAction = async (): Promise<void> => {
+    const item: Item = await this.getItemInOrder();
+    const quantity: number = await this.getQuantityInput(item);
     this.order.setItem(item, quantity);
   };
 
-  private removeAction = async () => {
-    const item = await this.getItemInOrder();
+  private removeAction = async (): Promise<void> => {
+    const item: Item = await this.getItemInOrder();
     this.order.removeItem(item);
   };
 
-  private viewAction = () => {
+  private viewAction = (): void => {
     this.menu.drawTable(this.order.getSummary());
     this.menu.outputMessage(`Order Total: ${this.order.getTotal()}`);
   };
 
-  private completeAction = () => {
+  private completeAction = (): void => {
     this.menu.outputMessage("Your final order is as follows:");
     this.viewAction();
 

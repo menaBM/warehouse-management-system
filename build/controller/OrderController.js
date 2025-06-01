@@ -12,7 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.OrderController = void 0;
 const BaseController_1 = require("./BaseController");
 class OrderController extends BaseController_1.BaseController {
-    constructor(inventory, menu, order, financialReport) {
+    constructor(inventory, menu, order, // accepts any order class to create an instance of
+    financialReport) {
         super(menu);
         this.addAction = () => __awaiter(this, void 0, void 0, function* () {
             const item = yield this.getItemInput();
@@ -85,7 +86,7 @@ class OrderController extends BaseController_1.BaseController {
         return __awaiter(this, void 0, void 0, function* () {
             while (true) {
                 const quantity = Number(yield this.menu.getInput("Enter item quantity:"));
-                if (quantity) {
+                if (!isNaN(quantity) && quantity > 0) {
                     if (!this.order.isValidQuantity(item, quantity)) {
                         this.menu.outputMessage("Insufficient stock");
                         continue;

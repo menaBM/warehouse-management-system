@@ -10,8 +10,8 @@ export class Inventory {
     quantity: number,
     lowStockThreshold: number,
     supplierName: string,
-  ) {
-    const item = new Item(
+  ):void {
+    const item: Item = new Item(
       name,
       price,
       supplierPrice,
@@ -22,7 +22,7 @@ export class Inventory {
     this.items.set(name, item);
   }
 
-  addItem(item: Item) {
+  addItem(item: Item) : void{
     this.items.set(item.getName(), item);
   }
 
@@ -34,7 +34,7 @@ export class Inventory {
     return this.items;
   }
 
-  generateReport() {
+  generateReport(): Array<Array<string>> {
     let report: Array<Array<string>> = [["Item", "Quantity", "Low Stock"]];
     this.items.forEach((item) => {
       const isLowStock: string = item.isLowStock() ? "Yes" : "No";
@@ -45,7 +45,7 @@ export class Inventory {
 
   getLowStock(): Array<Array<string>> {
     let lowStock: Array<Array<string>> = [["Item", "Quantity"]];
-    let items = [...this.items.values()].filter((item) => item.isLowStock());
+    let items: Array<Item> = [...this.items.values()].filter((item) => item.isLowStock());
     items.map((item) =>
       lowStock.push([item.getName(), item.getQuantity().toString()]),
     );
@@ -53,9 +53,9 @@ export class Inventory {
   }
 
   updateStock(items: Map<Item, number>): Array<string> {
-    let alerts = new Array<string>();
+    let alerts: Array<string> = new Array<string>();
     items.forEach((quantity, item) => {
-      const stock = this.items.get(item.getName());
+      const stock: Item | undefined = this.items.get(item.getName());
 
       if (!stock) return alerts;
 

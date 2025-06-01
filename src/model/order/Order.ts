@@ -17,7 +17,7 @@ export class Order {
     return this.items;
   }
 
-  setStatus(status: OrderStatus) {
+  setStatus(status: OrderStatus): void {
     this.status = status;
   }
 
@@ -25,8 +25,8 @@ export class Order {
     return this.status;
   }
 
-  setItem(item: Item, quantity: number) {
-    const existingItemQuantity = this.items.get(item);
+  setItem(item: Item, quantity: number): void {
+    const existingItemQuantity: number| undefined = this.items.get(item);
     if (existingItemQuantity) {
       this.total -= existingItemQuantity * this.getItemPrice(item);
     }
@@ -34,12 +34,12 @@ export class Order {
     this.total += this.getItemPrice(item) * quantity;
   }
 
-  hasItem(item: Item) {
+  hasItem(item: Item): boolean {
     return this.items.has(item);
   }
 
-  removeItem(item: Item) {
-    const quantity = this.items.get(item);
+  removeItem(item: Item): void {
+    const quantity: number | undefined = this.items.get(item);
     if (quantity) {
       this.total -= this.getItemPrice(item) * quantity;
     }
@@ -54,7 +54,7 @@ export class Order {
     return this.total;
   }
 
-  getSummary() {
+  getSummary(): Array<Array<string>> {
     let order: Array<Array<string>> = [["Name", "Quantity", "Price"]];
     this.items.forEach((quantity, item) => {
       const price: number = this.getItemPrice(item) * quantity;

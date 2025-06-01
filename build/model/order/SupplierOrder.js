@@ -14,7 +14,10 @@ class SupplierOrder extends Order_1.Order {
     }
     complete(inventory, financialReport) {
         var _a;
-        this.supplierName = (_a = this.getAllItems().keys().next().value) === null || _a === void 0 ? void 0 : _a.getSupplierName();
+        this.supplierName = (_a = this.getAllItems()
+            .keys()
+            .next()
+            .value) === null || _a === void 0 ? void 0 : _a.getSupplierName();
         this.setStatus(types_1.OrderStatus.Processed);
         financialReport.updatePurchaseCosts(this);
         return [];

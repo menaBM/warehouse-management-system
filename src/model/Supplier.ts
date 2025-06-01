@@ -9,7 +9,7 @@ export class Supplier {
     this.phoneNumber = phoneNumber;
   }
 
-  setName(name: string) {
+  setName(name: string): void {
     this.name = name;
   }
 
@@ -17,7 +17,7 @@ export class Supplier {
     return this.name;
   }
 
-  setEmail(email: string) {
+  setEmail(email: string): void {
     this.email = email;
   }
 
@@ -25,7 +25,7 @@ export class Supplier {
     return this.email;
   }
 
-  setPhoneNumber(phoneNumber: number) {
+  setPhoneNumber(phoneNumber: number): void {
     this.phoneNumber = phoneNumber;
   }
 
