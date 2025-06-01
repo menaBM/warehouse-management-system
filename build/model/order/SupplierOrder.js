@@ -12,20 +12,9 @@ class SupplierOrder extends Order_1.Order {
         var _a;
         return (_a = this.supplierName) !== null && _a !== void 0 ? _a : "";
     }
-    getSummary() {
-        let order = [["Name", "Quantity", "Price"]];
-        this.getAllItems().forEach((quantity, item) => {
-            const price = item.getSupplierPrice() * quantity;
-            order.push([item.getName(), quantity.toString(), price.toString()]);
-        });
-        return order;
-    }
     complete(inventory, financialReport) {
         var _a;
-        this.supplierName = (_a = this.getAllItems()
-            .keys()
-            .next()
-            .value) === null || _a === void 0 ? void 0 : _a.getSupplierName();
+        this.supplierName = (_a = this.getAllItems().keys().next().value) === null || _a === void 0 ? void 0 : _a.getSupplierName();
         this.setStatus(types_1.OrderStatus.Processed);
         financialReport.updatePurchaseCosts(this);
         return [];

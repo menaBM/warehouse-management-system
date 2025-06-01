@@ -11,15 +11,6 @@ export class SupplierOrder extends Order {
     return this.supplierName ?? "";
   }
 
-  getSummary() {
-    let order: Array<Array<string>> = [["Name", "Quantity", "Price"]];
-    this.getAllItems().forEach((quantity, item) => {
-      const price: number = item.getSupplierPrice() * quantity;
-      order.push([item.getName(), quantity.toString(), price.toString()]);
-    });
-    return order;
-  }
-
   complete(
     inventory: Inventory,
     financialReport: FinancialReport,
@@ -28,7 +19,6 @@ export class SupplierOrder extends Order {
       .keys()
       .next()
       .value?.getSupplierName();
-
     this.setStatus(OrderStatus.Processed);
     financialReport.updatePurchaseCosts(this);
     return [];
